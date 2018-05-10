@@ -61,11 +61,11 @@ namespace WebApp.Controllers
                     }
                 }
             }
-            ImageDTO imageDTO = new ImageDTO() { ImagePath = filePath+name};
+            Image image = new Image() { ImagePath = filePath+name};
 
-            imageManager.Insert(imageDTO);
-            var imageId = imageManager.Get().Where(e => e.ImagePath == imageDTO.ImagePath).FirstOrDefault().Id;
-            NewsDTO newsDTO = new NewsDTO() { Text = Text, Title = Title,
+            imageManager.Insert(image);
+            var imageId = imageManager.Get().Where(e => e.ImagePath == image.ImagePath).FirstOrDefault().Id;
+            News newsDTO = new News() { Text = Text, Title = Title,
                 Image_Id = imageId,
                 Day = DateTime.Today.Day,
                 Month = Enum.GetName(typeof(MonthEnum), DateTime.Today.Month - 1),

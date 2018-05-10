@@ -8,7 +8,7 @@ namespace WebApp.ViewModels
 {
     public class NewsViewModel
     {
-        public List<NewsDTO> NewsLst { get; set; }
-        public List<ImageDTO> ImageLst { get; set; }
+        public List<News> NewsLst { get; set; }
+        public List<Image> ImageLst { get; set; }
     }
 }

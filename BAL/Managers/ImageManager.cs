@@ -20,41 +20,41 @@ namespace BAL.Managers
             this.mapper = mapper;
             this.unitOfWork = unitOfWork;
         }
-        public IEnumerable<ImageDTO> GetAll()
+        public IEnumerable<Image> GetAll()
         {
-            return mapper.Map<List<ImageDTO>>(unitOfWork.ImageRepo.GetAll());
+            return unitOfWork.ImageRepo.GetAll();
         }
 
-        public ImageDTO GetById(int id)
+        public Image GetById(int id)
         {
-            return mapper.Map<ImageDTO>(unitOfWork.ImageRepo.GetById(id));
+            return mapper.Map<Image>(unitOfWork.ImageRepo.GetById(id));
         }
 
-        public virtual IEnumerable<ImageDTO> Get(
+        public virtual IEnumerable<Image> Get(
             Expression<Func<Image, bool>> filter = null,
             Func<IQueryable<Image>,
             IOrderedQueryable<Image>> orderBy = null,
             string includeProperties = "")
         {
-            return mapper.Map<List<ImageDTO>>(unitOfWork.ImageRepo.Get(filter, orderBy, includeProperties));
+            return unitOfWork.ImageRepo.Get(filter, orderBy, includeProperties);
         }
 
-        public void Insert(ImageDTO entity)
+        public void Insert(Image entity)
         {
-            unitOfWork.ImageRepo.Insert(mapper.Map<Image>(entity));
+            unitOfWork.ImageRepo.Insert(entity);
             unitOfWork.Save();
         }
 
-        public void Update(ImageDTO entityToUpdate)
+        public void Update(Image entityToUpdate)
         {
-            unitOfWork.ImageRepo.Update(mapper.Map<Image>(entityToUpdate));
+            unitOfWork.ImageRepo.Update(entityToUpdate);
             unitOfWork.Save();
         }
 
 
-        public void Delete(ImageDTO entityToDelete)
+        public void Delete(Image entityToDelete)
         {
-            unitOfWork.ImageRepo.Delete(mapper.Map<Image>(entityToDelete));
+            unitOfWork.ImageRepo.Delete(entityToDelete);
             unitOfWork.Save();
         }
 

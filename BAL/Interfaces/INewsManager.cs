@@ -10,15 +10,19 @@ namespace BAL.Interfaces
 {
     public interface INewsManager
     {
-        IEnumerable<NewsDTO> GetAll();
-        IEnumerable<NewsDTO> Get(
-           Expression<Func<News, bool>> filter = null,
-           Func<IQueryable<News>,
-           IOrderedQueryable<News>> orderBy = null,
-           string includeProperties = "");
-        NewsDTO GetById(int id);
-        void Insert(NewsDTO item);
-        void Update(NewsDTO item);
-        void Delete(NewsDTO item);
+        IEnumerable<News> GetAll();
+
+        News GetById(int id);
+
+        IEnumerable<News> Get(Expression<Func<News, bool>> filter = null,
+                                     Func<IQueryable<News>,
+                                     IOrderedQueryable<News>> orderBy = null,
+                                     string includeProperties = "");
+
+        void Insert(News entity);
+
+        void Update(News entity);
+
+        void DeleteOrRecover(int id);
     }
 }

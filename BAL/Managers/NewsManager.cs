@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using AutoMapper;
 using BAL.Interfaces;
+using Common;
 using DAL.Interface;
 using Microsoft.AspNetCore.Identity;
 using Model.DB;
@@ -17,51 +18,52 @@ namespace BAL.Managers
     {
         private IUnitOfWork unitOfWork;
         private IMapper mapper;
-        private IImageManager imageManager;
-        private UserManager<User> userManager;
-        
-        public NewsManager(IUnitOfWork unitOfWork, IMapper mapper, IImageManager imageManager, UserManager<User> userManager)
+
+        public NewsManager(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            this.userManager = userManager;
-            this.imageManager = imageManager;
             this.mapper = mapper;
             this.unitOfWork = unitOfWork;
         }
-        public IEnumerable<NewsDTO> GetAll()
+
+        public IEnumerable<News> GetAll()
         {
-            return mapper.Map<List<NewsDTO>>(unitOfWork.NewsRepo.GetAll());
+            return unitOfWork.NewsRepo.GetAll();
         }
 
-        public NewsDTO GetById(int id)
+        public News GetById(int id)
         {
-            return mapper.Map<NewsDTO>(unitOfWork.NewsRepo.GetById(id));
+            return unitOfWork.NewsRepo.GetById(id);
         }
 
-        public virtual IEnumerable<NewsDTO> Get(
-            Expression<Func<News, bool>> filter = null,
-            Func<IQueryable<News>,
-            IOrderedQueryable<News>> orderBy = null,
-            string includeProperties = "")
+        public virtual IEnumerable<News> Get(Expression<Func<News, bool>> filter = null,
+                                     Func<IQueryable<News>,
+                                     IOrderedQueryable<News>> orderBy = null,
+                                     string includeProperties = "")
         {
-            return mapper.Map<List<NewsDTO>>(unitOfWork.NewsRepo.Get(filter, orderBy, includeProperties));
+            return unitOfWork.NewsRepo.Get(filter, orderBy, includeProperties);
         }
 
-        public void Insert(NewsDTO entity)
+        public void Insert(News entity)
         {
-            unitOfWork.NewsRepo.Insert(mapper.Map<News>(entity));
+            unitOfWork.NewsRepo.Insert(entity);
             unitOfWork.Save();
         }
 
-        public void Update(NewsDTO entityToUpdate)
+        public void Update(News entity)
         {
-            unitOfWork.NewsRepo.Update(mapper.Map<News>(entityToUpdate));
+            var article = unitOfWork.NewsRepo.GetById(entity.Id);
+            article.Title = entity.Title;
+            article.Text = entity.Text;
+            article.Day = DateTime.Today.Day;
+            article.Month = Enum.GetName(typeof(MonthEnum), DateTime.Today.Month - 1);
+            unitOfWork.NewsRepo.Update(article);
             unitOfWork.Save();
         }
 
-
-        public void Delete(NewsDTO entityToDelete)
+        public void DeleteOrRecover(int id)
         {
-            unitOfWork.NewsRepo.Delete(mapper.Map<News>(entityToDelete));
+            var article = unitOfWork.NewsRepo.GetById(id);
+            unitOfWork.NewsRepo.Update(article);
             unitOfWork.Save();
         }
 
