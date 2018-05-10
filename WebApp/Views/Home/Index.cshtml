@@ -1,0 +1,63 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<style>
+
+
+</style>
+<hr>
+<div class="stripe"> НАШИ НОВОСТИ</div>
+<div class="decorator"></div>
+<div class="clear"></div>
+<div class="container">
+    <div class="row newsBlock">
+        <div class="col-sm-6">
+            <p class="last-news">Последние новости:</p>
+            <ul>
+                <li *ngFor="let article of articles" class="listOfNews">
+                    <div>{{article.title}}</div>
+                    <div class="date">{{article.dateOfRelease | date:'EEEE, MMMM dd, y, hh:mm:ss a' }}</div>
+                </li>
+            </ul>
+
+        </div>
+        <div class="col-sm-6">
+            <p class="last-news">Новости из соцсетей:</p>
+
+            <socnews></socnews>
+        </div>
+    </div>
+</div>
+
+
+<hr>
+<div class="stripe">ВИДЕО</div>
+<div class="decorator"></div>
+<div class="clear"></div>
+<div class="container">
+    <div class="row videoBlock">
+        <div class="col-sm-6">
+            <iframe width="547" height="420" src="https://www.youtube.com/embed/WXBuVDKYvj8" frameborder="0" allow="autoplay; encrypted-media"
+                    allowfullscreen></iframe>
+        </div>
+        <div class="col-sm-6">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas corrupti temporibus voluptatum dolor distinctio tenetur quis?
+            Vero magnam velit similique numquam, illum necessitatibus nesciunt deserunt ipsam cumque, a, impedit nostrum? Lorem
+            ipsum dolor sit amet consectetur adipisicing elit. Quas corrupti temporibus voluptatum dolor distinctio tenetur quis?
+            Vero magnam velit similique numquam, illum necessitatibus nesciunt deserunt ipsam cumque, a, impedit nostrum?
+
+        </div>
+
+    </div>
+</div>
+<hr>
+<div class="stripe">НАШИ ПРОЕКТЫ</div>
+<div class="decorator"></div>
+<div class="clear"></div>
+<div class="container">
+    <div class="row projectsBlock">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam rerum quod aperiam expedita ut sunt, accusamus perferendis
+        animi harum, perspiciatis ad. Dignissimos fugit, doloremque dolore praesentium adipisci cumque quis harum!
+    </div>
+</div>
+
