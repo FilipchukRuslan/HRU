@@ -1,10 +1,220 @@
-﻿@{
+﻿@model WebApp.ViewModels.StartPageViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
 <style>
+    .eo-date .eo-date__day {
+        font-size: 18px;
+        font-weight: 700;
+    }
 
+    .eo-date .eo-date__month {
+        font-size: 11px;
+        text-transform: uppercase;
+    }
 
+    .eo-date {
+        display: -webkit-box;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        background: #eee;
+        text-align: center;
+        width: 50px;
+        height: 50px;
+        color: #888;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-align-content: center;
+        -ms-flex-line-pack: center;
+        align-content: center;
+        -ms-grid-column-align: center;
+        justify-items: center;
+        -webkit-box-pack: center;
+        -webkit-justify-content: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        margin-top: 4px;
+    }
+
+    .modalDialog {
+        position: fixed;
+        font-family: Arial, Helvetica, sans-serif;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: rgba(0,0,0,0.8);
+        z-index: 99999;
+        -webkit-transition: opacity 400ms ease-in;
+        -moz-transition: opacity 400ms ease-in;
+        transition: opacity 400ms ease-in;
+        display: none;
+        pointer-events: none;
+        max-height: 100%;
+        overflow-y: auto;
+    }
+
+        .modalDialog:target {
+            display: block;
+            pointer-events: auto;
+        }
+
+        .modalDialog > div {
+            width: 600px;
+            position: relative;
+            margin: 10% auto;
+            padding: 5px 20px 13px 20px;
+            border-radius: 10px;
+            background: #fff;
+            background: -moz-linear-gradient(#fff, #999);
+            background: -webkit-linear-gradient(#fff, #999);
+            background: -o-linear-gradient(#fff, #999);
+        }
+
+    .close {
+        background: #ff0000;
+        color: #fff;
+        line-height: 25px;
+        position: absolute;
+        right: -12px;
+        text-align: center;
+        top: -10px;
+        width: 24px;
+        text-decoration: none;
+        font-weight: bold;
+        -webkit-border-radius: 12px;
+        -moz-border-radius: 12px;
+        border-radius: 12px;
+        -moz-box-shadow: 1px 1px 3px #000;
+        -webkit-box-shadow: 1px 1px 3px #000;
+        box-shadow: 1px 1px 3px #000;
+    }
+
+        .close:hover {
+            background: #00d9ff;
+        }
+
+    .section:hover {
+        cursor: pointer;
+        color: slategrey;
+    }
+
+    .title:hover {
+        cursor: pointer;
+        color: slategrey;
+    }
+
+    #preview {
+        max-height: 150px;
+        min-height: 150px;
+        max-width: 220px;
+        min-width: 220px;
+    }
+
+    img {
+        background-size: contain;
+        background-size: cover;
+    }
+
+    li {
+        list-style-type: none;
+    }
+
+    .listOfNews {
+        margin-bottom: 6px;
+        font-size: 18px;
+    }
+
+    .date {
+        color: #414141;
+        font-size: 16px;
+    }
+
+    hr {
+        margin-top: 30px;
+        margin-bottom: 0%;
+        border: 1.5px solid #eeeeef;
+    }
+
+    .stripe {
+        width: 33%;
+        height: 30px;
+        background-color: rgb(101, 206, 255);
+        float: left;
+        margin-right: 80px;
+        margin-bottom: 30px;
+        color: rgb(255, 255, 255);
+        font-size: 20px;
+        text-align: right;
+        font-weight: 500;
+        letter-spacing: 3px;
+    }
+
+    .decorator {
+        width: 35%;
+        height: 30px;
+        border-top: 30px solid rgb(101, 206, 255);
+        border-right: 15px solid transparent;
+    }
+
+    .brandHeader {
+        background: linear-gradient(180deg, rgb(1, 141, 255), rgb(101, 206, 255));
+        height: 75px;
+    }
+
+    .brandHeader {
+        background: linear-gradient(180deg, rgb(0, 0, 0), rgb(41, 42, 51));
+        height: 75px;
+    }
+
+    .container-fluid {
+        margin: 0% auto;
+        padding: 0%;
+    }
+
+    .last-news {
+        margin: 5px 0px 25px;
+        font-size: 25px;
+        color: #414141;
+        font-weight: 300;
+    }
 </style>
+
+<div class="carousel"></div>
+
+@if (User.IsInRole("Administrator"))
+{
+    <a href="#openModal" class="btn btn-default" style="margin-top:30px;">Создать слайд</a>
+    <div id="openModal" class="modalDialog">
+        <div>
+            <a href="#close" title="Закрыть" class="close">X</a>
+            <form name="uploadFiles" method="post" enctype="multipart/form-data" asp-controller="News" asp-action="Post">
+                <div class="form-group">
+                    <br />
+                    <input type='file' name="files" multiple onchange="readURL(this);" />
+                    <img id="preview" src="http://www.adbazar.pk/frontend/images/default-image.jpg" alt="your image" />
+                    <div></div>
+                    <hr>
+                </div>
+                <div class="form-group">
+
+                    <label for="title">Текст</label>
+                    <textarea cols="30" rows="10" class="form-control text-area-title" name="Title" id="title" required>
+                </textarea>
+                    <div></div>
+                </div>
+                <input type="submit" value="Опубликовать" />
+            </form>
+        </div>
+    </div>
+}
+
 <hr>
 <div class="stripe"> НАШИ НОВОСТИ</div>
 <div class="decorator"></div>
@@ -13,12 +223,18 @@
     <div class="row newsBlock">
         <div class="col-sm-6">
             <p class="last-news">Последние новости:</p>
-            <ul>
-                <li *ngFor="let article of articles" class="listOfNews">
-                    <div>{{article.title}}</div>
-                    <div class="date">{{article.dateOfRelease | date:'EEEE, MMMM dd, y, hh:mm:ss a' }}</div>
-                </li>
-            </ul>
+            @foreach (var news in Model.NewsLst)
+            {
+                <br />
+                <div class="row">
+                    <div class="col-lg-12">
+                        <span class="title">@news.Title</span>
+                    </div>
+                </div>
+                <br />
+                
+
+            }
 
         </div>
         <div class="col-sm-6">

@@ -27,42 +27,42 @@ namespace BAL.Managers
             this.unitOfWork = unitOfWork;
         }
 
-        public IEnumerable<ProjectsDTO> GetAll()
+        public IEnumerable<Projects> GetAll()
         {
-            return mapper.Map<List<ProjectsDTO>>(unitOfWork.ProjectsRepo.GetAll());
+            return unitOfWork.ProjectsRepo.GetAll();
         }
 
-        public ProjectsDTO GetById(int id)
+        public Projects GetById(int id)
         {
-            return mapper.Map<ProjectsDTO>(unitOfWork.ProjectsRepo.GetById(id));
+            return unitOfWork.ProjectsRepo.GetById(id);
         }
 
-        public virtual IEnumerable<ProjectsDTO> Get(
+        public virtual IEnumerable<Projects> Get(
             Expression<Func<Projects, bool>> filter = null,
             Func<IQueryable<Projects>,
             IOrderedQueryable<Projects>> orderBy = null,
             string includeProperties = "")
         {
-            return mapper.Map<List<ProjectsDTO>>(unitOfWork.ProjectsRepo.Get(filter, orderBy, includeProperties));
+            return unitOfWork.ProjectsRepo.Get(filter, orderBy, includeProperties);
         }
 
-        public void Insert(ProjectsDTO entity)
+        public void Insert(Projects entity)
         {
-            unitOfWork.ProjectsRepo.Insert(mapper.Map<Projects>(entity));
+            unitOfWork.ProjectsRepo.Insert(entity);
             unitOfWork.Save();
         }
 
-        public void Update(ProjectsDTO entityToUpdate)
+        public void Update(Projects entityToUpdate)
         {
-            unitOfWork.ProjectsRepo.Update(mapper.Map<Projects>(entityToUpdate));
+            unitOfWork.ProjectsRepo.Update(entityToUpdate);
             unitOfWork.Save();
         }
 
 
 
-        public void Delete(ProjectsDTO entityToDelete)
+        public void Delete(Projects entityToDelete)
         {
-            unitOfWork.ProjectsRepo.Delete(mapper.Map<Projects>(entityToDelete));
+            unitOfWork.ProjectsRepo.Delete(entityToDelete);
             unitOfWork.Save();
         }
     }

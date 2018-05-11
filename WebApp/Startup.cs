@@ -66,6 +66,8 @@ namespace WebApp
             services.AddScoped<INewsManager, NewsManager>();
             services.AddScoped<IProjectsManager, ProjectsManager>();
             services.AddScoped<ICarouselManager, CarouselManager>();
+            services.AddScoped<IFaceBookManager, FaceBookManager>();
+            services.AddScoped<IVideoManager, VideoManager>();
             //services.AddScoped<IPartnersManager, PartnersManager>();
             //services.AddScoped<IContactsManager, ContactsManager>();
             //services.AddScoped<IMediaManager, MediaManager>();

@@ -9,15 +9,15 @@ namespace BAL.Interfaces
 {
     public interface IVideoManager
     {
-        IEnumerable<VideoDTO> GetAll();
-        IEnumerable<VideoDTO> Get(
+        IEnumerable<Video> GetAll();
+        IEnumerable<Video> Get(
            Expression<Func<Video, bool>> filter = null,
            Func<IQueryable<Video>,
            IOrderedQueryable<Video>> orderBy = null,
            string includeProperties = "");
-        VideoDTO GetById(int id);
-        void Insert(VideoDTO item);
-        void Update(VideoDTO item);
-        void Delete(VideoDTO item);
+        Video GetById(int id);
+        void Insert(Video item);
+        void Update(Video item);
+        void Delete(Video item);
     }
 }

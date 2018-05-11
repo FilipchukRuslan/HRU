@@ -9,15 +9,15 @@ namespace BAL.Interfaces
 {
     public interface IFaceBookManager
     {
-        IEnumerable<FaceBookDTO> GetAll();
-        IEnumerable<FaceBookDTO> Get(
+        IEnumerable<FaceBook> GetAll();
+        IEnumerable<FaceBook> Get(
            Expression<Func<FaceBook, bool>> filter = null,
            Func<IQueryable<FaceBook>,
            IOrderedQueryable<FaceBook>> orderBy = null,
            string includeProperties = "");
-        FaceBookDTO GetById(int id);
-        void Insert(FaceBookDTO item);
-        void Update(FaceBookDTO item);
-        void Delete(FaceBookDTO item);
+        FaceBook GetById(int id);
+        void Insert(FaceBook item);
+        void Update(FaceBook item);
+        void Delete(FaceBook item);
     }
 }

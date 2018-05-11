@@ -21,40 +21,40 @@ namespace BAL.Managers
             this.unitOfWork = unitOfWork;
         }
 
-        public IEnumerable<VideoDTO> GetAll()
+        public IEnumerable<Video> GetAll()
         {
-            return mapper.Map<List<VideoDTO>>(unitOfWork.VideoRepo.GetAll());
+            return unitOfWork.VideoRepo.GetAll();
         }
        
-        public VideoDTO GetById(int id)
+        public Video GetById(int id)
         {
-            return mapper.Map<VideoDTO>(unitOfWork.VideoRepo.GetById(id));
+            return unitOfWork.VideoRepo.GetById(id);
         }
 
-        public virtual IEnumerable<VideoDTO> Get(
+        public virtual IEnumerable<Video> Get(
             Expression<Func<Video, bool>> filter = null,
             Func<IQueryable<Video>,
             IOrderedQueryable<Video>> orderBy = null,
             string includeProperties = "")
         {
-            return mapper.Map<List<VideoDTO>>(unitOfWork.VideoRepo.Get(filter, orderBy, includeProperties));
+            return mapper.Map<List<Video>>(unitOfWork.VideoRepo.Get(filter, orderBy, includeProperties));
         }
 
-        public void Insert(VideoDTO entity)
+        public void Insert(Video entity)
         {
             unitOfWork.VideoRepo.Insert(mapper.Map<Video>(entity));
             unitOfWork.Save();
         }
 
-        public void Update(VideoDTO entityToUpdate)
+        public void Update(Video entityToUpdate)
         {
-            unitOfWork.VideoRepo.Update(mapper.Map<Video>(entityToUpdate));
+            unitOfWork.VideoRepo.Update(entityToUpdate);
             unitOfWork.Save();
         }
         
-        public void Delete(VideoDTO entityToDelete)
+        public void Delete(Video entityToDelete)
         {
-            unitOfWork.VideoRepo.Delete(mapper.Map<Video>(entityToDelete));
+            unitOfWork.VideoRepo.Delete(entityToDelete);
             unitOfWork.Save();
         }
     }

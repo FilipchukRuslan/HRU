@@ -9,15 +9,15 @@ namespace BAL.Interfaces
 {
     public interface IProjectsManager
     {
-        IEnumerable<ProjectsDTO> GetAll();
-        IEnumerable<ProjectsDTO> Get(
+        IEnumerable<Projects> GetAll();
+        IEnumerable<Projects> Get(
            Expression<Func<Projects, bool>> filter = null,
            Func<IQueryable<Projects>,
            IOrderedQueryable<Projects>> orderBy = null,
            string includeProperties = "");
-        ProjectsDTO GetById(int id);
-        void Insert(ProjectsDTO item);
-        void Update(ProjectsDTO item);
-        void Delete(ProjectsDTO item);
+        Projects GetById(int id);
+        void Insert(Projects item);
+        void Update(Projects item);
+        void Delete(Projects item);
     }
 }

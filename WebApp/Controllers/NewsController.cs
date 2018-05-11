@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BAL.Interfaces;
 using Common;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Model.DB;
@@ -16,11 +17,13 @@ namespace WebApp.Controllers
     {
         private readonly INewsManager newsManager;
         private readonly IImageManager imageManager;
+        IHostingEnvironment appEnvironment;
 
-        public NewsController(INewsManager newsManager, IImageManager imageManager)
+        public NewsController(INewsManager newsManager, IImageManager imageManager, IHostingEnvironment appEnvironment)
         {
             this.newsManager = newsManager;
             this.imageManager = imageManager;
+            this.appEnvironment = appEnvironment;
         }
         
         public IActionResult News()
@@ -44,40 +47,34 @@ namespace WebApp.Controllers
 
         }
         [HttpPost("UploadFiles")]
-        public async Task<IActionResult> Post(List<IFormFile> files, string Text, string Title)
+        public async Task<IActionResult> Post(IFormFile file, string Text, string Title)
         {
-            long size = files.Sum(f => f.Length);
-            var name = files.Select(e => e.FileName);
 
-            var filePath = Path.GetTempFileName(); ;
+            var path = "/images/" + file.FileName;
 
-            foreach (var formFile in files)
+            using (var fileStream = new FileStream(appEnvironment.WebRootPath + path, FileMode.Create))
             {
-                if (formFile.Length > 0)
-                {
-                    using (var stream = new FileStream(filePath, FileMode.OpenOrCreate))
-                    {
-                        await formFile.CopyToAsync(stream);
-                    }
-                }
+                await file.CopyToAsync(fileStream);
             }
-            Image image = new Image() { ImagePath = filePath+name};
+            
+
+            Image image = new Image() { ImagePath = path };
 
             imageManager.Insert(image);
             var imageId = imageManager.Get().Where(e => e.ImagePath == image.ImagePath).FirstOrDefault().Id;
-            News newsDTO = new News() { Text = Text, Title = Title,
+            News news = new News() { Text = Text, Title = Title,
                 Image_Id = imageId,
                 Day = DateTime.Today.Day,
                 Month = Enum.GetName(typeof(MonthEnum), DateTime.Today.Month - 1),
                 Year = DateTime.Today.Year };
 
-            newsManager.Insert(newsDTO);
+            newsManager.Insert(news);
 
-            var news = newsManager.GetAll().ToList();
+            var allNews = newsManager.GetAll().ToList();
             var images = imageManager.GetAll().ToList();
             return View("News", new NewsViewModel()
             {
-                NewsLst = news,
+                NewsLst = allNews,
                 ImageLst = images
             });
 

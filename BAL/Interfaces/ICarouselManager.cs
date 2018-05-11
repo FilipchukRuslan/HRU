@@ -11,15 +11,15 @@ namespace BAL.Interfaces
 {
     public interface ICarouselManager
     {
-        IEnumerable<CarouselDTO> GetAll();
-        IEnumerable<CarouselDTO> Get(
+        IEnumerable<Carousel> GetAll();
+        IEnumerable<Carousel> Get(
            Expression<Func<Carousel, bool>> filter = null,
            Func<IQueryable<Carousel>,
            IOrderedQueryable<Carousel>> orderBy = null,
            string includeProperties = "");
-        CarouselDTO GetById(int id);
-        void Insert(CarouselDTO item);
-        void Update(CarouselDTO item);
-        void Delete(CarouselDTO item);
+        Carousel GetById(int id);
+        void Insert(Carousel item);
+        void Update(Carousel item);
+        void Delete(Carousel item);
     }
 }

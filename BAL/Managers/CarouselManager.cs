@@ -22,41 +22,41 @@ namespace BAL.Managers
             this.unitOfWork = unitOfWork;
         }
 
-        public IEnumerable<CarouselDTO> GetAll()
+        public IEnumerable<Carousel> GetAll()
         {
-            return mapper.Map<List<CarouselDTO>>(unitOfWork.CarouselRepo.GetAll());
+            return unitOfWork.CarouselRepo.GetAll();
         }
 
-        public CarouselDTO GetById(int id)
+        public Carousel GetById(int id)
         {
-            return mapper.Map<CarouselDTO>(unitOfWork.CarouselRepo.GetById(id));
+            return unitOfWork.CarouselRepo.GetById(id);
         }
 
-        public virtual IEnumerable<CarouselDTO> Get(
+        public virtual IEnumerable<Carousel> Get(
             Expression<Func<Carousel, bool>> filter = null,
             Func<IQueryable<Carousel>,
             IOrderedQueryable<Carousel>> orderBy = null,
             string includeProperties = "")
         {
-            return mapper.Map<List<CarouselDTO>>(unitOfWork.CarouselRepo.Get(filter, orderBy, includeProperties));
+            return unitOfWork.CarouselRepo.Get(filter, orderBy, includeProperties);
         }
 
-        public void Insert(CarouselDTO entity)
+        public void Insert(Carousel entity)
         {
-            unitOfWork.CarouselRepo.Insert(mapper.Map<Carousel>(entity));
+            unitOfWork.CarouselRepo.Insert(entity);
             unitOfWork.Save();
         }
 
-        public void Update(CarouselDTO entityToUpdate)
+        public void Update(Carousel entityToUpdate)
         {
-            unitOfWork.CarouselRepo.Update(mapper.Map<Carousel>(entityToUpdate));
+            unitOfWork.CarouselRepo.Update(entityToUpdate);
             unitOfWork.Save();
         }
         
 
-        public void Delete(CarouselDTO entityToDelete)
+        public void Delete(Carousel entityToDelete)
         {
-            unitOfWork.CarouselRepo.Delete(mapper.Map<Carousel>(entityToDelete));
+            unitOfWork.CarouselRepo.Delete(entityToDelete);
             unitOfWork.Save();
         }
     }

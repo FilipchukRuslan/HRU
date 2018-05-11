@@ -21,40 +21,40 @@ namespace BAL.Managers
             this.unitOfWork = unitOfWork;
         }
 
-        public IEnumerable<FaceBookDTO> GetAll()
+        public IEnumerable<FaceBook> GetAll()
         {
-            return mapper.Map<List<FaceBookDTO>>(unitOfWork.FaceBookRepo.GetAll());
+            return unitOfWork.FaceBookRepo.GetAll();
         }
 
-        public FaceBookDTO GetById(int id)
+        public FaceBook GetById(int id)
         {
-            return mapper.Map<FaceBookDTO>(unitOfWork.FaceBookRepo.GetById(id));
+            return unitOfWork.FaceBookRepo.GetById(id);
         }
 
-        public virtual IEnumerable<FaceBookDTO> Get(
+        public virtual IEnumerable<FaceBook> Get(
             Expression<Func<FaceBook, bool>> filter = null,
             Func<IQueryable<FaceBook>,
             IOrderedQueryable<FaceBook>> orderBy = null,
             string includeProperties = "")
         {
-            return mapper.Map<List<FaceBookDTO>>(unitOfWork.FaceBookRepo.Get(filter, orderBy, includeProperties));
+            return unitOfWork.FaceBookRepo.Get(filter, orderBy, includeProperties);
         }
 
-        public void Insert(FaceBookDTO entity)
+        public void Insert(FaceBook entity)
         {
-            unitOfWork.FaceBookRepo.Insert(mapper.Map<FaceBook>(entity));
+            unitOfWork.FaceBookRepo.Insert(entity);
             unitOfWork.Save();
         }
 
-        public void Update(FaceBookDTO entityToUpdate)
+        public void Update(FaceBook entityToUpdate)
         {
-            unitOfWork.FaceBookRepo.Update(mapper.Map<FaceBook>(entityToUpdate));
+            unitOfWork.FaceBookRepo.Update(entityToUpdate);
             unitOfWork.Save();
         }
         
-        public void Delete(FaceBookDTO entityToDelete)
+        public void Delete(FaceBook entityToDelete)
         {
-            unitOfWork.FaceBookRepo.Delete(mapper.Map<FaceBook>(entityToDelete));
+            unitOfWork.FaceBookRepo.Delete(entityToDelete);
             unitOfWork.Save();
         }
     }
