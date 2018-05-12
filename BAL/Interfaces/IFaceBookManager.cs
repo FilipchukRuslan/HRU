@@ -16,7 +16,7 @@ namespace BAL.Interfaces
            IOrderedQueryable<FaceBook>> orderBy = null,
            string includeProperties = "");
         FaceBook GetById(int id);
-        void Insert(FaceBook item);
+        void Insert(string item);
         void Update(FaceBook item);
         void Delete(FaceBook item);
     }

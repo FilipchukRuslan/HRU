@@ -42,7 +42,7 @@
         margin-top: 4px;
     }
 
-    .modalDialog {
+    .modalDialog, .modalDialog2 {
         position: fixed;
         font-family: Arial, Helvetica, sans-serif;
         top: 0;
@@ -60,12 +60,12 @@
         overflow-y: auto;
     }
 
-        .modalDialog:target {
+        .modalDialog:target, .modalDialog2:target {
             display: block;
             pointer-events: auto;
         }
 
-        .modalDialog > div {
+        .modalDialog > div, .modalDialog2 > div {
             width: 600px;
             position: relative;
             margin: 10% auto;
@@ -77,7 +77,7 @@
             background: -o-linear-gradient(#fff, #999);
         }
 
-    .close {
+    .close, .close2 {
         background: #ff0000;
         color: #fff;
         line-height: 25px;
@@ -96,7 +96,7 @@
         box-shadow: 1px 1px 3px #000;
     }
 
-        .close:hover {
+        .close:hover, .close2:hover {
             background: #00d9ff;
         }
 
@@ -145,7 +145,7 @@
     .stripe {
         width: 33%;
         height: 30px;
-        background-color: rgb(101, 206, 255);
+        background-color: rgb(88, 88, 88);
         float: left;
         margin-right: 80px;
         margin-bottom: 30px;
@@ -159,7 +159,7 @@
     .decorator {
         width: 35%;
         height: 30px;
-        border-top: 30px solid rgb(101, 206, 255);
+        border-top: 30px solid rgb(88, 88, 88);
         border-right: 15px solid transparent;
     }
 
@@ -184,9 +184,47 @@
         color: #414141;
         font-weight: 300;
     }
-</style>
 
-<div class="carousel"></div>
+    .blackWraping {
+        background-color: black;
+        opacity: 0.6;
+    }
+</style>
+@try
+{
+    <div class="container">
+        <div class="row">
+            <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                <!-- Indicators -->
+                <ol class="carousel-indicators">
+                    @for (var i = 0; i < Model.CarouselLst.Count(); i++)
+                    {
+                        <li data-target="#myCarousel" data-slide-to="@i" class="active"></li>
+                    }
+                </ol>
+                @foreach (var item in Model.CarouselLst)
+                {
+                    <!-- Wrapper for slides -->
+                    <div class="">
+                        <div class="item">
+                            <img src="@Model.ImagesLst.Where(e=>e.Id==item.Image_Id).FirstOrDefault().ImagePath" alt="Chania">
+                            <div class="carousel-caption">
+                                <p class="blackWraping">@item.Text</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+}
+catch (Exception ex)
+{
+    <h3>Добавте слайд</h3>
+
+}
+
 
 @if (User.IsInRole("Administrator"))
 {
@@ -194,22 +232,22 @@
     <div id="openModal" class="modalDialog">
         <div>
             <a href="#close" title="Закрыть" class="close">X</a>
-            <form name="uploadFiles" method="post" enctype="multipart/form-data" asp-controller="News" asp-action="Post">
+            <form name="uploadCarousel" method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="PostCarousel">
                 <div class="form-group">
                     <br />
-                    <input type='file' name="files" multiple onchange="readURL(this);" />
+                    <input type='file' name="file" multiple onchange="readURL(this);" />
                     <img id="preview" src="http://www.adbazar.pk/frontend/images/default-image.jpg" alt="your image" />
                     <div></div>
                     <hr>
                 </div>
                 <div class="form-group">
 
-                    <label for="title">Текст</label>
-                    <textarea cols="30" rows="10" class="form-control text-area-title" name="Title" id="title" required>
+                    <label for="text">Текст</label>
+                    <textarea cols="30" rows="10" class="form-control text-area-text" name="Text" id="text" required>
                 </textarea>
                     <div></div>
                 </div>
-                <input type="submit" value="Опубликовать" />
+                <input name="Carousel" type="submit" value="Опубликовать" />
             </form>
         </div>
     </div>
@@ -232,7 +270,7 @@
                     </div>
                 </div>
                 <br />
-                
+
 
             }
 
@@ -240,7 +278,48 @@
         <div class="col-sm-6">
             <p class="last-news">Новости из соцсетей:</p>
 
-            <socnews></socnews>
+            @for (var i = 0; i < 3; i++)//only 2 posts shold be on page
+            {
+                <br />
+                <div class="row">
+                    <div class="col-lg-12">
+                        @try
+                        {
+                            @Html.Raw(Model.FaceBookLst[i].FBPost);
+
+                        }
+                        catch (Exception ex)
+                        {
+                            <span class="title"></span>
+                        }
+
+                    </div>
+                </div>
+                <br />
+
+            }
+            @if (User.IsInRole("Administrator"))
+            {
+                <a href="#openModal2" class="btn btn-default" style="margin-top:30px;">Опубликовать ссылку FaceBook</a>
+                <div id="openModal2" class="modalDialog2">
+                    <div>
+                        <a href="#close" title="Закрыть" class="close2">X</a>
+                        <form name="uploadFB" method="post" asp-controller="Home" asp-action="PostFB">
+
+                            <div class="form-group">
+
+                                <label for="title">Текст</label>
+                                <textarea cols="30" rows="10" class="form-control text-area-title" name="Text" id="Text" required>
+                                
+                                </textarea>
+                                <div></div>
+                            </div>
+                            <input type="submit" value="Опубликовать" />
+                        </form>
+                    </div>
+                </div>
+            }
+
         </div>
     </div>
 </div>
@@ -277,3 +356,35 @@
     </div>
 </div>
 
+@section Scripts{
+
+    <script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#preview')
+                        .attr('src', e.target.result)
+                        .width(180)
+                        .height(100);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $('.submit-btn').click(function () {
+            alert('новость успешно добавлена');
+            var obj = new Object();
+            obj.
+                $.ajax({
+                    type: "POST",
+                    url: "/AddNews/AddArticle",
+                    data: obj,
+                    success: function (data) {
+                        location.reload();
+                    }
+                });
+        });
+    </script>
+
+}

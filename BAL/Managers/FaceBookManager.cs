@@ -40,9 +40,9 @@ namespace BAL.Managers
             return unitOfWork.FaceBookRepo.Get(filter, orderBy, includeProperties);
         }
 
-        public void Insert(FaceBook entity)
+        public void Insert(string entity)
         {
-            unitOfWork.FaceBookRepo.Insert(entity);
+            unitOfWork.FaceBookRepo.Insert(new FaceBook() { FBPost = entity});
             unitOfWork.Save();
         }
 
