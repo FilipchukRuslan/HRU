@@ -8,6 +8,7 @@ namespace Model.DB
     {
         public int Id { get; set; }
         public string Text { get; set; }
+        public string ImageMin { get; set; }
 
         public int Image_Id { get; set; }
         public virtual Image Image { get; set; }

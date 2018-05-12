@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="~/css/style.css" rel="stylesheet" />
     <link href="~/css/site.css" rel="stylesheet" />
     <link href="~/css/normalize.css" rel="stylesheet" />
-    <link href="~/css/component.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <title>@ViewData["Title"] - ПСУ</title>
 
@@ -19,7 +19,6 @@
             margin: 0% auto !important;
             padding: 0% !important;
         }
-
 
 
         .myNavbar-stripe {
@@ -38,7 +37,7 @@
         }
 
         body {
-            font-family: Roboto Condensed;
+            font-family: Tahoma;
             margin: 0% auto !important;
             padding: 0% !important;
             background: none;
@@ -48,38 +47,46 @@
             clear: both;
         }
 
+        .myNavbar-stripe {
+            background-color: white;
+            height: 1px;
+        }
+
         .footer {
             background-color: rgb(207, 204, 204);
             margin-top: 20px;
         }
 
         .myBrand-header {
-            background: rgb(64, 64, 64);
+            background: rgba(41, 79, 209, 0.82);
             height: 75px;
         }
+
 
         .navbar {
             border-radius: 0px;
             border-style: none;
             height: 52px;
-            font-family: Roboto Condensed;
+            font-weight: 500;
+            font-family: Tahoma;
             font-size: 21px;
-            background-color: rgb(64, 64, 64);
+            background-color: rgba(41, 79, 209, 0.82);
             text-align: center;
         }
+
 
         .myBrand {
             border-radius: 0px;
             border-style: none;
             height: 52px;
-            font-family: Roboto Condensed;
+            font-family: Tahoma;
             font-size: 21px;
             background-color: rgb(64, 64, 64);
         }
 
         .center {
             display: flex;
-            align-items: center
+            align-items: center;
         }
     </style>
 </head>
@@ -102,13 +109,12 @@
                     <div class="row">
                         <div class="navbar-collapse collapse center">
                             <ul class="nav navbar-nav center">
-                                <li><a style="color:antiquewhite;" asp-controller="News" asp-action="News">НОВОСТИ</a></li>
-                                <li><a style="color:antiquewhite;" asp-controller="Projects" asp-action="Index">ПРОЕКТЫ</a></li>
-                                <li><a style="color:antiquewhite;" asp-controller="AboutUnion" asp-action="Index">О СОЮЗЕ</a></li>
-                                <li><a style="color:antiquewhite;" asp-controller="Partners" asp-action="Index">ПАРТНЕРЫ</a></li>
-                                <li><a style="color:antiquewhite;" asp-controller="Media" asp-action="Index">СМИ</a></li>
-                                <li><a style="color:antiquewhite;" asp-controller="AboutUs" asp-action="Index">О НАС</a></li>
-                                <li><a style="color:antiquewhite;" asp-controller="Contacts" asp-action="Index">КОНТАКТЫ</a></li>
+                                <li><a style="color:white;" asp-controller="News" asp-action="News">НОВОСТИ</a></li>
+                                <li><a style="color:white;" asp-controller="Projects" asp-action="Index">ПРОЕКТЫ</a></li>
+                                <li><a style="color:white;" asp-controller="AboutUnion" asp-action="Index">О СОЮЗЕ</a></li>
+                                <li><a style="color:white;" asp-controller="Partners" asp-action="Index">ПАРТНЕРЫ</a></li>
+                                <li><a style="color:white;" asp-controller="Media" asp-action="Index">СМИ О НАС</a></li>
+                                <li><a style="color:white;" asp-controller="Contacts" asp-action="Index">КОНТАКТЫ</a></li>
                                 @if (User.Identity.IsAuthenticated)
                                 {
                                     <li>@Html.ActionLink(@User.Identity.Name, "Index", "User")</li>
@@ -129,7 +135,7 @@
             </nav>
         </div>
     </div>
-    <div class="container">
+    <div class="container-fluid">
         @RenderBody()
 
     </div>

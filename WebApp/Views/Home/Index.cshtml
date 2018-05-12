@@ -2,7 +2,15 @@
 @{
     ViewData["Title"] = "Home Page";
 }
+<link href="~/css/site.css" rel="stylesheet" />
 <style>
+    body {
+        font-family: Tahoma;
+        margin: 0% auto !important;
+        padding: 0% !important;
+        background: none;
+    }
+
     .eo-date .eo-date__day {
         font-size: 18px;
         font-weight: 700;
@@ -117,10 +125,7 @@
         min-width: 220px;
     }
 
-    img {
-        background-size: contain;
-        background-size: cover;
-    }
+
 
     li {
         list-style-type: none;
@@ -145,7 +150,7 @@
     .stripe {
         width: 33%;
         height: 30px;
-        background-color: rgb(88, 88, 88);
+        background-color: rgba(41, 79, 209, 0.70);
         float: left;
         margin-right: 80px;
         margin-bottom: 30px;
@@ -159,7 +164,7 @@
     .decorator {
         width: 35%;
         height: 30px;
-        border-top: 30px solid rgb(88, 88, 88);
+        border-top: 30px solid rgb(41, 79, 209);
         border-right: 15px solid transparent;
     }
 
@@ -185,71 +190,143 @@
         font-weight: 300;
     }
 
+    .newsBlock {
+        margin-bottom: 23px;
+        font-weight: 400;
+        font-size: 18px;
+    }
+
     .blackWraping {
         background-color: black;
         opacity: 0.6;
     }
+
+    .slider {
+        max-height: 590px;
+        min-height: 590px;
+        max-width: 100%;
+        min-width: 100%;
+    }
+
+    img {
+        background-size: cover;
+    }
+
+    .clear {
+        clear: both;
+    }
+
+    .backGr {
+        background-size: contain;
+        background-position: 50% 50%;
+    }
+
+    .faceBook {
+        background: rgba(144, 252, 206, 0.78);
+    }
+
+    .profile {
+        width: 100%;
+        height: 100%;
+        border-radius: 50px;
+    }
 </style>
 @try
 {
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
+
             <div id="myCarousel" class="carousel slide" data-ride="carousel">
                 <!-- Indicators -->
-                <ol class="carousel-indicators">
-                    @for (var i = 0; i < Model.CarouselLst.Count(); i++)
-                    {
-                        <li data-target="#myCarousel" data-slide-to="@i" class="active"></li>
-                    }
-                </ol>
-                @foreach (var item in Model.CarouselLst)
-                {
-                    <!-- Wrapper for slides -->
-                    <div class="">
-                        <div class="item">
-                            <img src="@Model.ImagesLst.Where(e=>e.Id==item.Image_Id).FirstOrDefault().ImagePath" alt="Chania">
+                @*<ol class="carousel-indicators">
+                        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                        <li data-target="#myCarousel" data-slide-to="1"></li>
+                        <li data-target="#myCarousel" data-slide-to="2"></li>
+                    </ol>*@
+
+                <!-- Wrapper for slides -->
+                <div class="carousel-inner">
+                    <div class="item active">
+                        <div class="backGr" style="background-image:url(@Model.CarouselLst[0].ImageMin);">
+                            <div class="container">
+                                <img class="slider" src="@Model.ImagesLst.Where(e=>e.Id==Model.CarouselLst[0].Image_Id).FirstOrDefault().ImagePath" alt="Chania">
+                            </div>
+
                             <div class="carousel-caption">
-                                <p class="blackWraping">@item.Text</p>
+                                <p class="blackWraping">@Model.CarouselLst[0].Text</p>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="item">
+                        <div class="backGr" style="background-image:url(@Model.CarouselLst[1].ImageMin);">
+                            <div class="container">
+                                <img class="slider" src="@Model.ImagesLst.Where(e=>e.Id==Model.CarouselLst[1].Image_Id).FirstOrDefault().ImagePath" alt="Chania">
+                            </div>
+
+                            <div class="carousel-caption">
+                                <p class="blackWraping">@Model.CarouselLst[1].Text</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="item">
+                        <div class="backGr" style="background-image:url(@Model.CarouselLst[2].ImageMin);">
+                            <div class="container">
+                                <img class="slider" src="@Model.ImagesLst.Where(e=>e.Id==Model.CarouselLst[2].Image_Id).FirstOrDefault().ImagePath" alt="Chania">
+                            </div>
+
+                            <div class="carousel-caption">
+                                <p class="blackWraping">@Model.CarouselLst[2].Text</p>
                             </div>
                         </div>
                     </div>
-                }
-
+                </div>
             </div>
         </div>
     </div>
 }
 catch (Exception ex)
 {
-    <h3>Добавте слайд</h3>
-
+    <div class="container">
+        <h3>Добавте слайд</h3>
+    </div>
 }
 
 
 @if (User.IsInRole("Administrator"))
 {
-    <a href="#openModal" class="btn btn-default" style="margin-top:30px;">Создать слайд</a>
-    <div id="openModal" class="modalDialog">
-        <div>
-            <a href="#close" title="Закрыть" class="close">X</a>
-            <form name="uploadCarousel" method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="PostCarousel">
-                <div class="form-group">
-                    <br />
-                    <input type='file' name="file" multiple onchange="readURL(this);" />
-                    <img id="preview" src="http://www.adbazar.pk/frontend/images/default-image.jpg" alt="your image" />
-                    <div></div>
-                    <hr>
-                </div>
-                <div class="form-group">
+    <div class="container">
+        <form name="uploadCarousel" method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="PostCarousel">
+            <div class="form-group">
+                <br />
+                <input type='file' name="uploads" multiple onchange="readURL(this);" />
+                <img id="preview" src="http://www.adbazar.pk/frontend/images/default-image.jpg" alt="your image" />
+                <div></div>
+                <hr>
+            </div>
+            <div class="form-group">
+                <br />
+                <label>для фото маленького разрешения</label>
+                <input type='file' name="uploads" multiple onchange="readURL2(this);" />
+                <img id="preview2" src="http://www.adbazar.pk/frontend/images/default-image.jpg" alt="your image" />
+                <div></div>
+                <hr>
+            </div>
+            <div class="form-group">
+                <input type="number" size="3" name="num" min="1" max="3" value="1" />
+            </div>
+            <div class="form-group">
 
-                    <label for="text">Текст</label>
-                    <textarea cols="30" rows="10" class="form-control text-area-text" name="Text" id="text" required>
-                </textarea>
-                    <div></div>
-                </div>
-                <input name="Carousel" type="submit" value="Опубликовать" />
-            </form>
-        </div>
+                <label for="text">Текст</label>
+                <textarea cols="30" rows="10" class="form-control text-area-text" name="Text" id="text" required></textarea>
+                <div></div>
+            </div>
+            <input name="Carousel" type="submit" value="Загрузить слайд" />
+        </form>
     </div>
 }
 
@@ -258,7 +335,7 @@ catch (Exception ex)
 <div class="decorator"></div>
 <div class="clear"></div>
 <div class="container">
-    <div class="row newsBlock">
+    <div class="row">
         <div class="col-sm-6">
             <p class="last-news">Последние новости:</p>
             @foreach (var news in Model.NewsLst)
@@ -266,7 +343,8 @@ catch (Exception ex)
                 <br />
                 <div class="row">
                     <div class="col-lg-12">
-                        <span class="title">@news.Title</span>
+                        <span class="newsBlock">@news.Title</span>
+                        <p class="date">@news.Day @news.Month</p>
                     </div>
                 </div>
                 <br />
@@ -278,21 +356,18 @@ catch (Exception ex)
         <div class="col-sm-6">
             <p class="last-news">Новости из соцсетей:</p>
 
-            @for (var i = 0; i < 3; i++)//only 2 posts shold be on page
+            @foreach (var face in Model.FaceBookLst)
             {
                 <br />
                 <div class="row">
                     <div class="col-lg-12">
-                        @try
-                        {
-                            @Html.Raw(Model.FaceBookLst[i].FBPost);
+                        <div class="profile col-lg-3">@Model.PersonsLst.Where(e => e.Id == face.Person_Id).FirstOrDefault().ProfilePhoto</div>
 
-                        }
-                        catch (Exception ex)
-                        {
-                            <span class="title"></span>
-                        }
-
+                        <div class="faceBook col-lg-9">
+                            <a>fbIcon</a>
+                            <a>@Model.PersonsLst.Where(e => e.Id == face.Person_Id).FirstOrDefault().Name</a>
+                            <a href="@Model.PersonsLst.Where(e => e.Id == face.Person_Id).FirstOrDefault().ReferenceFB" target="_blank">@face.FBPost</a>
+                        </div>
                     </div>
                 </div>
                 <br />
@@ -300,18 +375,23 @@ catch (Exception ex)
             }
             @if (User.IsInRole("Administrator"))
             {
-                <a href="#openModal2" class="btn btn-default" style="margin-top:30px;">Опубликовать ссылку FaceBook</a>
+                <a href="#openModal2" class="btn btn-default" style="margin-top:30px;">Опубликовать пост FaceBook</a>
                 <div id="openModal2" class="modalDialog2">
                     <div>
                         <a href="#close" title="Закрыть" class="close2">X</a>
-                        <form name="uploadFB" method="post" asp-controller="Home" asp-action="PostFB">
+                        <form name="UploadFB" method="post" asp-controller="Home" asp-action="PostFB">
 
                             <div class="form-group">
 
-                                <label for="title">Текст</label>
-                                <textarea cols="30" rows="10" class="form-control text-area-title" name="Text" id="Text" required>
-                                
-                                </textarea>
+                                <select form="UploadFB" name="Person">
+                                    @foreach (var person in Model.PersonsLst)
+                                    {
+                                        <option>@person.Name</option>
+                                    }
+                                </select>
+
+                                <label for="Text">Текст</label>
+                                <textarea cols="30" rows="10" class="form-control text-area-text" name="Text" id="Text" required></textarea>
                                 <div></div>
                             </div>
                             <input type="submit" value="Опубликовать" />
@@ -364,6 +444,18 @@ catch (Exception ex)
                 var reader = new FileReader();
                 reader.onload = function (e) {
                     $('#preview')
+                        .attr('src', e.target.result)
+                        .width(180)
+                        .height(100);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        function readURL2(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#preview2')
                         .attr('src', e.target.result)
                         .width(180)
                         .height(100);

@@ -19,6 +19,7 @@ namespace DAL
         public DbSet<FaceBook> FaceBook { get; set; }
         public DbSet<Video> Video { get; set; }
         public DbSet<Image> Image { get; set; }
+        public DbSet<Person> Person { get; set; }
 
         public HRUDbContext(DbContextOptions<HRUDbContext> options) : base(options)
         {

@@ -127,60 +127,61 @@
     }
 </style>
 
-<h2>Новости союза</h2>
+
 
 @try
 {
     <div class="container">
         <div class="row">
+            <h2>Новости союза</h2>
             <div class="col-lg-8">
                 @foreach (var i in Model.NewsLst)
-                {
-                    <br />
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <img src="@Model.ImageLst.Where(e => e.Id == i.Image_Id).FirstOrDefault().ImagePath" />
-                            <span class="title">@i.Title</span>
-                        </div>
-                    </div>
-                    <br />
-                    <hr />
+        {
+            <br />
+            <div class="row">
+                <div class="col-lg-12">
+                    <img src="@Model.ImageLst.Where(e => e.Id == i.Image_Id).FirstOrDefault().ImagePath" />
+                    <span class="title">@i.Title</span>
+                </div>
+            </div>
+            <br />
+            <hr />
 
-                }
+}
             </div>
             <div class="col-lg-4">
                 @if (User.IsInRole("Administrator"))
-                {
-                    <h3>Создать новость</h3>
-                    <br/>
+        {
+            <h3>Создать новость</h3>
+            <br />
 
-                    <a href="#openModal" class="btn btn-default" style="margin-top:30px;">Создать новость</a>
-                    <div id="openModal" class="modalDialog">
-                        <div>
-                            <a href="#close" title="Закрыть" class="close">X</a>
-                            <form name="uploadFiles" method="post" enctype="multipart/form-data" asp-controller="News" asp-action="Post">
-                                <div class="form-group">
-                                    <br/>
-                                    <input type='file' name="file" multiple onchange="readURL(this);" />
-                                    <img id="preview" src="http://www.adbazar.pk/frontend/images/default-image.jpg" alt="your image"/>
-                                    <div></div>
-                                    <hr>
-                                </div>
-                                <div class="form-group">
-                                    <label for="title">Заголовок</label>
-                                    <textarea cols="30" rows="10" class="form-control text-area-title" name="Title" id="title" required></textarea>
-                                    <div></div>
-                                    <hr>
-                                    <label for="article">Новость</label>
-                                    <textarea cols="30" rows="10" class="form-control text-area-article" name="Text" id="article" required></textarea>
-                                    <div></div>
-                                </div>
-                                <input type="submit" value="Опубликовать" />
-                            </form>
+            <a href="#openModal" class="btn btn-default" style="margin-top:30px;">Создать новость</a>
+            <div id="openModal" class="modalDialog">
+                <div>
+                    <a href="#close" title="Закрыть" class="close">X</a>
+                    <form name="UploadF" method="post" enctype="multipart/form-data" asp-controller="News" asp-action="Post">
+                        <div class="form-group">
+                            <br />
+                            <input type='file' name="file" multiple onchange="readURL(this);" />
+                            <img id="preview" src="http://www.adbazar.pk/frontend/images/default-image.jpg" alt="your image" />
+                            <div></div>
+                            <hr>
                         </div>
-                    </div>
+                        <div class="form-group">
+                            <label for="title">Заголовок</label>
+                            <textarea cols="30" rows="10" class="form-control text-area-title" name="Title" id="title" required></textarea>
+                            <div></div>
+                            <hr>
+                            <label for="article">Новость</label>
+                            <textarea cols="30" rows="10" class="form-control text-area-article" name="Text" id="article" required></textarea>
+                            <div></div>
+                        </div>
+                        <input type="submit" value="Опубликовать" />
+                    </form>
+                </div>
+            </div>
 
-                }
+}
             </div>
         </div>
     </div>

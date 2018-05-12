@@ -11,9 +11,10 @@ using System;
 namespace DAL.Migrations
 {
     [DbContext(typeof(HRUDbContext))]
-    partial class HRUDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180512171025_туцШтше")]
+    partial class туцШтше
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -171,8 +172,6 @@ namespace DAL.Migrations
 
                     b.Property<int?>("ImageId");
 
-                    b.Property<string>("ImageMin");
-
                     b.Property<int>("Image_Id");
 
                     b.Property<string>("Text");
@@ -207,13 +206,7 @@ namespace DAL.Migrations
 
                     b.Property<string>("FBPost");
 
-                    b.Property<int?>("PersonId");
-
-                    b.Property<int>("Person_Id");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("PersonId");
 
                     b.ToTable("FaceBook");
                 });
@@ -222,6 +215,8 @@ namespace DAL.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ImageMin");
 
                     b.Property<string>("ImagePath");
 
@@ -294,22 +289,6 @@ namespace DAL.Migrations
                     b.HasIndex("ImageId");
 
                     b.ToTable("Partners");
-                });
-
-            modelBuilder.Entity("Model.DB.Person", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Name");
-
-                    b.Property<string>("ProfilePhoto");
-
-                    b.Property<string>("ReferenceFB");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Person");
                 });
 
             modelBuilder.Entity("Model.DB.Projects", b =>
@@ -461,13 +440,6 @@ namespace DAL.Migrations
                     b.HasOne("Model.DB.Image", "Image")
                         .WithMany()
                         .HasForeignKey("ImageId");
-                });
-
-            modelBuilder.Entity("Model.DB.FaceBook", b =>
-                {
-                    b.HasOne("Model.DB.Person", "Person")
-                        .WithMany()
-                        .HasForeignKey("PersonId");
                 });
 
             modelBuilder.Entity("Model.DB.Media", b =>

@@ -68,10 +68,10 @@ namespace WebApp
             services.AddScoped<ICarouselManager, CarouselManager>();
             services.AddScoped<IFaceBookManager, FaceBookManager>();
             services.AddScoped<IVideoManager, VideoManager>();
+            services.AddScoped<IPersonManager, PersonManager>();
             //services.AddScoped<IPartnersManager, PartnersManager>();
             //services.AddScoped<IContactsManager, ContactsManager>();
             //services.AddScoped<IMediaManager, MediaManager>();
-            //services.AddScoped<IAboutUsManager, AboutUsManager>();
             //services.AddScoped<IAboutUnionManager, AboutUnionManager>();
 
             services.Configure<IdentityOptions>(options =>

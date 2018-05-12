@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BAL.Interfaces;
+using BAL.Managers;
 using DAL;
 using DAL.Interface;
 using Microsoft.AspNetCore.Hosting;
@@ -28,6 +29,7 @@ namespace WebApp.Controllers
         private readonly IFaceBookManager faceBookManager;
         private readonly IProjectsManager projectsManager;
         private readonly IVideoManager videoManager;
+        private readonly IPersonManager personsManager;
 
         public HomeController(ICarouselManager carouselManager,
             INewsManager newsManager,
@@ -35,7 +37,8 @@ namespace WebApp.Controllers
             IFaceBookManager faceBookManager,
             IVideoManager videoManager,
             IProjectsManager projectsManager,
-            IHostingEnvironment appEnvironment)
+            IHostingEnvironment appEnvironment,
+            IPersonManager personsManager)
         {
             this.carouselManager = carouselManager;
             this.newsManager = newsManager;
@@ -44,17 +47,18 @@ namespace WebApp.Controllers
             this.projectsManager = projectsManager;
             this.videoManager = videoManager;
             this.appEnvironment = appEnvironment;
+            this.personsManager = personsManager;
         }
 
         public IActionResult Index()
         {
-
             var carouselLst = carouselManager.GetAll().ToList();
             var fbLst = faceBookManager.GetAll().ToList();
             var newsLst = newsManager.GetAll().ToList();
             var projLst = projectsManager.GetAll().ToList();
             var videoLst = videoManager.GetAll().ToList();
             var imgLst = imageManager.GetAll().ToList();
+            var personsLst = personsManager.GetAll().ToList();
 
             return View(new StartPageViewModel()
             {
@@ -63,74 +67,67 @@ namespace WebApp.Controllers
                 ProjectsLst = projLst,
                 VideoLst = videoLst,
                 NewsLst = newsLst,
-                ImagesLst = imgLst
+                ImagesLst = imgLst,
+                PersonsLst = personsLst
             });
 
 
         }
 
         [HttpPost("UploadFB")]
-        public IActionResult PostFB( string Text)
+        public IActionResult PostFB(string Text, string Person)
         {
-            faceBookManager.Insert(Text);
+            var p = personsManager.Get().Where(e => e.Name == Person).FirstOrDefault();
 
-            var carouselLst = carouselManager.GetAll().ToList();
-            var fbLst = faceBookManager.GetAll().ToList();
-            var newsLst = newsManager.GetAll().ToList();
-            var projLst = projectsManager.GetAll().ToList();
-            var videoLst = videoManager.GetAll().ToList();
-            var imgLst = imageManager.GetAll().ToList();
+            faceBookManager.Insert(new FaceBook() {FBPost = Text, Person_Id = p.Id });
 
-            return View("Index", new StartPageViewModel()
-            {
-                CarouselLst = carouselLst,
-                FaceBookLst = fbLst,
-                ProjectsLst = projLst,
-                VideoLst = videoLst,
-                NewsLst = newsLst,
-                ImagesLst = imgLst
-            });
+            return RedirectToAction("Index");
         }
 
         [HttpPost("UploadCarousel")]
-        public async Task<IActionResult> PostCarousel(IFormFile file, string Text)
+        public async Task<IActionResult> PostCarousel(IFormFileCollection uploads, string Text, int num)
         {
-            var path = "/images/" + file.FileName;
+            string path1 = "/images/" + uploads[0].FileName;
+            if (path1 == null)
+                path1 = "";
 
-            using (var fileStream = new FileStream(appEnvironment.WebRootPath + path, FileMode.Create))
+            using (var fileStream = new FileStream(appEnvironment.WebRootPath + path1, FileMode.Create))
             {
-                await file.CopyToAsync(fileStream);
+                await uploads[0].CopyToAsync(fileStream);
             }
 
-
-            Image image = new Image() { ImagePath = path };
+            string path2 = "/images/" + uploads[1].FileName;
+            if (path2 == null)
+                path2 = "";
+            using (var fileStream = new FileStream(appEnvironment.WebRootPath + path2, FileMode.Create))
+            {
+                await uploads[1].CopyToAsync(fileStream);
+            }
+            Image image = new Image() { ImagePath = path1};
 
             imageManager.Insert(image);
+
             var imageId = imageManager.Get().Where(e => e.ImagePath == image.ImagePath).FirstOrDefault().Id;
-
-            Carousel carousel = new Carousel()
-            {
-                Image_Id = imageId,
-                Text = Text
-            };
-            carouselManager.Insert(carousel);
             
-            var carouselLst = carouselManager.GetAll().ToList();
-            var fbLst = faceBookManager.GetAll().ToList();
-            var newsLst = newsManager.GetAll().ToList();
-            var projLst = projectsManager.GetAll().ToList();
-            var videoLst = videoManager.GetAll().ToList();
-            var imgLst = imageManager.GetAll().ToList();
-
-            return View("Index", new StartPageViewModel()
+            try
             {
-                CarouselLst = carouselLst,
-                FaceBookLst = fbLst,
-                ProjectsLst = projLst,
-                VideoLst = videoLst,
-                NewsLst = newsLst,
-                ImagesLst = imgLst
-            });
+                Carousel entity = carouselManager.Get().Where(e => e.Id == num).FirstOrDefault();
+                entity.Image_Id = imageId;
+                entity.Text = Text;
+                entity.ImageMin = path2;
+                carouselManager.Update(entity);
+            }
+            catch (Exception ex)
+            {
+                Carousel carousel = new Carousel()
+                {
+                    Image_Id = imageId,
+                    Text = Text
+                };
+                carouselManager.Insert(carousel);
+            }
+
+            return RedirectToAction("Index");
         }
 
         public IActionResult Error()

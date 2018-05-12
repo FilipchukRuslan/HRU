@@ -23,6 +23,7 @@ namespace DAL
         private IBaseRepository<Contacts> contactsRepo;
         private IBaseRepository<FaceBook> faceBookRepo;
         private IBaseRepository<Video> videoRepo;
+        private IBaseRepository<Person> personRepo;
 
         public UnitOfWork(HRUDbContext context)
         {
@@ -142,6 +143,15 @@ namespace DAL
             {
                 if (videoRepo == null) { videoRepo = new BaseRepository<Video>(context); }
                 return videoRepo;
+            }
+        }
+
+        public IBaseRepository<Person> PersonRepo
+        {
+            get
+            {
+                if (personRepo == null) { personRepo = new BaseRepository<Person>(context); }
+                return personRepo;
             }
         }
 

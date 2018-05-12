@@ -46,7 +46,7 @@ namespace WebApp.Controllers
             return View();
 
         }
-        [HttpPost("UploadFiles")]
+        [HttpPost("UploadF")]
         public async Task<IActionResult> Post(IFormFile file, string Text, string Title)
         {
 

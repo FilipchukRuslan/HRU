@@ -20,6 +20,8 @@ namespace DAL.Interface
         IBaseRepository<AboutUnion> AboutUnionRepo { get; }
         IBaseRepository<Video> VideoRepo { get; }
         IBaseRepository<FaceBook> FaceBookRepo { get; }
+        IBaseRepository<Person> PersonRepo { get; }
+
         int Save();
     }
 }

@@ -55,6 +55,9 @@ namespace BAL.IoC
                 cfg.CreateMap<FaceBook, FaceBookDTO>();
                 cfg.CreateMap<List<FaceBook>, List<FaceBookDTO>>();
 
+                //cfg.CreateMap<Person, FaceBookDTO>();
+                //cfg.CreateMap<List<Person>, List<FaceBookDTO>>();
+
                 cfg.CreateMap<Image, ImageDTO>()
                 .ForMember(dest => dest.Id, options => options.MapFrom(src => src.Id))
                 .ForMember(dest => dest.ImagePath, options => options.MapFrom(src => src.ImagePath));
