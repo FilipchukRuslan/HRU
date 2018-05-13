@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Model.DB;
 
-namespace BAL.Managers
+namespace BAL.Interfaces
 {
     public interface IPersonManager
     {

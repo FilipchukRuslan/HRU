@@ -1,7 +1,300 @@
-﻿
+﻿@model WebApp.ViewModels.StartPageViewModel
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Проекты";
 }
+<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+<style>
+    body {
+        font-family: Tahoma;
+        margin: 0% auto !important;
+        padding: 0% !important;
+        background: none;
+    }
 
-<h2>Index</h2>
+    .eo-date .eo-date__day {
+        font-size: 18px;
+        font-weight: 700;
+    }
 
+    .eo-date .eo-date__month {
+        font-size: 11px;
+        text-transform: uppercase;
+    }
+
+    .eo-date {
+        display: -webkit-box;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        background: #eee;
+        text-align: center;
+        width: 50px;
+        height: 50px;
+        color: #888;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-align-content: center;
+        -ms-flex-line-pack: center;
+        align-content: center;
+        -ms-grid-column-align: center;
+        justify-items: center;
+        -webkit-box-pack: center;
+        -webkit-justify-content: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        margin-top: 4px;
+    }
+
+    .modalDialog, .modalDialog2 {
+        position: fixed;
+        font-family: Arial, Helvetica, sans-serif;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: rgba(0,0,0,0.8);
+        z-index: 99999;
+        -webkit-transition: opacity 400ms ease-in;
+        -moz-transition: opacity 400ms ease-in;
+        transition: opacity 400ms ease-in;
+        display: none;
+        pointer-events: none;
+        max-height: 100%;
+        overflow-y: auto;
+    }
+
+        .modalDialog:target, .modalDialog2:target {
+            display: block;
+            pointer-events: auto;
+        }
+
+        .modalDialog > div, .modalDialog2 > div {
+            width: 600px;
+            position: relative;
+            margin: 10% auto;
+            padding: 5px 20px 13px 20px;
+            border-radius: 10px;
+            background: #fff;
+            background: -moz-linear-gradient(#fff, #999);
+            background: -webkit-linear-gradient(#fff, #999);
+            background: -o-linear-gradient(#fff, #999);
+        }
+
+    .close, .close2 {
+        background: #ff0000;
+        color: #fff;
+        line-height: 25px;
+        position: absolute;
+        right: -12px;
+        text-align: center;
+        top: -10px;
+        width: 24px;
+        text-decoration: none;
+        font-weight: bold;
+        -webkit-border-radius: 12px;
+        -moz-border-radius: 12px;
+        border-radius: 12px;
+        -moz-box-shadow: 1px 1px 3px #000;
+        -webkit-box-shadow: 1px 1px 3px #000;
+        box-shadow: 1px 1px 3px #000;
+    }
+
+        .close:hover, .close2:hover {
+            background: #00d9ff;
+        }
+
+    .section:hover {
+        cursor: pointer;
+        color: slategrey;
+    }
+
+    .title:hover {
+        cursor: pointer;
+        color: slategrey;
+    }
+
+    #preview {
+        max-height: 150px;
+        min-height: 150px;
+        max-width: 220px;
+        min-width: 220px;
+    }
+
+
+
+    li {
+        list-style-type: none;
+    }
+
+    .date {
+        color: #414141;
+        font-size: 16px;
+    }
+
+    hr {
+        margin-top: 30px;
+        margin-bottom: 0%;
+        border: 1.5px solid #eeeeef;
+    }
+
+    .stripe {
+        width: 33%;
+        height: 30px;
+        background-color: rgba(41, 79, 209, 0.70);
+        float: left;
+        margin-right: 80px;
+        margin-bottom: 30px;
+        color: rgb(255, 255, 255);
+        font-size: 20px;
+        text-align: right;
+        font-weight: 500;
+        letter-spacing: 3px;
+    }
+
+    .decorator {
+        width: 35%;
+        height: 30px;
+        border-top: 30px solid rgb(41, 79, 209);
+        border-right: 15px solid transparent;
+    }
+
+    .container-fluid {
+        margin: 0% auto;
+        padding: 0%;
+    }
+
+    img {
+        background-size: cover;
+    }
+
+    .clear {
+        clear: both;
+    }
+
+    .projImg {
+        width: 312px;
+        height: 200px;
+    }
+
+    .projects {
+        height: 370px;
+        overflow:auto;
+    }
+</style>
+
+
+<div class="container">
+    <div class="row">
+        <h2>Проекты</h2>
+        <div class="col-lg-11">
+
+            <div class="row" >
+                <br />
+                @foreach (var proj in Model.ProjectsLst)
+                {
+                    <div class="col-lg-4 projects">
+                        <img class="projImg"
+                             src="@Model.ImagesLst.Where(e=>e.Id==proj.Image_Id).FirstOrDefault().ImagePath" />
+                        <p>@proj.Title</p>
+                    </div>
+
+
+                }
+            </div>
+        </div>
+        <div class="col-lg-1">
+            @if (User.IsInRole("Administrator"))
+            {
+                <a href="#openModal2" class="btn btn-default" style="margin-top:30px;">Добавить проект</a>
+                <div id="openModal2" class="modalDialog2">
+                    <div>
+                        <a href="#close" title="Закрыть" class="close2">X</a>
+                        <form name="UploadProjects" method="post" enctype="multipart/form-data" asp-controller="Projects" asp-action="Post">
+
+                            <div class="form-group">
+                                <br />
+                                <label for="file">фото профиля</label>
+                                <input type='file' name="file" multiple onchange="readURL2(this);" />
+                                <img id="preview2" src="http://www.adbazar.pk/frontend/images/default-image.jpg" alt="your image" />
+                                <div></div>
+                                <hr>
+                            </div>
+                            <div class="form-group">
+                                <label for="Title">Заголовок</label>
+                                <textarea cols="30" rows="5" name="Title"></textarea>
+                                <label for="Text">Текст</label>
+                                <textarea name="Text" id="MCE"></textarea>
+                                <div></div>
+                            </div>
+                            <input type="submit" value="Опубликовать" />
+                        </form>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@section Scripts{
+
+    <script>
+        tinymce.init({ selector: '#MCE' });
+
+
+        window.onload = function () {
+            var editableCodeMirror = CodeMirror.fromTextArea(document.getElementById('taskBaseCodeField'), {
+                mode: "text/x-csrc",
+                theme: "default",
+                lineNumbers: true
+            });
+            var editableTestCasesCodeMirror = CodeMirror.fromTextArea(document.getElementById('testCasesCodeField'), {
+                mode: "text/x-csrc",
+                theme: "default",
+                lineNumbers: true
+            });
+        };
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#preview')
+                        .attr('src', e.target.result)
+                        .width(180)
+                        .height(100);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        function readURL2(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#preview2')
+                        .attr('src', e.target.result)
+                        .width(180)
+                        .height(100);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $('.submit-btn').click(function () {
+            alert('новость успешно добавлена');
+            var obj = new Object();
+            obj.
+                $.ajax({
+                    type: "POST",
+                    url: "/AddNews/AddArticle",
+                    data: obj,
+                    success: function (data) {
+                        location.reload();
+                    }
+                });
+        });
+    </script>
+
+}

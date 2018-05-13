@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BAL.Interfaces;
 using BAL.Managers;
+using Common;
 using DAL;
 using DAL.Interface;
 using Microsoft.AspNetCore.Hosting;
@@ -52,6 +53,18 @@ namespace WebApp.Controllers
 
         public IActionResult Index()
         {
+            if (!carouselManager.GetAll().Any())
+            {
+                carouselManager.Insert(new Carousel() { ImageMin = "http://lavenderhillhigh.co.za/wp-content/gallery/fundraising/default-image.jpg", Text = " ", Image_Id = 1 });
+                carouselManager.Insert(new Carousel() { ImageMin = "http://lavenderhillhigh.co.za/wp-content/gallery/fundraising/default-image.jpg", Text = " ", Image_Id = 2 });
+                carouselManager.Insert(new Carousel() { ImageMin = "http://lavenderhillhigh.co.za/wp-content/gallery/fundraising/default-image.jpg", Text = " ", Image_Id = 3 });
+            }
+            if (!imageManager.GetAll().Any())
+            {
+                imageManager.Insert(new Image() { ImagePath = "http://lavenderhillhigh.co.za/wp-content/gallery/fundraising/default-image.jpg" });
+                imageManager.Insert(new Image() { ImagePath = "http://lavenderhillhigh.co.za/wp-content/gallery/fundraising/default-image.jpg" });
+                imageManager.Insert(new Image() { ImagePath = "http://lavenderhillhigh.co.za/wp-content/gallery/fundraising/default-image.jpg" });
+            }
             var carouselLst = carouselManager.GetAll().ToList();
             var fbLst = faceBookManager.GetAll().ToList();
             var newsLst = newsManager.GetAll().ToList();
@@ -79,7 +92,14 @@ namespace WebApp.Controllers
         {
             var p = personsManager.Get().Where(e => e.Name == Person).FirstOrDefault();
 
-            faceBookManager.Insert(new FaceBook() {FBPost = Text, Person_Id = p.Id });
+            var fb = new FaceBook()
+            {
+                FBPost = Text,
+                Person_Id = p.Id,
+                Date = DateTime.Now
+            };
+
+            faceBookManager.Insert(fb);
 
             return RedirectToAction("Index");
         }
@@ -103,12 +123,12 @@ namespace WebApp.Controllers
             {
                 await uploads[1].CopyToAsync(fileStream);
             }
-            Image image = new Image() { ImagePath = path1};
+            Image image = new Image() { ImagePath = path1 };
 
             imageManager.Insert(image);
 
             var imageId = imageManager.Get().Where(e => e.ImagePath == image.ImagePath).FirstOrDefault().Id;
-            
+
             try
             {
                 Carousel entity = carouselManager.Get().Where(e => e.Id == num).FirstOrDefault();

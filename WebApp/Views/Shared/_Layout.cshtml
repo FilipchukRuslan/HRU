@@ -8,7 +8,7 @@
     <link href="~/css/normalize.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <title>@ViewData["Title"] - ПСУ</title>
-
+    <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
     <style type="text/css">
 
         a:hover {
@@ -19,7 +19,6 @@
             margin: 0% auto !important;
             padding: 0% !important;
         }
-
 
         .myNavbar-stripe {
             background-color: #ff0000;
@@ -52,95 +51,118 @@
             height: 1px;
         }
 
-        .footer {
+        footer {
             background-color: rgb(207, 204, 204);
-            margin-top: 20px;
+            margin-top: 5px;
         }
 
         .myBrand-header {
             background: rgba(41, 79, 209, 0.82);
-            height: 75px;
+            height: 85px;
         }
 
 
         .navbar {
             border-radius: 0px;
             border-style: none;
-            height: 52px;
             font-weight: 500;
             font-family: Tahoma;
-            font-size: 21px;
+            font-size: 22px;
             background-color: rgba(41, 79, 209, 0.82);
             text-align: center;
+            letter-spacing: 2px;
         }
 
+        .navbar-nav > li > a:hover {
+            color: #b6ff00 !important;
+        }
 
         .myBrand {
-            border-radius: 0px;
-            border-style: none;
-            height: 52px;
             font-family: Tahoma;
             font-size: 21px;
-            background-color: rgb(64, 64, 64);
         }
 
         .center {
             display: flex;
             align-items: center;
         }
+
+        .nav-li {
+            color: white !important;
+            height: 53px;
+            margin-top: 8px;
+        }
+        .foot {
+            margin-top: 10px;
+            font-size: 24px;
+            font-weight: 500;
+            text-transform: uppercase;
+            text-decoration: none;
+        }
     </style>
 </head>
-
 <body>
     <div class="myBrand-header"></div>
     <div class="myNavbar-stripe"></div>
-    <div class="container-fluid">
-        <div class="row">
-            <nav class="nav navbar navbar-inverse">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                </div>
-                <div class="container center">
-                    <div class="row">
-                        <div class="navbar-collapse collapse center">
-                            <ul class="nav navbar-nav center">
-                                <li><a style="color:white;" asp-controller="News" asp-action="News">НОВОСТИ</a></li>
-                                <li><a style="color:white;" asp-controller="Projects" asp-action="Index">ПРОЕКТЫ</a></li>
-                                <li><a style="color:white;" asp-controller="AboutUnion" asp-action="Index">О СОЮЗЕ</a></li>
-                                <li><a style="color:white;" asp-controller="Partners" asp-action="Index">ПАРТНЕРЫ</a></li>
-                                <li><a style="color:white;" asp-controller="Media" asp-action="Index">СМИ О НАС</a></li>
-                                <li><a style="color:white;" asp-controller="Contacts" asp-action="Index">КОНТАКТЫ</a></li>
-                                @if (User.Identity.IsAuthenticated)
-                                {
-                                    <li>@Html.ActionLink(@User.Identity.Name, "Index", "User")</li>
-
-                                    <li>
-                                        <form asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm">
-                                            <button type="submit" style="" class="btn btn-link navbar-btn navbar-link deff ">
-                                                Выйти
-                                            </button>
-                                        </form>
-                                    </li>
-                                }
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                
-            </nav>
+    <nav class="nav navbar navbar-inverse">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
         </div>
-    </div>
+        <div class="container" >
+            <div class="row">
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav" style="margin-left:31px;">
+                        <li><a class="nav-li" asp-controller="Home" asp-action="Index"><img style="margin-top:-25%; width:50px;height:40px;" src="~/images/logo.jpg" /></a></li>
+
+                        <li><a class="nav-li" asp-controller="News" asp-action="News">НОВОСТИ</a></li>
+                        <li><a class="nav-li" asp-controller="Projects" asp-action="Index">ПРОЕКТЫ</a></li>
+                        <li><a class="nav-li" asp-controller="AboutUnion" asp-action="Index">О СОЮЗЕ</a></li>
+                        <li><a class="nav-li" asp-controller="Media" asp-action="Index">СМИ О НАС</a></li>
+                        <li><a class="nav-li" asp-controller="Contacts" asp-action="Index">КОНТАКТЫ</a></li>
+                        @if (User.Identity.IsAuthenticated)
+    {
+                    <li>@Html.ActionLink(@User.Identity.Name, "Index", "User")</li>
+
+                    <li>
+                        <form asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm">
+                            <button type="submit" style="" class="btn btn-link navbar-btn navbar-link deff ">
+                                Выйти
+                            </button>
+                        </form>
+                    </li>
+}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
     <div class="container-fluid">
         @RenderBody()
-
     </div>
-
-
+    <footer>
+        <div class="container" >
+            <div class="row">
+                <div class="foot">
+                    <a class="nav-li" asp-controller="Home" asp-action="Index">
+                        <img style="width:310px;height:220px;" src="~/images/logo.jpg" />
+                    </a>
+                </div>
+                <div class="foot"><a class="nav-li" asp-controller="News" asp-action="News">НОВОСТИ</a></div>
+                <div class="foot"><a class="nav-li" asp-controller="Projects" asp-action="Index">ПРОЕКТЫ</a></div>
+                <div class="foot"><a class="nav-li" asp-controller="AboutUnion" asp-action="Index">О СОЮЗЕ</a></div>
+                <div class="foot"><a class="nav-li" asp-controller="Media" asp-action="Index">СМИ О НАС</a></div>
+                <div class="foot" style="margin-bottom:40px;"><a class="nav-li" asp-controller="Contacts" asp-action="Index">КОНТАКТЫ</a></div>
+                <div>© 2018 Все права защищены</div>
+                
+            </div>
+        </div>
+        
+    </footer>
     <script src="~/js/modernizr.custom.js"></script>
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>

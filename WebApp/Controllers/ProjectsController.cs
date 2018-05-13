@@ -15,42 +15,72 @@ namespace WebApp.Controllers
 {
     public class ProjectsController : Controller
     {
-        private readonly IImageManager imageManager;
         IHostingEnvironment appEnvironment;
         private readonly ICarouselManager carouselManager;
+        private readonly INewsManager newsManager;
+        private readonly IImageManager imageManager;
+        private readonly IFaceBookManager faceBookManager;
         private readonly IProjectsManager projectsManager;
+        private readonly IVideoManager videoManager;
+        private readonly IPersonManager personsManager;
 
-        public ProjectsController(INewsManager newsManager, IImageManager imageManager, IHostingEnvironment appEnvironment, IProjectsManager projectsManager)
+        public ProjectsController(ICarouselManager carouselManager,
+            INewsManager newsManager,
+            IImageManager imageManager,
+            IFaceBookManager faceBookManager,
+            IVideoManager videoManager,
+            IProjectsManager projectsManager,
+            IHostingEnvironment appEnvironment,
+            IPersonManager personsManager)
         {
+            this.carouselManager = carouselManager;
+            this.newsManager = newsManager;
             this.imageManager = imageManager;
-            this.appEnvironment = appEnvironment;
+            this.faceBookManager = faceBookManager;
             this.projectsManager = projectsManager;
+            this.videoManager = videoManager;
+            this.appEnvironment = appEnvironment;
+            this.personsManager = personsManager;
         }
 
         public IActionResult Index()
         {
-            try
+            if (!carouselManager.GetAll().Any())
             {
-                var projects = projectsManager.GetAll().ToList();
-                var images = imageManager.GetAll().ToList();
-
-                return View(new ProjectsViewModel()
-                {
-                    ProjectsLst = projects,
-                    ImageLst = images
-                });
+                carouselManager.Insert(new Carousel() { ImageMin = "http://lavenderhillhigh.co.za/wp-content/gallery/fundraising/default-image.jpg", Text = " ", Image_Id = 1 });
+                carouselManager.Insert(new Carousel() { ImageMin = "http://lavenderhillhigh.co.za/wp-content/gallery/fundraising/default-image.jpg", Text = " ", Image_Id = 2 });
+                carouselManager.Insert(new Carousel() { ImageMin = "http://lavenderhillhigh.co.za/wp-content/gallery/fundraising/default-image.jpg", Text = " ", Image_Id = 3 });
             }
-            catch (Exception ex)
+            if (!imageManager.GetAll().Any())
             {
-
+                imageManager.Insert(new Image() { ImagePath = "http://lavenderhillhigh.co.za/wp-content/gallery/fundraising/default-image.jpg" });
+                imageManager.Insert(new Image() { ImagePath = "http://lavenderhillhigh.co.za/wp-content/gallery/fundraising/default-image.jpg" });
+                imageManager.Insert(new Image() { ImagePath = "http://lavenderhillhigh.co.za/wp-content/gallery/fundraising/default-image.jpg" });
             }
-            return View();
+            var carouselLst = carouselManager.GetAll().ToList();
+            var fbLst = faceBookManager.GetAll().ToList();
+            var newsLst = newsManager.GetAll().ToList();
+            var projLst = projectsManager.GetAll().ToList();
+            var videoLst = videoManager.GetAll().ToList();
+            var imgLst = imageManager.GetAll().ToList();
+            var personsLst = personsManager.GetAll().ToList();
+
+            return View(new StartPageViewModel()
+            {
+                CarouselLst = carouselLst,
+                FaceBookLst = fbLst,
+                ProjectsLst = projLst,
+                VideoLst = videoLst,
+                NewsLst = newsLst,
+                ImagesLst = imgLst,
+                PersonsLst = personsLst
+            });
 
         }
-        [HttpPost("UploadFiles")]
+
+        [HttpPost("UploadProjects")]
         public async Task<IActionResult> Post(IFormFile file, string Text, string Title)
         {
-
             var path = "/images/" + file.FileName;
 
             using (var fileStream = new FileStream(appEnvironment.WebRootPath + path, FileMode.Create))
@@ -72,13 +102,7 @@ namespace WebApp.Controllers
 
             projectsManager.Insert(projects);
 
-            var allProjects = projectsManager.GetAll().ToList();
-            var images = imageManager.GetAll().ToList();
-            return View("Projects", new ProjectsViewModel()
-            {
-                ProjectsLst = allProjects,
-                ImageLst = images
-            });
+            return RedirectToAction("Index");
 
         }
         //public void AddArticle()

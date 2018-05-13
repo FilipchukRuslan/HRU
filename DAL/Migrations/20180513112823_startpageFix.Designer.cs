@@ -11,9 +11,10 @@ using System;
 namespace DAL.Migrations
 {
     [DbContext(typeof(HRUDbContext))]
-    partial class HRUDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180513112823_startpageFix")]
+    partial class startpageFix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

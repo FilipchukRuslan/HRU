@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BAL.Interfaces;
 using DAL.Interface;
 using Model.DB;
 using System;
