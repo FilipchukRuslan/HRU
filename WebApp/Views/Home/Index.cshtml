@@ -2,10 +2,11 @@
 @{
     ViewData["Title"] = "Home Page";
 }
+
 <link href="~/css/site.css" rel="stylesheet" />
+<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
 <style>
     body {
-        font-family: Tahoma;
         margin: 0% auto !important;
         padding: 0% !important;
         background: none;
@@ -50,9 +51,9 @@
         margin-top: 4px;
     }
 
-    .modalDialog, .modalDialog2 {
+    .modalDialog, .modalDialog2, .modalDialog3 {
         position: fixed;
-        font-family: Arial, Helvetica, sans-serif;
+        font-family: 'Roboto', sans-serif;
         top: 0;
         right: 0;
         bottom: 0;
@@ -68,12 +69,12 @@
         overflow-y: auto;
     }
 
-        .modalDialog:target, .modalDialog2:target {
+        .modalDialog:target, .modalDialog2:target, .modalDialog3:target {
             display: block;
             pointer-events: auto;
         }
 
-        .modalDialog > div, .modalDialog2 > div {
+        .modalDialog > div, .modalDialog2 > div, .modalDialog3 > div {
             width: 600px;
             position: relative;
             margin: 10% auto;
@@ -85,7 +86,7 @@
             background: -o-linear-gradient(#fff, #999);
         }
 
-    .close, .close2 {
+    .close, .close2, .close3 {
         background: #ff0000;
         color: #fff;
         line-height: 25px;
@@ -104,7 +105,7 @@
         box-shadow: 1px 1px 3px #000;
     }
 
-        .close:hover, .close2:hover {
+        .close:hover, .close2:hover, .close3:hover {
             background: #00d9ff;
         }
 
@@ -134,6 +135,7 @@
     .listOfNews {
         margin-bottom: 6px;
         font-size: 18px;
+        font-family: 'Roboto', sans-serif;
     }
 
     .date {
@@ -159,6 +161,7 @@
         text-align: right;
         font-weight: 500;
         letter-spacing: 3px;
+        font-family: 'Roboto', sans-serif;
     }
 
     .decorator {
@@ -196,6 +199,13 @@
         font-size: 18px;
     }
 
+    .myslider {
+        max-height: 590px;
+        min-height: 590px;
+        max-width: 1050px;
+        min-width: 1050px;
+    }
+
     .slider {
         max-height: 590px;
         min-height: 590px;
@@ -221,7 +231,7 @@
     }
 
     .faceBook {
-        background: rgba(234, 234, 234, 0.83);
+        background: rgb(245, 246, 247);
         border: 1px solid rgba(164, 164, 164, 0.33);
         font-size: 18px;
     }
@@ -292,6 +302,31 @@
         width: 10px;
     }
 
+    .targets2 {
+        float: left;
+        margin-right: 20px;
+        color: #034EA1;
+        width: 11px;
+        height: 11px;
+        border: 2px solid #4d56b0;
+        border-radius: 50%;
+        margin: 4px;
+        display: inline-block;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        cursor: pointer;
+    }
+
+    .targetsBlock2 {
+        position: absolute;
+        display: inline-block;
+        left: 10px;
+        bottom: 12px;
+        z-index: 3;
+        width: 10px;
+    }
+
     .fixTop {
         margin-top: -19px !important;
     }
@@ -300,15 +335,132 @@
         width: auto;
         height: auto;
     }
+
     .projImg {
         width: 312px;
         height: 200px;
     }
 
     .projects {
-        height: 370px;
+        height: 400px;
         overflow: auto;
+        font-size: 18px;
     }
+
+    .videoBlock {
+        background: rgb(245, 246, 247);
+    }
+
+    .video-el {
+        margin-top: 40px;
+        font-size: 18px;
+    }
+
+    .center-el {
+        text-align: center;
+    }
+
+    .text-size {
+        font-size: 20px;
+        color: #161A1E;
+        text-transform: uppercase;
+        font-weight: 500;
+        margin-top: 15px;
+    }
+
+    .video {
+        width: 600px !important;
+    }
+    .slider__inner {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 400%;
+        -webkit-transition: left 0.4s;
+        transition: left 0.4s;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-flex-flow: row nowrap;
+        -ms-flex-flow: row nowrap;
+        flex-flow: row nowrap;
+    }
+    *, *:before, *:after {
+        box-sizing: border-box;
+    }
+
+    html, body {
+        height: 100%;
+    }
+
+    body {
+        color: #444;
+        font-family: 'Roboto', sans-serif;
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+
+    .slider {
+        position: relative;
+        overflow: hidden;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-flex-flow: row nowrap;
+        -ms-flex-flow: row nowrap;
+        flex-flow: row nowrap;
+        -webkit-box-align: end;
+        -webkit-align-items: flex-end;
+        -ms-flex-align: end;
+        align-items: flex-end;
+        -webkit-box-pack: center;
+        -webkit-justify-content: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+    }
+
+    .slider__nav {
+        height: 14px;
+        width: 14px;
+        border-radius: 50%;
+        z-index: 10;
+        outline: 4px solid #ccc;
+        outline-offset: -6px;
+        box-shadow: 0 0 0 0 #333, 0 0 0 0 rgba(51, 51, 51, 0);
+        cursor: pointer;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+    }
+
+        .slider__nav:checked {
+            -webkit-animation: check 0.4s linear forwards;
+            animation: check 0.4s linear forwards;
+        }
+
+            .slider__nav:checked:nth-of-type(1) ~ .slider__inner {
+                left: 0%;
+            }
+
+            .slider__nav:checked:nth-of-type(2) ~ .slider__inner {
+                left: -100%;
+            }
+
+            .slider__nav:checked:nth-of-type(3) ~ .slider__inner {
+                left: -200%;
+            }
+
+            .slider__nav:checked:nth-of-type(4) ~ .slider__inner {
+                left: -300%;
+            }
+
+
+
+    
 </style>
 <div id="myCarousel" class="carousel slide fixTop" data-ride="carousel">
 
@@ -323,7 +475,7 @@
         <div class="item active">
             <div class="backGr" style="background-image:url(@Model.CarouselLst[0].ImageMin);">
                 <div class="c">
-                    <img class="slider" src="@Model.ImagesLst.Where(e=>e.Id==Model.CarouselLst[0].Image_Id).FirstOrDefault().ImagePath" alt="Chania">
+                    <img class="myslider" src="@Model.ImagesLst.Where(e=>e.Id==Model.CarouselLst[0].Image_Id).FirstOrDefault().ImagePath" alt="Chania">
                 </div>
 
                 <p class="blackWraping">@Model.CarouselLst[0].Text</p>
@@ -335,11 +487,10 @@
         <div class="item">
             <div class="backGr" style="background-image:url(@Model.CarouselLst[1].ImageMin);">
                 <div class="c">
-                    <img class="slider" src="@Model.ImagesLst.Where(e=>e.Id==Model.CarouselLst[1].Image_Id).FirstOrDefault().ImagePath" alt="Chania">
+                    <img class="myslider" src="@Model.ImagesLst.Where(e=>e.Id==Model.CarouselLst[1].Image_Id).FirstOrDefault().ImagePath" alt="Chania">
                 </div>
 
                 <p class="blackWraping">@Model.CarouselLst[1].Text</p>
-
             </div>
 
         </div>
@@ -347,7 +498,7 @@
         <div class="item">
             <div class="backGr" style="background-image:url(@Model.CarouselLst[2].ImageMin);">
                 <div class="c">
-                    <img class="slider" src="@Model.ImagesLst.Where(e=>e.Id==Model.CarouselLst[2].Image_Id).FirstOrDefault().ImagePath" alt="Chania">
+                    <img class="myslider" src="@Model.ImagesLst.Where(e=>e.Id==Model.CarouselLst[2].Image_Id).FirstOrDefault().ImagePath" alt="Chania">
                 </div>
 
                 <p class="blackWraping">@Model.CarouselLst[2].Text</p>
@@ -383,7 +534,7 @@
             <div class="form-group">
 
                 <label for="text">Текст</label>
-                <textarea cols="30" rows="10" class="form-control text-area-text" name="Text" id="text" required></textarea>
+                <textarea cols="30" rows="10" class="form-control text-area-text" name="Text" id="MCE" required></textarea>
                 <div></div>
             </div>
             <input name="Carousel" type="submit" value="Загрузить слайд" />
@@ -472,7 +623,7 @@
                                 <select name="Person"
                                         asp-items="Items"></select>
                                 <label for="Text">Текст</label>
-                                <textarea cols="30" rows="10" class="form-control text-area-text" name="Text" id="Text" required></textarea>
+                                <textarea cols="30" rows="10" class="form-control text-area-text" name="Text" id="MCE" required></textarea>
                                 <div></div>
                             </div>
                             <input type="submit" value="Опубликовать" />
@@ -492,19 +643,28 @@
 <div class="clear"></div>
 <div class="container">
     <div class="row videoBlock">
-        <div class="col-sm-6">
-            <iframe width="547" height="420" src="https://www.youtube.com/embed/WXBuVDKYvj8" frameborder="0" allow="autoplay; encrypted-media"
-                    allowfullscreen></iframe>
+        <div class="slider">
+            <input type="radio" name="slider" checked="checked" class="slider__nav" />
+            <input type="radio" name="slider" class="slider__nav" />
+            <input type="radio" name="slider" class="slider__nav" />
+            <input type="radio" name="slider" class="slider__nav" />
+            <div class="slider__inner">
+                @for (var vid = Model.VideoLst.Count()-1; vid>Model.VideoLst.Count()-5; vid--)
+                {
+                <div class="col-lg-12">
+                    <div id="@Model.VideoLst[vid].Id" style="margin-left:40px;" class="col-sm-7 video-el">
+                        @Html.Raw(@Model.VideoLst[vid].VideoFile)
+                    </div>
+                    <div style="margin-left:18px;" class="col-sm-4 video-el">
+                        @Model.VideoLst[vid].Text
+                    </div>
+                </div>
+                }
+            </div>
         </div>
-        <div class="col-sm-6">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas corrupti temporibus voluptatum dolor distinctio tenetur quis?
-            Vero magnam velit similique numquam, illum necessitatibus nesciunt deserunt ipsam cumque, a, impedit nostrum? Lorem
-            ipsum dolor sit amet consectetur adipisicing elit. Quas corrupti temporibus voluptatum dolor distinctio tenetur quis?
-            Vero magnam velit similique numquam, illum necessitatibus nesciunt deserunt ipsam cumque, a, impedit nostrum?
-
-        </div>
-
     </div>
+    <a class="center-el text-size" asp-controller="Video" asp-action="Index">ВСЕ ВИДЕО</a>
+
 </div>
 <hr>
 <div class="stripe">НАШИ ПРОЕКТЫ</div>
@@ -518,7 +678,7 @@
             <div class="col-lg-4 projects">
                 <img class="projImg"
                      src="@Model.ImagesLst.Where(e=>e.Id==Model.ProjectsLst[i].Image_Id).FirstOrDefault().ImagePath" />
-                <p>@Model.ProjectsLst[i].Title</p>
+                <p style="width:325px; margin-top:10px;">@Model.ProjectsLst[i].Title</p>
             </div>
         }
     </div>
@@ -527,6 +687,46 @@
 @section Scripts{
 
     <script>
+        tinymce.init({
+            selector: '#MCE',
+            plugins: [
+                'advlist autolink list link image charmap print preview hr anchor pagebreak',
+                'searchreplace wordcount visualblocks visualchars code fullscreen',
+                'insertdatetime media nonbreaking save table contextmenu directionality',
+                'emoticons template paste textcolor colorpicker textpattern imagetools image'
+            ],
+            toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+            toolbar2: 'print preview media | forecolor backcolor emotions | code',
+            image_title: true,
+            automatic_uploads: true,
+            file_picker_types: 'image',
+            file_picker_callback: function (cb, value, meta) {
+                var input = document.createElement('input');
+                input.setAttribute('type', 'file');
+                input.setAttribute('accept', 'image/*');
+                input.onchange = function () {
+                    var file = this.files[0];
+
+                    var reader = new FileReader();
+                    reader.onload = function () {
+                        var id = 'blobid' + (new Date()).getTime();
+                        var blobCache = tinymce.activeEditor.editorUpload.blobCache;
+                        var blobInfo = blobCache.create(id, file, base64);
+                        blobCache.add(blobInfo);
+
+                        cb(blobInfo.blobUri(), { title: file.name });
+                    };
+                    reader.readAsDataURL(file);
+                };
+                input.click();
+            }
+        });
+
+        $(document).ready(function () {
+            $('iframe').attr('width', '600');
+            $('iframe').attr('height', '350');
+        });
+
         function readURL(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();

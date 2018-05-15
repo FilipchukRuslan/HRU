@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using BAL.Interfaces;
-using Common;
+﻿using BAL.Interfaces;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Model.DB;
-using Model.Entity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using WebApp.ViewModels;
 
 namespace WebApp.Controllers
 {
-    public class ProjectsController : Controller
+    public class VideoController : Controller
     {
         IHostingEnvironment appEnvironment;
         private readonly ICarouselManager carouselManager;
@@ -25,7 +21,7 @@ namespace WebApp.Controllers
         private readonly IVideoManager videoManager;
         private readonly IPersonManager personsManager;
 
-        public ProjectsController(ICarouselManager carouselManager,
+        public VideoController(ICarouselManager carouselManager,
             INewsManager newsManager,
             IImageManager imageManager,
             IFaceBookManager faceBookManager,
@@ -77,52 +73,14 @@ namespace WebApp.Controllers
                 PersonsLst = personsLst
             });
 
+
         }
 
-        [HttpPost("UploadProjects")]
-        public async Task<IActionResult> Post(IFormFile file, string Text, string Title)
+        [HttpPost("UploadVideo")]
+        public IActionResult PostVideo(string Video, string Text)
         {
-            var path = "/images/" + file.FileName;
-
-            using (var fileStream = new FileStream(appEnvironment.WebRootPath + path, FileMode.Create))
-            {
-                await file.CopyToAsync(fileStream);
-            }
-
-
-            Image image = new Image() { ImagePath = path };
-
-            imageManager.Insert(image);
-            var imageId = imageManager.Get().Where(e => e.ImagePath == image.ImagePath).FirstOrDefault().Id;
-            Projects projects = new Projects()
-            {
-                Text = Text,
-                Title = Title,
-                Image_Id = imageId
-            };
-
-            projectsManager.Insert(projects);
-
+            videoManager.Insert(new Video() { Text = Text, VideoFile = Video });
             return RedirectToAction("Index");
         }
-
-        public IActionResult ShowArtice(int id)
-        {
-            var m = projectsManager.Get().Where(e => e.Id == id).FirstOrDefault();
-            return View(m);
-        }
-        public IActionResult Show(Projects model)
-        {
-            return View(model);
-        }
-        //public void DeleteOrRecoverArticle(NewsDTO newsDTO)
-        //{
-        //    newsManager.DeleteOrRecover(newsDTO.Id);
-        //}
-
-        //public void UpdateArticle(NewsDTO newsDTO)
-        //{
-        //    newsManager.Update(newsDTO);
-        //}
     }
 }

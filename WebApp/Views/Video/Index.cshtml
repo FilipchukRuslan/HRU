@@ -1,10 +1,11 @@
 ﻿@model WebApp.ViewModels.StartPageViewModel
 @{
-    ViewData["Title"] = "Проекты";
+    ViewData["Title"] = "Index";
 }
-<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+
 <style>
     body {
+        font-family: Tahoma;
         margin: 0% auto !important;
         padding: 0% !important;
         background: none;
@@ -49,9 +50,9 @@
         margin-top: 4px;
     }
 
-    .modalDialog, .modalDialog2 {
+    .modalDialog, .modalDialog2, .modalDialog3 {
         position: fixed;
-        font-family: 'Roboto', sans-serif;
+        font-family: Arial, Helvetica, sans-serif;
         top: 0;
         right: 0;
         bottom: 0;
@@ -67,12 +68,12 @@
         overflow-y: auto;
     }
 
-        .modalDialog:target, .modalDialog2:target {
+        .modalDialog:target, .modalDialog2:target, .modalDialog3:target {
             display: block;
             pointer-events: auto;
         }
 
-        .modalDialog > div, .modalDialog2 > div {
+        .modalDialog > div, .modalDialog2 > div, .modalDialog3 > div {
             width: 600px;
             position: relative;
             margin: 10% auto;
@@ -84,7 +85,7 @@
             background: -o-linear-gradient(#fff, #999);
         }
 
-    .close, .close2 {
+    .close, .close2, .close3 {
         background: #ff0000;
         color: #fff;
         line-height: 25px;
@@ -103,7 +104,7 @@
         box-shadow: 1px 1px 3px #000;
     }
 
-        .close:hover, .close2:hover {
+        .close:hover, .close2:hover, .close3:hover {
             background: #00d9ff;
         }
 
@@ -122,6 +123,49 @@
         min-height: 150px;
         max-width: 220px;
         min-width: 220px;
+    }
+
+
+
+    li {
+        list-style-type: none;
+    }
+
+    .listOfNews {
+        margin-bottom: 6px;
+        font-size: 18px;
+    }
+
+    .date {
+        color: #999;
+        font-size: 16px;
+    }
+
+    hr {
+        margin-top: 30px;
+        margin-bottom: 0%;
+        border: 1.5px solid #eeeeef;
+    }
+
+    .stripe {
+        width: 33%;
+        height: 30px;
+        background-color: rgba(41, 79, 209, 0.70);
+        float: left;
+        margin-right: 80px;
+        margin-bottom: 30px;
+        color: rgb(255, 255, 255);
+        font-size: 20px;
+        text-align: right;
+        font-weight: 500;
+        letter-spacing: 3px;
+    }
+
+    .decorator {
+        width: 35%;
+        height: 30px;
+        border-top: 30px solid rgb(41, 79, 209);
+        border-right: 15px solid transparent;
     }
 
 
@@ -181,60 +225,74 @@
     }
 
     .projects {
-        height: 400px;
+        height: 370px;
         overflow: auto;
+    }
+
+    .videoBlock {
+        background: rgb(245, 246, 247);
+    }
+
+    .video-el {
+        margin-top: 40px;
+        margin-bottom: 40px;
         font-size: 18px;
-        font-family: 'Roboto', sans-serif;
     }
 
-    #proj-text {
-        margin-top: 13px;
-        cursor: pointer;
+    .center-el {
+        text-align: center;
     }
 
-        #proj-text:hover {
-        }
+    .text-size {
+        font-size: 20px;
+        color: #161A1E;
+        text-transform: uppercase;
+        font-weight: 500;
+        margin-top: 15px;
+    }
+
+    .video {
+        width: 600px !important;
+        height: 350px !important;
+    }
 </style>
 
 
 <div class="container">
     <div class="row">
-        <h2>Проекты</h2>
+        <h2>Видео</h2>
         <div class="col-lg-11">
             <div class="row">
                 <br />
-                @foreach (var proj in Model.ProjectsLst)
+                @foreach (var vid in Model.VideoLst)
                 {
-                    <div class="col-lg-4 projects">
-                        <img class="projImg"
-                             src="@Model.ImagesLst.Where(e=>e.Id==proj.Image_Id).FirstOrDefault().ImagePath" />
-                        <a href='@Url.Action("ShowArtice", "Projects", new { id = @proj.Id }, null)'><p id="proj-text">@proj.Title</p></a>
+                    <div style="margin-left:40px;" class="col-sm-6 video-el video">
+                        @Html.Raw(@vid.VideoFile)
                     </div>
+                    <div style="margin-left:40px;" class="col-sm-4 video-el">
+                        @vid.Text
+                    </div>
+                    <div class="clear"></div>
+
                 }
             </div>
         </div>
         <div class="col-lg-1">
             @if (User.IsInRole("Administrator"))
             {
-                <a href="#openModal2" class="btn btn-default" style="margin-top:30px;">Добавить проект</a>
+                <a href="#openModal2" class="btn btn-default center-el" style="margin-top:20px;">Добавить видео</a>
                 <div id="openModal2" class="modalDialog2">
                     <div>
                         <a href="#close" title="Закрыть" class="close2">X</a>
-                        <form name="UploadProjects" method="post" enctype="multipart/form-data" asp-controller="Projects" asp-action="Post">
+                        <form name="UploadVideo" method="post" asp-controller="Video" asp-action="PostVideo">
 
                             <div class="form-group">
-                                <br />
-                                <label for="file">фото профиля</label>
-                                <input type='file' name="file" multiple onchange="readURL2(this);" />
-                                <img id="preview2" src="http://www.adbazar.pk/frontend/images/default-image.jpg" alt="your image" />
+                                <label for="Video">Видео</label>
+                                <textarea cols="30" rows="10" class="form-control text-area-text" name="Video" required></textarea>
                                 <div></div>
-                                <hr>
-                            </div>
-                            <div class="form-group">
-                                <label for="Title">Заголовок</label>
-                                <textarea cols="30" rows="5" name="Title"></textarea>
+
                                 <label for="Text">Текст</label>
-                                <textarea name="Text" id="MCE"></textarea>
+                                <textarea cols="30" rows="10" class="form-control text-area-text" name="Text" required></textarea>
                                 <div></div>
                             </div>
                             <input type="submit" value="Опубликовать" />
@@ -248,53 +306,13 @@
 @section Scripts{
 
     <script>
-        tinymce.init({
-            selector: '#MCE',
-            plugins: [
-                'advlist autolink list link image charmap print preview hr anchor pagebreak',
-                'searchreplace wordcount visualblocks visualchars code fullscreen',
-                'insertdatetime media nonbreaking save table contextmenu directionality',
-                'emoticons template paste textcolor colorpicker textpattern imagetools image'
-            ],
-            toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
-            toolbar2: 'print preview media | forecolor backcolor emotions | code',
-            image_title: true,
-            automatic_uploads: true,
-            file_picker_types: 'image',
-            file_picker_callback: function (cb, value, meta) {
-                var input = document.createElement('input');
-                input.setAttribute('type', 'file');
-                input.setAttribute('accept', 'image/*');
-                input.onchange = function () {
-                    var file = this.files[0];
+        tinymce.init({ selector: '#MCE' });
 
-                    var reader = new FileReader();
-                    reader.onload = function () {
-                        var id = 'blobid' + (new Date()).getTime();
-                        var blobCache = tinymce.activeEditor.editorUpload.blobCache;
-                        var blobInfo = blobCache.create(id, file, base64);
-                        blobCache.add(blobInfo);
-
-                        cb(blobInfo.blobUri(), { title: file.name });
-                    };
-                    reader.readAsDataURL(file);
-                };
-                input.click();
-            }
+        $(document).ready(function () {
+            $('iframe').attr('width', '600');
+            $('iframe').attr('height', '350');
         });
-        function ch(id) {
-            obj = new Object();
-            obj.id = id;
-            
-            $.ajax({
-                type: "POST",
-                url: "/Projects/ShowArtice",
-                data: obj,
-                success: function (data) {
-                    location.replace("/Projects/ShowArtice");
-                }
-            });
-        };
+
 
         function readURL(input) {
             if (input.files && input.files[0]) {
@@ -337,3 +355,4 @@
     </script>
 
 }
+
