@@ -1,12 +1,16 @@
-﻿@model WebApp.ViewModels.NewsViewModel
+﻿@model WebApp.ViewModels.StartPageViewModel
 
 @{
     ViewData["Title"] = "Новости";
 }
 
 
-
 <style>
+    .title {
+        font-size: 18px;
+        font-family: 'Roboto', sans-serif;
+    }
+
     .eo-date .eo-date__day {
         font-size: 18px;
         font-weight: 700;
@@ -113,128 +117,137 @@
         cursor: pointer;
         color: slategrey;
     }
+
     #preview {
         max-height: 150px;
         min-height: 150px;
         max-width: 220px;
         min-width: 220px;
     }
+
     img {
         background-size: contain;
         background-size: cover;
-        width:690px;
-        height:420px;
+        width: 690px;
+        height: 420px;
     }
 </style>
 
 
 
-@try
-{
-    <div class="container">
-        <div class="row">
-            <h2>Новости союза</h2>
-            <div class="col-lg-8">
-                @foreach (var i in Model.NewsLst)
-        {
-            <br />
-            <div class="row">
-                <div class="col-lg-12">
-                    <img src="@Model.ImageLst.Where(e => e.Id == i.Image_Id).FirstOrDefault().ImagePath" />
-                    <span class="title">@i.Title</span>
-                </div>
-            </div>
-            <br />
-            <hr />
-
-}
-            </div>
-            <div class="col-lg-4">
-                @if (User.IsInRole("Administrator"))
-        {
-            <h3>Создать новость</h3>
-            <br />
-
-            <a href="#openModal" class="btn btn-default" style="margin-top:30px;">Создать новость</a>
-            <div id="openModal" class="modalDialog">
-                <div>
-                    <a href="#close" title="Закрыть" class="close">X</a>
-                    <form name="UploadF" method="post" enctype="multipart/form-data" asp-controller="News" asp-action="Post">
-                        <div class="form-group">
-                            <br />
-                            <input type='file' name="file" multiple onchange="readURL(this);" />
-                            <img id="preview" src="http://www.adbazar.pk/frontend/images/default-image.jpg" alt="your image" />
-                            <div></div>
-                            <hr>
-                        </div>
-                        <div class="form-group">
-                            <label for="title">Заголовок</label>
-                            <textarea cols="30" rows="10" class="form-control text-area-title" name="Title" id="title" required></textarea>
-                            <div></div>
-                            <hr>
-                            <label for="article">Новость</label>
-                            <textarea cols="30" rows="10" class="form-control text-area-article" name="Text" id="article" required></textarea>
-                            <div></div>
-                        </div>
-                        <input type="submit" value="Опубликовать" />
-                    </form>
-                </div>
-            </div>
-
-}
-            </div>
-        </div>
-    </div>
-}
-catch (Exception ex)
-{
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8">
-                <h3>Новостей еще нет</h3>
-            </div>
-            <div class="col-lg-4">
-                @if (User.IsInRole("Administrator"))
+<div class="container">
+    <div class="row">
+        <h2>Новости союза</h2>
+        <div class="col-lg-8">
+            @if (Model.IndexViewModel.News.Count() > 0)
+            {
+                @foreach (var i in Model.IndexViewModel.News)
                 {
-                    <h3>Создать новость</h3>
-                    <br/>
+                    <br />
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <a href='@Url.Action("ShowNews", "News", new { id = i.Id }, null)'><img style="margin-bottom:10px;" src="@Model.ImagesLst.Where(e => e.Id == i.Image_Id).FirstOrDefault().ImagePath" /></a>
 
-                    <a href="#openModal" class="btn btn-default" style="margin-top:30px;">Создать новость</a>
-                    <div id="openModal" class="modalDialog">
-                        <div>
-                            <a href="#close" title="Закрыть" class="close">X</a>
-                            <form name="uploadFiles" method="post" enctype="multipart/form-data" asp-controller="News" asp-action="Post">
-                                <div class="form-group">
-                                    <br />
-                                    <input type='file' name="files" multiple onchange="readURL(this);" />
-                                    <img id="preview" src="http://www.adbazar.pk/frontend/images/default-image.jpg" alt="your image"/>
-                                    <div></div>
-                                    <hr>
-                                </div>
-                                <div class="form-group">
-                                    
-                                    <label for="title">Заголовок</label>
-                                    <textarea cols="30" rows="10" class="form-control text-area-title" name="Title" id="title" required>
-                </textarea>
-                                    <div></div>
-                                    <hr>
-                                    <label for="article">Новость</label>
-                                    <textarea cols="30" rows="10" class="form-control text-area-article" name="Text" id="article" required>
-                </textarea>
-                                    <div></div>
-                                </div>
-                                <input type="submit" value="Опубликовать" />
-                            </form>
+                            <a href='@Url.Action("ShowNews", "News", new { id = i.Id }, null)' class="title">@i.Title</a>
+                            @if (User.IsInRole("Administrator"))
+                            {
+                                <a class="btn btn-default" href='@Url.Action("DeleteNews", "News", new { id = @i.Id }, null)'>Удалить новость</a>
+                            }
                         </div>
                     </div>
+                    <br />
+                    <hr />
                 }
-            </div>
+            }
+            @if (Model.IndexViewModel.NewsPageInfo.HasPreviousPage)
+            {
+                <a asp-action="News"
+                   asp-route-page="@(Model.IndexViewModel.NewsPageInfo.PageNumber - 1)"
+                   class="btn btn-default btn">
+                    <i class="glyphicon glyphicon-chevron-left"></i>
+                    Назад
+                </a>
+            }
+            @if (Model.IndexViewModel.NewsPageInfo.HasNextPage)
+            {
+                <a asp-action="News"
+                   asp-route-page="@(Model.IndexViewModel.NewsPageInfo.PageNumber + 1)"
+                   class="btn btn-default btn">
+                    Вперед
+                    <i class="glyphicon glyphicon-chevron-right"></i>
+                </a>
+            }
+        </div>
+
+        <div class="col-lg-4">
+            @if (User.IsInRole("Administrator"))
+            {
+                <h3>Создать новость</h3>
+                <br />
+                <form name="UploadF" method="post" enctype="multipart/form-data" asp-controller="News" asp-action="PostImage">
+                    <div class="form-group">
+                        <br />
+                        <input type='file' name="file" multiple onchange="readURL(this);" />
+                        <img id="preview" src="http://www.adbazar.pk/frontend/images/default-image.jpg" alt="your image" />
+                        <div></div>
+                        <hr>
+                    </div>
+                    <input type="submit" value="загрузить изображение" />
+                </form>
+
+                <div class="form-group">
+                    <label for="title">Заголовок</label>
+                    <textarea cols="30" rows="10" class="form-control text-area-title" name="Title" id="title" required></textarea>
+                    <div></div>
+                    <hr>
+                    <label for="article">Новость</label>
+                    <textarea cols="30" rows="10" class="form-control text-area-article" id="MCE" name="Text" required></textarea>
+                    <div></div>
+                </div>
+                <input type="submit" id="submit-btn" value="Опубликовать новость" />
+            }
         </div>
     </div>
-}
+</div>
+
 @section Scripts{
 
     <script>
+        tinymce.init({
+            selector: '#MCE',
+            plugins: [
+                'advlist autolink list link image charmap print preview hr anchor pagebreak',
+                'searchreplace wordcount visualblocks visualchars code fullscreen',
+                'insertdatetime media nonbreaking save table contextmenu directionality',
+                'emoticons template paste textcolor colorpicker textpattern imagetools image'
+            ],
+            toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+            toolbar2: 'print preview media | forecolor backcolor emotions | code',
+            image_title: true,
+            automatic_uploads: true,
+            file_picker_types: 'image',
+            file_picker_callback: function (cb, value, meta) {
+                var input = document.createElement('input');
+                input.setAttribute('type', 'file');
+                input.setAttribute('accept', 'image/*');
+                input.onchange = function () {
+                    var file = this.files[0];
+
+                    var reader = new FileReader();
+                    reader.onload = function () {
+                        var id = 'blobid' + (new Date()).getTime();
+                        var blobCache = tinymce.activeEditor.editorUpload.blobCache;
+                        var blobInfo = blobCache.create(id, file, base64);
+                        blobCache.add(blobInfo);
+
+                        cb(blobInfo.blobUri(), { title: file.name });
+                    };
+                    reader.readAsDataURL(file);
+                };
+                input.click();
+            }
+        });
+
         function readURL(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
@@ -248,18 +261,21 @@ catch (Exception ex)
             }
         }
 
-        $('.submit-btn').click(function () {
-            alert('новость успешно добавлена');
+        $('#submit-btn').click(function () {
             var obj = new Object();
-            obj.
-                $.ajax({
-                    type: "POST",
-                    url: "/AddNews/AddArticle",
-                    data: obj,
-                    success: function (data) {
-                        location.reload();
-                    }
-                });
+            var title = $("#title").val();
+            var text = tinymce.activeEditor.getContent();
+            obj.title = title;
+            obj.text = text;
+            console.log("dd");
+            $.ajax({
+                type: "POST",
+                url: "/News/PostForm",
+                data: obj,
+                success: function (data) {
+                    location.reload();
+                }
+            });
         });
     </script>
 

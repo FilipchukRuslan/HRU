@@ -23,6 +23,6 @@ namespace BAL.Interfaces
 
         void Update(News entity);
 
-        void DeleteOrRecover(int id);
+        void Delete(News entity);
     }
 }

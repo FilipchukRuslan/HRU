@@ -1,0 +1,34 @@
+﻿@model WebApp.ViewModels.ShowNewsViewModel
+@{
+    ViewData["Title"] = "ShowNews";
+}
+<style>
+    body {
+        font-size: 18px;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    img {
+        background-size: contain;
+        background-size: cover;
+        width: 690px;
+        height: 420px;
+    }
+</style>
+<div class="container">
+    <div class="row">
+        <div class="row">
+            <img style="margin-bottom:10px;" src="@Model.Image.ImagePath" />
+        </div>
+
+        <div class="row">
+            @Model.Article.Title
+        </div>
+
+        <div class="row">
+            @Html.Raw(Model.Article.Text)
+        </div>
+
+    </div>
+</div>
+

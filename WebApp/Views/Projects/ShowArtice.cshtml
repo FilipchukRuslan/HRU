@@ -1,11 +1,35 @@
-﻿@model Model.DB.Projects 
+﻿@model WebApp.ViewModels.ProjectsViewModel
 @{
     ViewData["Title"] = "ShowArtice";
 }
-
+<style>
+    img {
+        background-size: contain;
+        background-size: cover;
+        width: 690px;
+        height: 420px;
+    }
+    body {
+        font-size: 18px;
+        font-family: 'Roboto', sans-serif;
+    }
+</style>
 <div class="container">
     <div class="row">
-        @Model.Text
+        <br />
+        <div class="row">
+            <img style="margin-bottom:10px;" src="@Model.Image.ImagePath" />
+        </div>
+        <div class="row">
+            @Model.Projects.Title
+        </div>
+        <div class="row">
+            @Html.Raw(Model.Projects.Text)
+        </div>
+
+        <br />
+
+
     </div>
 </div>
 

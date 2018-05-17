@@ -1,4 +1,5 @@
 ﻿using Model.DB;
+using Model.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,6 @@ namespace WebApp.ViewModels
         public List<Carousel> CarouselLst { get; set; }
         public List<Image> ImagesLst { get; set; }
         public List<Person> PersonsLst { get; set; }
+        public IndexViewModel IndexViewModel { get; set; }
     }
 }

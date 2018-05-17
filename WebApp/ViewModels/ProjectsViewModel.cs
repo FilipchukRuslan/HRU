@@ -8,6 +8,7 @@ namespace WebApp.ViewModels
 {
     public class ProjectsViewModel
     {
+        public Image Image { get; set; }
         public Projects Projects { get; set; }
     }
 }

@@ -60,10 +60,9 @@ namespace BAL.Managers
             unitOfWork.Save();
         }
 
-        public void DeleteOrRecover(int id)
+        public void Delete(News entityToDelete)
         {
-            var article = unitOfWork.NewsRepo.GetById(id);
-            unitOfWork.NewsRepo.Update(article);
+            unitOfWork.NewsRepo.Delete(entityToDelete);
             unitOfWork.Save();
         }
 

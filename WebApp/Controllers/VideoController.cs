@@ -42,17 +42,9 @@ namespace WebApp.Controllers
 
         public IActionResult Index()
         {
-            if (!carouselManager.GetAll().Any())
+            if (!videoManager.GetAll().Any())
             {
-                carouselManager.Insert(new Carousel() { ImageMin = "http://lavenderhillhigh.co.za/wp-content/gallery/fundraising/default-image.jpg", Text = " ", Image_Id = 1 });
-                carouselManager.Insert(new Carousel() { ImageMin = "http://lavenderhillhigh.co.za/wp-content/gallery/fundraising/default-image.jpg", Text = " ", Image_Id = 2 });
-                carouselManager.Insert(new Carousel() { ImageMin = "http://lavenderhillhigh.co.za/wp-content/gallery/fundraising/default-image.jpg", Text = " ", Image_Id = 3 });
-            }
-            if (!imageManager.GetAll().Any())
-            {
-                imageManager.Insert(new Image() { ImagePath = "http://lavenderhillhigh.co.za/wp-content/gallery/fundraising/default-image.jpg" });
-                imageManager.Insert(new Image() { ImagePath = "http://lavenderhillhigh.co.za/wp-content/gallery/fundraising/default-image.jpg" });
-                imageManager.Insert(new Image() { ImagePath = "http://lavenderhillhigh.co.za/wp-content/gallery/fundraising/default-image.jpg" });
+                videoManager.Insert(new Video() { Text = "Default Text", VideoFile = "<iframe width=\"854\" height=\"480\" src=\"https://www.youtube.com/embed/TFHcJMzgYiE\" frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen></iframe>" });
             }
             var carouselLst = carouselManager.GetAll().ToList();
             var fbLst = faceBookManager.GetAll().ToList();
@@ -75,11 +67,16 @@ namespace WebApp.Controllers
 
 
         }
-
         [HttpPost("UploadVideo")]
         public IActionResult PostVideo(string Video, string Text)
         {
             videoManager.Insert(new Video() { Text = Text, VideoFile = Video });
+            return RedirectToAction("Index");
+        }
+        public IActionResult DeleteVideo(int id)
+        {
+            var video = videoManager.Get().Where(e => e.Id == id).FirstOrDefault();
+            videoManager.Delete(video);
             return RedirectToAction("Index");
         }
     }

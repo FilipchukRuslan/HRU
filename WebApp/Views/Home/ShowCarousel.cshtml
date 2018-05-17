@@ -1,0 +1,35 @@
+﻿@model WebApp.ViewModels.CarouselViewModel
+@{
+    ViewData["Title"] = "ShowCarousel";
+}
+
+<style>
+    body {
+        font-size: 18px;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    img {
+        background-size: contain;
+        background-size: cover;
+        width: 690px;
+        height: 420px;
+    }
+</style>
+<div class="container">
+    <div class="row">
+        <div class="row">
+            <img style="margin-bottom:10px;" src="@Model.Image.ImagePath" />
+        </div>
+
+        <div class="row">
+            @Model.Carousel.Title
+        </div>
+
+        <div class="row">
+            @Html.Raw(Model.Carousel.Text)
+        </div>
+
+    </div>
+</div>
+

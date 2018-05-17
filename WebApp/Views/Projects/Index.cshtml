@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Проекты";
 }
-<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+
 <style>
     body {
         margin: 0% auto !important;
@@ -203,13 +203,39 @@
         <div class="col-lg-11">
             <div class="row">
                 <br />
-                @foreach (var proj in Model.ProjectsLst)
+                @foreach (var proj in Model.IndexViewModel.Projects)
                 {
                     <div class="col-lg-4 projects">
-                        <img class="projImg"
-                             src="@Model.ImagesLst.Where(e=>e.Id==proj.Image_Id).FirstOrDefault().ImagePath" />
+                        <a href='@Url.Action("ShowArtice", "Projects", new { id = @proj.Id }, null)'>
+                            <img class="projImg"
+                                 src="@Model.ImagesLst.Where(e=>e.Id==proj.Image_Id).FirstOrDefault().ImagePath" />
+                        </a>
+
                         <a href='@Url.Action("ShowArtice", "Projects", new { id = @proj.Id }, null)'><p id="proj-text">@proj.Title</p></a>
+                        @if (User.IsInRole("Administrator"))
+                        {
+                            <a class="btn btn-default" href='@Url.Action("DeleteProject", "Projects", new { id = @proj.Id }, null)'>Удалить проект</a>
+                        }
                     </div>
+                }
+                <div class="clear"></div>
+                @if (Model.IndexViewModel.ProjectsPageInfo.HasPreviousPage)
+                {
+                    <a asp-action="Index"
+                       asp-route-page="@(Model.IndexViewModel.ProjectsPageInfo.PageNumber - 1)"
+                       class="btn btn-default btn">
+                        <i class="glyphicon glyphicon-chevron-left"></i>
+                        Назад
+                    </a>
+                }
+                @if (Model.IndexViewModel.ProjectsPageInfo.HasNextPage)
+                {
+                    <a asp-action="Index"
+                       asp-route-page="@(Model.IndexViewModel.ProjectsPageInfo.PageNumber + 1)"
+                       class="btn btn-default btn">
+                        Вперед
+                        <i class="glyphicon glyphicon-chevron-right"></i>
+                    </a>
                 }
             </div>
         </div>
@@ -285,7 +311,7 @@
         function ch(id) {
             obj = new Object();
             obj.id = id;
-            
+
             $.ajax({
                 type: "POST",
                 url: "/Projects/ShowArtice",

@@ -44,22 +44,58 @@ namespace WebApp.Controllers
             this.personsManager = personsManager;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int page = 1)
         {
-            if (!carouselManager.GetAll().Any())
+            int pageSize = 9;   // количество элементов на странице
+
+            var projects = projectsManager.GetAll().Reverse().ToList();
+            var count = projects.Count();
+            var items = projects.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            PageViewModel ProjectsPageViewModel = new PageViewModel(count, page, pageSize);
+            IndexViewModel viewModel = new IndexViewModel
             {
-                carouselManager.Insert(new Carousel() { ImageMin = "http://lavenderhillhigh.co.za/wp-content/gallery/fundraising/default-image.jpg", Text = " ", Image_Id = 1 });
-                carouselManager.Insert(new Carousel() { ImageMin = "http://lavenderhillhigh.co.za/wp-content/gallery/fundraising/default-image.jpg", Text = " ", Image_Id = 2 });
-                carouselManager.Insert(new Carousel() { ImageMin = "http://lavenderhillhigh.co.za/wp-content/gallery/fundraising/default-image.jpg", Text = " ", Image_Id = 3 });
-            }
+                ProjectsPageInfo = ProjectsPageViewModel,
+                Projects = items
+            };
             if (!imageManager.GetAll().Any())
             {
                 imageManager.Insert(new Image() { ImagePath = "http://lavenderhillhigh.co.za/wp-content/gallery/fundraising/default-image.jpg" });
-                imageManager.Insert(new Image() { ImagePath = "http://lavenderhillhigh.co.za/wp-content/gallery/fundraising/default-image.jpg" });
-                imageManager.Insert(new Image() { ImagePath = "http://lavenderhillhigh.co.za/wp-content/gallery/fundraising/default-image.jpg" });
             }
+            if (!carouselManager.GetAll().Any())
+            {
+                carouselManager.Insert(new Carousel() { ImageMin = "http://lavenderhillhigh.co.za/wp-content/gallery/fundraising/default-image.jpg", Text = "Default text", Image_Id = 1 });
+                carouselManager.Insert(new Carousel() { ImageMin = "http://lavenderhillhigh.co.za/wp-content/gallery/fundraising/default-image.jpg", Text = "Default text", Image_Id = 1 });
+                carouselManager.Insert(new Carousel() { ImageMin = "http://lavenderhillhigh.co.za/wp-content/gallery/fundraising/default-image.jpg", Text = "Default text", Image_Id = 1 });
+            }
+            while (projectsManager.GetAll().Count() < 3)
+            {
+                projectsManager.Insert(new Projects() { Image_Id = 1, Title = "Default text" });
+            }
+            if (!personsManager.GetAll().Any())
+            {
+                personsManager.Insert(new Person() { Name = "Default Name", ProfilePhoto = "http://www.brilliant-stay.com/wp-content/uploads/2016/02/default-avatar_0.png", ReferenceFB = "#" });
+            }
+            if (!faceBookManager.GetAll().Any())
+            {
+                faceBookManager.Insert(new FaceBook() { FBPost = "Default text", Date = DateTime.Now, Person_Id = 1 });
+            }
+            while (videoManager.GetAll().Count() < 4)
+            {
+                videoManager.Insert(new Video() { Text = "Default Text", VideoFile = "<iframe width=\"854\" height=\"480\" src=\"https://www.youtube.com/embed/TFHcJMzgYiE\" frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen></iframe>" });
+            }
+
+            List<FaceBook> fbLst;
+            if (faceBookManager.GetAll().Count() > 5)
+            {
+                fbLst = faceBookManager.Get().Reverse().Take(5).ToList();
+            }
+            else
+            {
+                fbLst = faceBookManager.GetAll().ToList();
+            }
+
             var carouselLst = carouselManager.GetAll().ToList();
-            var fbLst = faceBookManager.GetAll().ToList();
             var newsLst = newsManager.GetAll().ToList();
             var projLst = projectsManager.GetAll().ToList();
             var videoLst = videoManager.GetAll().ToList();
@@ -74,7 +110,8 @@ namespace WebApp.Controllers
                 VideoLst = videoLst,
                 NewsLst = newsLst,
                 ImagesLst = imgLst,
-                PersonsLst = personsLst
+                PersonsLst = personsLst,
+                IndexViewModel = viewModel
             });
 
         }
@@ -108,21 +145,21 @@ namespace WebApp.Controllers
 
         public IActionResult ShowArtice(int id)
         {
-            var m = projectsManager.Get().Where(e => e.Id == id).FirstOrDefault();
-            return View(m);
-        }
-        public IActionResult Show(Projects model)
-        {
-            return View(model);
-        }
-        //public void DeleteOrRecoverArticle(NewsDTO newsDTO)
-        //{
-        //    newsManager.DeleteOrRecover(newsDTO.Id);
-        //}
+            var projects = projectsManager.Get().Where(e => e.Id == id).FirstOrDefault();
+            var image = imageManager.Get().Where(e => e.Id == projects.Image_Id).FirstOrDefault();
+            return View(new ProjectsViewModel()
+            {
 
-        //public void UpdateArticle(NewsDTO newsDTO)
-        //{
-        //    newsManager.Update(newsDTO);
-        //}
+                Image = image,
+                Projects = projects
+            });
+        }
+        public IActionResult DeleteProject(int id)
+        {
+            var proj = projectsManager.Get().Where(e => e.Id == id).FirstOrDefault();
+            projectsManager.Delete(proj);
+            return RedirectToAction("Index");
+        }
+
     }
 }

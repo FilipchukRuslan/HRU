@@ -7,8 +7,8 @@
     <link href="~/css/site.css" rel="stylesheet" />
     <link href="~/css/normalize.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+
     <title>@ViewData["Title"] - ПСУ</title>
-    <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
     <style type="text/css">
 
         a:hover {
@@ -116,7 +116,7 @@
                 <span class="icon-bar"></span>
             </button>
         </div>
-        <div class="container" >
+        <div class="container">
             <div class="row">
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav" style="margin-left:31px;">
@@ -129,17 +129,17 @@
                         <li><a class="nav-li" asp-controller="Media" asp-action="Index">СМИ О НАС</a></li>
                         <li><a class="nav-li" asp-controller="Contacts" asp-action="Index">КОНТАКТЫ</a></li>
                         @if (User.Identity.IsAuthenticated)
-    {
-                    <li>@Html.ActionLink(@User.Identity.Name, "Index", "User")</li>
+                        {
+                            <li>@Html.ActionLink(@User.Identity.Name, "Index", "User")</li>
 
-                    <li>
-                        <form asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm">
-                            <button type="submit" style="" class="btn btn-link navbar-btn navbar-link deff ">
-                                Выйти
-                            </button>
-                        </form>
-                    </li>
-}
+                            <li>
+                                <form asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm">
+                                    <button type="submit" style="" class="btn btn-link navbar-btn navbar-link deff ">
+                                        Выйти
+                                    </button>
+                                </form>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
@@ -149,7 +149,7 @@
         @RenderBody()
     </div>
     <footer>
-        <div class="container" >
+        <div class="container">
             <div class="row">
                 <div class="foot">
                     <a class="nav-li" asp-controller="Home" asp-action="Index">
@@ -166,14 +166,15 @@
 
             </div>
         </div>
-        
+
     </footer>
     <script src="~/js/modernizr.custom.js"></script>
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
     <script src="~/js/classie.js"></script>
     <script src="~/js/site.js"></script>
-
+    <script src="~/js/jquery.tinymce.min.js"></script>
+    <script src="~/js/tinymce.min.js"></script>
 
 
     @RenderSection("Scripts", required: false)
