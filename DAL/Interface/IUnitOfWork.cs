@@ -16,11 +16,10 @@ namespace DAL.Interface
         IBaseRepository<Carousel> CarouselRepo { get; }
         IBaseRepository<Image> ImageRepo { get; }
         IBaseRepository<Contacts> ContactsRepo { get; }
-        IBaseRepository<AboutUs> AboutUsRepo { get; }
         IBaseRepository<AboutUnion> AboutUnionRepo { get; }
         IBaseRepository<Video> VideoRepo { get; }
         IBaseRepository<FaceBook> FaceBookRepo { get; }
-        IBaseRepository<Person> PersonRepo { get; }
+        IBaseRepository<Messages> MessagesRepo { get; }
 
         int Save();
     }

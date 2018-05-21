@@ -234,9 +234,10 @@
     }
 
     .video-el {
-        margin-top: 40px;
-        margin-bottom: 40px;
+        margin-top: 20px;
+        margin-bottom: 10px;
         font-size: 18px;
+        text-align:center;
     }
 
     .center-el {
@@ -261,23 +262,41 @@
 <div class="container">
     <div class="row">
         <h2>Видео</h2>
-        <div class="col-lg-11">
+        <div class="col-lg-11 videoBlock">
             <div class="row">
                 <br />
-                @foreach (var vid in Model.VideoLst)
+                @foreach (var vid in Model.IndexViewModel.Videos)
                 {
-                    <div style="margin-left:40px;" class="col-sm-6 video-el video">
+                    <div class="col-lg-12 video-el">
                         @Html.Raw(@vid.VideoFile)
                         @if (User.IsInRole("Administrator"))
                         {
                             <a class="btn btn-default" href='@Url.Action("DeleteVideo", "Video", new { id = @vid.Id }, null)'>Удалить видео</a>
                         }
                     </div>
+                    <div class="clear"></div>
                     <div style="margin-left:40px;" class="col-sm-4 video-el">
                         @vid.Text
                     </div>
                     <div class="clear"></div>
-
+                    <hr />
+                    <br />
+                }
+                @if (Model.IndexViewModel.VideosPageInfo.HasPreviousPage)
+                {
+                    <a asp-action="Index"
+                       asp-route-page="@(Model.IndexViewModel.VideosPageInfo.PageNumber - 1)"
+                       class="btn btn-default btn">
+                        <i class="glyphicon glyphicon-chevron-left"></i>
+                    </a>
+                }
+                @if (Model.IndexViewModel.VideosPageInfo.HasNextPage)
+                {
+                    <a asp-action="Index"
+                       asp-route-page="@(Model.IndexViewModel.VideosPageInfo.PageNumber + 1)"
+                       class="btn btn-default btn">
+                        <i class="glyphicon glyphicon-chevron-right"></i>
+                    </a>
                 }
             </div>
         </div>
@@ -313,8 +332,8 @@
         tinymce.init({ selector: '#MCE' });
 
         $(document).ready(function () {
-            $('iframe').attr('width', '600');
-            $('iframe').attr('height', '350');
+            $('iframe').attr('width', '690');
+            $('iframe').attr('height', '400');
         });
 
 

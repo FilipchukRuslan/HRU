@@ -128,8 +128,12 @@
     img {
         background-size: contain;
         background-size: cover;
-        width: 690px;
-        height: 420px;
+        width: 600px;
+        height: 360px;
+    }
+    .newsblock {
+        background: rgb(245, 246, 247);
+        padding-top: 40px;
     }
 </style>
 
@@ -138,7 +142,7 @@
 <div class="container">
     <div class="row">
         <h2>Новости союза</h2>
-        <div class="col-lg-8">
+        <div class="col-lg-8 newsblock">
             @if (Model.IndexViewModel.News.Count() > 0)
             {
                 @foreach (var i in Model.IndexViewModel.News)
@@ -147,8 +151,9 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <a href='@Url.Action("ShowNews", "News", new { id = i.Id }, null)'><img style="margin-bottom:10px;" src="@Model.ImagesLst.Where(e => e.Id == i.Image_Id).FirstOrDefault().ImagePath" /></a>
-
+                            <div class="clear"></div>
                             <a href='@Url.Action("ShowNews", "News", new { id = i.Id }, null)' class="title">@i.Title</a>
+                            <br />
                             @if (User.IsInRole("Administrator"))
                             {
                                 <a class="btn btn-default" href='@Url.Action("DeleteNews", "News", new { id = @i.Id }, null)'>Удалить новость</a>

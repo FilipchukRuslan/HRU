@@ -18,12 +18,11 @@ namespace DAL
         private IBaseRepository<Carousel> carouselRepo;
         private IBaseRepository<Partners> partnersRepo;
         private IBaseRepository<Media> mediaRepo;
-        private IBaseRepository<AboutUs> aboutUsRepo;
         private IBaseRepository<AboutUnion> aboutUnionRepo;
         private IBaseRepository<Contacts> contactsRepo;
         private IBaseRepository<FaceBook> faceBookRepo;
         private IBaseRepository<Video> videoRepo;
-        private IBaseRepository<Person> personRepo;
+        private IBaseRepository<Messages> messagesRepo;
 
         public UnitOfWork(HRUDbContext context)
         {
@@ -110,15 +109,7 @@ namespace DAL
                 return contactsRepo;
             }
         }
-
-        public IBaseRepository<AboutUs> AboutUsRepo
-        {
-            get
-            {
-                if (aboutUsRepo == null) { aboutUsRepo = new BaseRepository<AboutUs>(context); }
-                return aboutUsRepo;
-            }
-        }
+        
         public IBaseRepository<AboutUnion> AboutUnionRepo
         {
             get
@@ -145,13 +136,14 @@ namespace DAL
                 return videoRepo;
             }
         }
+        
 
-        public IBaseRepository<Person> PersonRepo
+        public IBaseRepository<Messages> MessagesRepo
         {
             get
             {
-                if (personRepo == null) { personRepo = new BaseRepository<Person>(context); }
-                return personRepo;
+                if (messagesRepo == null) { messagesRepo = new BaseRepository<Messages>(context); }
+                return messagesRepo;
             }
         }
 

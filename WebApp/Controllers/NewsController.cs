@@ -23,7 +23,7 @@ namespace WebApp.Controllers
         private readonly IFaceBookManager faceBookManager;
         private readonly IProjectsManager projectsManager;
         private readonly IVideoManager videoManager;
-        private readonly IPersonManager personsManager;
+        private readonly IPartnersManager partnersManager;
 
         public NewsController(ICarouselManager carouselManager,
             INewsManager newsManager,
@@ -32,7 +32,7 @@ namespace WebApp.Controllers
             IVideoManager videoManager,
             IProjectsManager projectsManager,
             IHostingEnvironment appEnvironment,
-            IPersonManager personsManager)
+            IPartnersManager partnersManager)
         {
             this.carouselManager = carouselManager;
             this.newsManager = newsManager;
@@ -41,23 +41,12 @@ namespace WebApp.Controllers
             this.projectsManager = projectsManager;
             this.videoManager = videoManager;
             this.appEnvironment = appEnvironment;
-            this.personsManager = personsManager;
+            this.partnersManager = partnersManager;
         }
 
         public IActionResult News(int page = 1)
         {
-            int pageSize = 8;   // количество элементов на странице
-
-            var news = newsManager.GetAll().Reverse().ToList();
-            var count = news.Count();
-            var items = news.Skip((page - 1) * pageSize).Take(pageSize).ToList();
             
-            PageViewModel NewsPageViewModel = new PageViewModel(count, page, pageSize);
-            IndexViewModel viewModel = new IndexViewModel
-            {
-                NewsPageInfo = NewsPageViewModel,
-                News = items
-            };
             if (!imageManager.GetAll().Any())
             {
                 imageManager.Insert(new Image() { ImagePath = "http://lavenderhillhigh.co.za/wp-content/gallery/fundraising/default-image.jpg" });
@@ -72,13 +61,9 @@ namespace WebApp.Controllers
             {
                 projectsManager.Insert(new Projects() { Image_Id = 1, Title = "Default text" });
             }
-            if (!personsManager.GetAll().Any())
-            {
-                personsManager.Insert(new Person() { Name = "Default Name", ProfilePhoto = "http://www.brilliant-stay.com/wp-content/uploads/2016/02/default-avatar_0.png", ReferenceFB = "#" });
-            }
             if (!faceBookManager.GetAll().Any())
             {
-                faceBookManager.Insert(new FaceBook() { FBPost = "Default text", Date = DateTime.Now, Person_Id = 1 });
+                faceBookManager.Insert(new FaceBook() { FBPost = "Default text", Date = DateTime.Now, PersonLink = "#", PersonName = "Default Name" });
             }
             while (videoManager.GetAll().Count() < 4)
             {
@@ -100,8 +85,19 @@ namespace WebApp.Controllers
             var projLst = projectsManager.GetAll().ToList();
             var videoLst = videoManager.GetAll().ToList();
             var imgLst = imageManager.GetAll().ToList();
-            var personsLst = personsManager.GetAll().ToList();
+            var partnersLst = partnersManager.GetAll().ToList();
+            int pageSize = 4;   
 
+            var news = newsManager.GetAll().Reverse().ToList();
+            var count = news.Count();
+            var items = news.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            PageViewModel NewsPageViewModel = new PageViewModel(count, page, pageSize);
+            IndexViewModel viewModel = new IndexViewModel
+            {
+                NewsPageInfo = NewsPageViewModel,
+                News = items
+            };
             return View(new StartPageViewModel()
             {
                 CarouselLst = carouselLst,
@@ -110,7 +106,7 @@ namespace WebApp.Controllers
                 VideoLst = videoLst,
                 NewsLst = newsLst,
                 ImagesLst = imgLst,
-                PersonsLst = personsLst,
+                PartnersLst = partnersLst,
                 IndexViewModel = viewModel
             });
 

@@ -15,7 +15,9 @@ namespace WebApp.ViewModels
         public List<Projects> ProjectsLst { get; set; }
         public List<Carousel> CarouselLst { get; set; }
         public List<Image> ImagesLst { get; set; }
-        public List<Person> PersonsLst { get; set; }
+        public List<Partners> PartnersLst { get; set; }
+        public List<AboutUnion> AboutUnionLst { get; set; }
         public IndexViewModel IndexViewModel { get; set; }
+
     }
 }

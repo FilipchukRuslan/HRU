@@ -11,7 +11,6 @@ namespace DAL
         public DbSet<Carousel> Carousel { get; set; }
         public DbSet<Projects> Projects { get; set; }
         public DbSet<News> News { get; set; }
-        public DbSet<AboutUs> AboutUs { get; set; }
         public DbSet<AboutUnion> AboutUnion { get; set; }
         public DbSet<Contacts> Contacts { get; set; }
         public DbSet<Media> Media { get; set; }
@@ -19,7 +18,6 @@ namespace DAL
         public DbSet<FaceBook> FaceBook { get; set; }
         public DbSet<Video> Video { get; set; }
         public DbSet<Image> Image { get; set; }
-        public DbSet<Person> Person { get; set; }
 
         public HRUDbContext(DbContextOptions<HRUDbContext> options) : base(options)
         {

@@ -32,7 +32,6 @@ namespace WebApp.Controllers
         private readonly IFaceBookManager faceBookManager;
         private readonly IProjectsManager projectsManager;
         private readonly IVideoManager videoManager;
-        private readonly IPersonManager personsManager;
 
         public HomeController(ICarouselManager carouselManager,
             INewsManager newsManager,
@@ -40,8 +39,7 @@ namespace WebApp.Controllers
             IFaceBookManager faceBookManager,
             IVideoManager videoManager,
             IProjectsManager projectsManager,
-            IHostingEnvironment appEnvironment,
-            IPersonManager personsManager)
+            IHostingEnvironment appEnvironment)
         {
             this.carouselManager = carouselManager;
             this.newsManager = newsManager;
@@ -50,13 +48,13 @@ namespace WebApp.Controllers
             this.projectsManager = projectsManager;
             this.videoManager = videoManager;
             this.appEnvironment = appEnvironment;
-            this.personsManager = personsManager;
         }
 
         public IActionResult Index()
         {
             if (!imageManager.GetAll().Any())
             {
+                imageManager.Insert(new Image() { ImagePath = "http://lavenderhillhigh.co.za/wp-content/gallery/fundraising/default-image.jpg" });
                 imageManager.Insert(new Image() { ImagePath = "http://lavenderhillhigh.co.za/wp-content/gallery/fundraising/default-image.jpg" });
             }
             if (!carouselManager.GetAll().Any())
@@ -69,13 +67,10 @@ namespace WebApp.Controllers
             {
                 projectsManager.Insert(new Projects() { Image_Id = 1, Title = "Default text" });
             }
-            if (!personsManager.GetAll().Any())
-            {
-                personsManager.Insert(new Person() { Name = "Default Name", ProfilePhoto = "http://www.brilliant-stay.com/wp-content/uploads/2016/02/default-avatar_0.png", ReferenceFB = "#" });
-            }
+            
             if (!faceBookManager.GetAll().Any())
             {
-                faceBookManager.Insert(new FaceBook() { FBPost = "Default text", Date = DateTime.Now, Person_Id = 1 });
+                faceBookManager.Insert(new FaceBook() { FBPost = "Default text", Date = DateTime.Now, Image_Id = 1, PersonLink = "#", PersonName = "Default Name" });
             }
             while (videoManager.GetAll().Count() < 4)
             {
@@ -97,7 +92,6 @@ namespace WebApp.Controllers
             var projLst = projectsManager.GetAll().ToList();
             var videoLst = videoManager.GetAll().ToList();
             var imgLst = imageManager.GetAll().ToList();
-            var personsLst = personsManager.GetAll().ToList();
 
             return View(new StartPageViewModel()
             {
@@ -106,20 +100,29 @@ namespace WebApp.Controllers
                 ProjectsLst = projLst,
                 VideoLst = videoLst,
                 NewsLst = newsLst,
-                ImagesLst = imgLst,
-                PersonsLst = personsLst
+                ImagesLst = imgLst
             });
         }
 
         [HttpPost("UploadFB")]
-        public IActionResult PostFB(string Text, string Person)
+        public async Task<IActionResult> PostFB(IFormFile uploads, string Text, string Person, string PersonLink)
         {
-            var p = personsManager.Get().Where(e => e.Name == Person).FirstOrDefault();
+            string path1 = "/images/" + uploads.FileName;
+            if (path1 == null)
+                path1 = "";
 
+            using (var fileStream = new FileStream(appEnvironment.WebRootPath + path1, FileMode.Create))
+            {
+                await uploads.CopyToAsync(fileStream);
+            }
+            Image image = new Image() { ImagePath = path1 };
+            imageManager.Insert(image);
             var fb = new FaceBook()
             {
                 FBPost = Text,
-                Person_Id = p.Id,
+                PersonName = Person,
+                PersonLink = PersonLink,
+                Image_Id = image.Id,
                 Date = DateTime.Now
             };
 

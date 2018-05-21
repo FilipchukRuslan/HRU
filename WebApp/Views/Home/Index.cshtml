@@ -119,19 +119,24 @@
     }
 
     #preview {
-        max-height: 150px;
-        min-height: 150px;
-        max-width: 220px;
-        min-width: 220px;
-    }
-
-    #preview2 {
-        max-height: 100px;
-        min-height: 100px;
+        max-height: 110px;
+        min-height: 110px;
         max-width: 170px;
         min-width: 170px;
     }
 
+    #preview2 {
+        max-height: 90px;
+        min-height: 90px;
+        max-width: 140px;
+        min-width: 140px;
+    }
+    #preview3 {
+        max-height: 90px;
+        min-height: 90px;
+        max-width: 140px;
+        min-width: 140px;
+    }
 
     li {
         list-style-type: none;
@@ -157,7 +162,7 @@
     .stripe {
         width: 33%;
         height: 30px;
-        background-color: rgba(41, 79, 209, 0.70);
+        background-color: rgb(23, 175, 240);
         float: left;
         margin-right: 80px;
         margin-bottom: 30px;
@@ -172,7 +177,7 @@
     .decorator {
         width: 35%;
         height: 30px;
-        border-top: 30px solid rgb(41, 79, 209);
+        border-top: 30px solid rgb(23, 175, 240);
         border-right: 15px solid transparent;
     }
 
@@ -470,6 +475,11 @@
         a:hover {
             color: black;
         }
+
+    .form-group {
+        margin: 0% auto;
+        padding: 0%;
+    }
 </style>
 <div id="myCarousel" class="carousel slide fixTop" data-ride="carousel">
 
@@ -514,21 +524,21 @@
 @if (User.IsInRole("Administrator"))
 {
     <div class="container">
+        <h3>Загрузка изображений для слайдера</h3>
         <form name="uploadCarousel" method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="PostCarousel">
             <div class="row">
-                <div class="col-lg-3 form-group">
+                <div class="col-lg-2 form-group">
                     <br />
                     <br />
-                    <input type='file' name="uploads" multiple onchange="readURL(this);" required/>
                     <img id="preview" src="http://www.adbazar.pk/frontend/images/default-image.jpg" alt="your image" />
+                    <input type='file' name="uploads" multiple onchange="readURL(this);" required />
 
                 </div>
-                <div class="col-lg-4 form-group">
+                <div class="col-lg-2 form-group">
                     <br />
                     <br />
-                    <label>для фото маленького разрешения</label>
-                    <input type='file' name="uploads" multiple onchange="readURL2(this);" required/>
                     <img id="preview2" src="http://www.adbazar.pk/frontend/images/default-image.jpg" alt="your image" />
+                    <input type='file' name="uploads" multiple onchange="readURL2(this);" required />
 
 
                 </div>
@@ -536,15 +546,17 @@
 
             </div>
             <br />
-            <input name="Carousel" type="submit" value="Загрузить изображения" />
+            <br />
+            <input class="btn btn-danger" name="Carousel" type="submit" value="Загрузить изображения" />
             <hr>
+            <br />
 
         </form>
 
 
         <div class="form-group">
             <label for="title">Заголовок</label>
-            <textarea cols="30" rows="10" class="form-control text-area-text" id="title" required></textarea>
+            <textarea cols="30" rows="4" class="form-control text-area-text" id="title" required></textarea>
             <div></div>
         </div>
 
@@ -587,9 +599,34 @@
             }
 
         </div>
-        <div class="col-sm-6">
+        <div class="col-lg-6">
             <p class="last-news">Новости из соцсетей:</p>
-
+            @if (User.IsInRole("Administrator"))
+            {
+                <form name="UploadFB" enctype="multipart/form-data"  method="post" asp-controller="Home" asp-action="PostFB">
+                    <div class="row">
+                        <div class="form-group">
+                            <br />
+                            <br />
+                            <input type='file' name="uploads" multiple onchange="readURL3(this);" required />
+                            <img id="preview3" src="http://www.adbazar.pk/frontend/images/default-image.jpg" alt="your image" />
+                        </div>
+                        <div class="form-group">
+                            <label>Имя</label><br />
+                            <input type="text" name="Person" /><br />
+                            <label>Ссылка FaceBook</label><br />
+                            <input type="text" name="PersonLink" />
+                        </div>
+                        <div class="form-group">
+                            <label for="Text">Статья</label>
+                            <textarea cols="30" rows="10" class="form-control text-area-text" name="Text" required></textarea>
+                            <div></div>
+                        </div>
+                        <div class="clear"></div>
+                        <input type="submit" value="Опубликовать" />
+                    </div>
+                </form>
+            }
             @foreach (var face in Model.FaceBookLst)
             {
                 <br />
@@ -598,7 +635,7 @@
 
                         <div class="row">
                             <div class="col-lg-3">
-                                <img class="profile" src="@Model.PersonsLst.Where(e => e.Id == face.Person_Id).FirstOrDefault().ProfilePhoto" />
+                                <img class="profile" src="@Model.ImagesLst.Where(e=>e.Id==face.Image_Id).FirstOrDefault().ImagePath" />
                                 @if (User.IsInRole("Administrator"))
                                 {
                                     <a class="btn btn-default" href='@Url.Action("DeleteFB", "Home", new { id = @face.Id }, null)'>Удалить пост</a>
@@ -610,9 +647,9 @@
                                         <img class="icon" src="http://rdsport.com.ua/wp-content/uploads/2017/01/fb-footer.png" />
                                     </div>
                                     <div class="col" style="margin-top: 10px;">
-                                        <a class="fbName" href="@Model.PersonsLst.Where(e => e.Id == face.Person_Id).FirstOrDefault().ReferenceFB" target="_blank">
+                                        <a class="fbName" href="@face.PersonLink" target="_blank">
 
-                                            @Model.PersonsLst.Where(e => e.Id == face.Person_Id).FirstOrDefault().Name
+                                            @face.PersonName
                                         </a>
                                     </div>
                                     <div class="col" style="margin-top: 10px;">
@@ -630,43 +667,7 @@
                     </div>
                 </div>
                 <br />
-
             }
-            @{
-                var Items = Model.PersonsLst.Select(c => new SelectListItem() { Value = c.Name, Text = c.Name }).ToList();
-            }
-
-            @if (User.IsInRole("Administrator"))
-            {
-                @if (!Model.PersonsLst.Any())
-                {
-                    <p>Чтобы добавить пост Facebook, в разделе О Союзе добавьте члена команды</p>
-                    <button class="btn btn-default" disabled>Опубликовать пост FaceBook</button>
-                }
-                else
-                {
-                    <a href="#openModal2" class="btn btn-default" style="margin-top:30px;">Опубликовать пост FaceBook</a>
-                    <div id="openModal2" class="modalDialog2">
-                        <div>
-                            <a href="#close" title="Закрыть" class="close2">X</a>
-                            <form name="UploadFB" method="post" asp-controller="Home" asp-action="PostFB">
-
-                                <div class="form-group">
-
-                                    <select name="Person"
-                                            asp-items="Items"></select>
-                                    <label for="Text">Текст</label>
-                                    <textarea cols="30" rows="10" class="form-control text-area-text" name="Text" required></textarea>
-                                    <div></div>
-                                </div>
-                                <input type="submit" value="Опубликовать" />
-                            </form>
-                        </div>
-                    </div>
-                }
-
-            }
-
         </div>
     </div>
 </div>
@@ -775,8 +776,8 @@
                 reader.onload = function (e) {
                     $('#preview')
                         .attr('src', e.target.result)
-                        .width(180)
-                        .height(100);
+                        .width(150)
+                        .height(80);
                 };
                 reader.readAsDataURL(input.files[0]);
             }
@@ -786,6 +787,19 @@
                 var reader = new FileReader();
                 reader.onload = function (e) {
                     $('#preview2')
+                        .attr('src', e.target.result)
+                        .width(180)
+                        .height(100);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function readURL3(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#preview3')
                         .attr('src', e.target.result)
                         .width(180)
                         .height(100);

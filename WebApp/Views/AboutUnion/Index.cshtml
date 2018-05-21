@@ -236,57 +236,88 @@
 <div class="container">
     <div class="row">
         <h2>О союзе</h2>
-        <div class="col-lg-8">
-            @foreach (var pers in Model.PersonsLst)
-            {
-                <div class="row">
-                    <div class="col-lg-3">
-                        <img class="profilePhoto" src="@pers.ProfilePhoto" />
-                    </div>
-                    <div class="col-lg-6">
-                        <a href="@pers.ReferenceFB" target="_blank">@pers.Name</a>
-                    </div>
+        @if (User.IsInRole("Administrator"))
+        {
+            <form name="UploadInfo" method="post" enctype="multipart/form-data" asp-controller="AboutUnion" asp-action="Info">
+
+                <div class="form-group">
+                    <br />
+                    <label for="article">Правозащитный союз Украины - </label>
+                    <textarea cols="30" rows="10" class="form-control text-area-article" id="MCE" name="HRU" required></textarea>
+                    <label for="article">Миссия союза</label>
+                    <textarea cols="30" rows="10" class="form-control text-area-article" id="MISSION" name="Mission" required></textarea>
+                    <label for="uploads">Цели и задачи</label>
+                    <textarea cols="30" rows="10" class="form-control text-area-article" id="GOALS" name="Goals" required></textarea>
+                    <div></div>
+                    <hr>
                 </div>
-                <br />
-
-
-            }
-        </div>
-        <div class="col-lg-4">
-            @if (User.IsInRole("Administrator"))
-            {
-                <a href="#openModal2" class="btn btn-default" style="margin-top:30px;">Добавить члена команды</a>
-                <div id="openModal2" class="modalDialog2">
-                    <div>
-                        <a href="#close" title="Закрыть" class="close2">X</a>
-                        <form name="UploadTeamMember" method="post" enctype="multipart/form-data" asp-controller="AboutUnion" asp-action="PostTeamMember">
-
-                            <div class="form-group">
-                                <br />
-                                <label for="uploads">фото профиля</label>
-                                <input type='file' name="uploads" multiple onchange="readURL2(this);" />
-                                <img id="preview2" src="http://www.adbazar.pk/frontend/images/default-image.jpg" alt="your image" />
-                                <div></div>
-                                <hr>
-                            </div>
-                            <div class="form-group">
-                                <label for="MemberName">Имя</label>
-                                <input type="text" name="MemberName" />
-                                <label for="Ref">Ссылка</label>
-                                <input type="text" name="Ref" />
-                                <div></div>
-                            </div>
-                            <input type="submit" value="Опубликовать" />
-                        </form>
-                    </div>
+                <input type="submit" value="Опубликовать" />
+            </form>
+            <br />
+            <br />
+            <h2>
+                Состав Союза и Партнеры
+            </h2>
+            <form name="UploadTeamMember" method="post" enctype="multipart/form-data" asp-controller="AboutUnion" asp-action="PostTeamMember">
+                <div class="form-group col-lg-3">
+                    <label>фото</label><br />
+                    <img id="preview2" src="http://www.adbazar.pk/frontend/images/default-image.jpg" alt="your image" />
+                    <input type='file' name="uploads" multiple onchange="readURL2(this);" />
                 </div>
-            }
-        </div>
+                <div class="form-group col-lg-8">
+                    <label>описание</label>
+                    <input type="text" name="Name" />
+                    <label>описание</label>
+                    <textarea cols="30" rows="10" class="form-control text-area-article" id="CREW" name="Text" required></textarea>
+                    <input type="submit" value="Опубликовать" />
+                </div>
+                <div class="clear"></div>
+                <hr>
+            </form>
+        }
+
     </div>
 </div>
 @section Scripts{
 
     <script>
+        tinymce.init({
+            selector: '#MCE, #MISSION, #GOALS, #CREW',
+            plugins: [
+                'advlist autolink list link image charmap print preview hr anchor pagebreak',
+                'searchreplace wordcount visualblocks visualchars code fullscreen',
+                'insertdatetime media nonbreaking save table contextmenu directionality',
+                'emoticons template paste textcolor colorpicker textpattern imagetools image'
+            ],
+            toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image" | "image",
+            toolbar2: 'print preview media | forecolor backcolor emotions | code',
+            image_title: true,
+            automatic_uploads: true,
+            file_picker_types: 'image',
+            file_picker_callback: function (cb, value, meta) {
+                var input = document.createElement('input');
+                input.setAttribute('type', 'file');
+                input.setAttribute('accept', 'image/*');
+                input.setAttribute('name', 'files');
+                input.onchange = function () {
+                    var file = this.files[0];
+
+                    var reader = new FileReader();
+
+                    reader.onload = function () {
+                        var dataUrl = reader.result;
+                        var base64 = dataUrl.split(',')[1];
+                        var id = 'blobid' + (new Date()).getTime();
+                        var blobCache = tinymce.activeEditor.editorUpload.blobCache;
+                        var blobInfo = blobCache.create(id, file, base64);
+                        blobCache.add(blobInfo);
+                        cb(blobInfo.blobUri(), { title: file.name });
+                    };
+                    reader.readAsDataURL(file);
+                };
+                input.click();
+            }
+        });
         function readURL(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();

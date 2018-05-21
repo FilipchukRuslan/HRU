@@ -9,8 +9,11 @@ namespace Model.DB
         public int Id { get; set; }
         public string FBPost { get; set; }
         public DateTime Date { get; set; }
+        
+        public string PersonName { get; set; }
+        public string PersonLink { get; set; }
 
-        public int Person_Id { get; set; }
-        public Person Person { get; set; }
+        public int Image_Id { get; set; }
+        public virtual Image Image { get; set; }
     }
 }

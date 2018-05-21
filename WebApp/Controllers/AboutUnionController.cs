@@ -21,7 +21,8 @@ namespace WebApp.Controllers
         private readonly IFaceBookManager faceBookManager;
         private readonly IProjectsManager projectsManager;
         private readonly IVideoManager videoManager;
-        private readonly IPersonManager personsManager;
+        private readonly IPartnersManager partnersManager;
+        private readonly IAboutUnionManager aboutUnionManager;
 
         public AboutUnionController(ICarouselManager carouselManager,
             INewsManager newsManager,
@@ -30,7 +31,8 @@ namespace WebApp.Controllers
             IVideoManager videoManager,
             IProjectsManager projectsManager,
             IHostingEnvironment appEnvironment,
-            IPersonManager personsManager)
+            IPartnersManager partnersManager,
+            IAboutUnionManager aboutUnionManager)
         {
             this.carouselManager = carouselManager;
             this.newsManager = newsManager;
@@ -39,7 +41,8 @@ namespace WebApp.Controllers
             this.projectsManager = projectsManager;
             this.videoManager = videoManager;
             this.appEnvironment = appEnvironment;
-            this.personsManager = personsManager;
+            this.partnersManager = partnersManager;
+            this.aboutUnionManager = aboutUnionManager;
         }
 
         public IActionResult Index()
@@ -50,7 +53,8 @@ namespace WebApp.Controllers
             var projLst = projectsManager.GetAll().ToList();
             var videoLst = videoManager.GetAll().ToList();
             var imgLst = imageManager.GetAll().ToList();
-            var personsLst = personsManager.GetAll().ToList();
+            var partnersManagerLst = partnersManager.GetAll().ToList();
+            var aboutUnionLst = aboutUnionManager.GetAll().ToList();
 
             return View(new StartPageViewModel()
             {
@@ -60,13 +64,14 @@ namespace WebApp.Controllers
                 VideoLst = videoLst,
                 NewsLst = newsLst,
                 ImagesLst = imgLst,
-                PersonsLst = personsLst
+                PartnersLst = partnersManagerLst,
+                AboutUnionLst = aboutUnionLst
             });
             
         }
 
         [HttpPost("UploadTeamMember")]
-        public async Task<IActionResult> PostTeamMember(IFormFile uploads, string MemberName, string Ref)
+        public async Task<IActionResult> PostTeamMember(IFormFile uploads, string Text, string Name)
         {
             string path1 = "/images/" + uploads.FileName;
             if (path1 == null)
@@ -76,11 +81,27 @@ namespace WebApp.Controllers
             {
                 await uploads.CopyToAsync(fileStream);
             }
-            
-            Person person = new Person() { ProfilePhoto = path1, Name = MemberName , ReferenceFB = Ref };
+            Image image = new Image() { ImagePath = path1 };
 
-            personsManager.Insert(person);
+            imageManager.Insert(image);
+
+            partnersManager.Insert(new Partners() {
+                Image_Id = image.Id,
+                ParnerName = Name,
+                ParnerAbout = Text
+            });
             
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost("UploadInfo")]
+        public IActionResult Info(string HRU, string Mission, string Goals)
+        {
+            aboutUnionManager.Insert(new AboutUnion() {
+                Mission = Mission,
+                Union = HRU,
+                Goals = Goals
+            });
             return RedirectToAction("Index");
         }
     }

@@ -19,7 +19,6 @@ namespace WebApp.Controllers
         private readonly IFaceBookManager faceBookManager;
         private readonly IProjectsManager projectsManager;
         private readonly IVideoManager videoManager;
-        private readonly IPersonManager personsManager;
 
         public VideoController(ICarouselManager carouselManager,
             INewsManager newsManager,
@@ -27,8 +26,7 @@ namespace WebApp.Controllers
             IFaceBookManager faceBookManager,
             IVideoManager videoManager,
             IProjectsManager projectsManager,
-            IHostingEnvironment appEnvironment,
-            IPersonManager personsManager)
+            IHostingEnvironment appEnvironment)
         {
             this.carouselManager = carouselManager;
             this.newsManager = newsManager;
@@ -37,10 +35,9 @@ namespace WebApp.Controllers
             this.projectsManager = projectsManager;
             this.videoManager = videoManager;
             this.appEnvironment = appEnvironment;
-            this.personsManager = personsManager;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int page = 1)
         {
             if (!videoManager.GetAll().Any())
             {
@@ -52,8 +49,19 @@ namespace WebApp.Controllers
             var projLst = projectsManager.GetAll().ToList();
             var videoLst = videoManager.GetAll().ToList();
             var imgLst = imageManager.GetAll().ToList();
-            var personsLst = personsManager.GetAll().ToList();
 
+            int pageSize = 3;   // количество элементов на странице
+
+            var videos = videoManager.GetAll().Reverse().ToList();
+            var count = videos.Count();
+            var items = videos.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            PageViewModel VideosPageViewModel = new PageViewModel(count, page, pageSize);
+            IndexViewModel viewModel = new IndexViewModel
+            {
+                VideosPageInfo = VideosPageViewModel,
+                Videos = items
+            };
             return View(new StartPageViewModel()
             {
                 CarouselLst = carouselLst,
@@ -62,7 +70,7 @@ namespace WebApp.Controllers
                 VideoLst = videoLst,
                 NewsLst = newsLst,
                 ImagesLst = imgLst,
-                PersonsLst = personsLst
+                IndexViewModel = viewModel
             });
 
 
