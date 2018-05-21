@@ -132,6 +132,24 @@ namespace WebApp.Controllers
             return RedirectToAction("News");
         }
 
+        [HttpPost("UploadFromTextArea")]
+        public async Task<IActionResult> PostImages(List<IFormFile> files)
+        {
+            foreach (var file in files)
+            {
+                var path = "/images/" + file.FileName;
+
+                using (var fileStream = new FileStream(appEnvironment.WebRootPath + path, FileMode.Create))
+                {
+                    await file.CopyToAsync(fileStream);
+                }
+                Image image = new Image() { ImagePath = path };
+
+                imageManager.Insert(image);
+            }
+            return RedirectToAction("News");
+        }
+
         public IActionResult PostForm(FormModelClass formModelClass)
         {
             var imageId = imageManager.Get().LastOrDefault().Id;

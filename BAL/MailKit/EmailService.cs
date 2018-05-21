@@ -6,7 +6,7 @@ namespace BAL.MailKit
 {
     public class EmailService
     {
-        public void SendEmailAsync()
+        public void SendEmailAsync(string password)
         {
             MailMessage mail = new MailMessage();
             SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
@@ -17,7 +17,7 @@ namespace BAL.MailKit
 
             SmtpServer.Port = 587;
             SmtpServer.UseDefaultCredentials = true;
-            SmtpServer.Credentials = new System.Net.NetworkCredential("Filipchukruslan72@gmail.com", "ybrbnfybrbnf72");
+            SmtpServer.Credentials = new System.Net.NetworkCredential("Filipchukruslan72@gmail.com", password);
             SmtpServer.EnableSsl = true;
 
             SmtpServer.Send(mail);

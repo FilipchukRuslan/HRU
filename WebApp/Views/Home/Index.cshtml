@@ -519,7 +519,7 @@
                 <div class="col-lg-3 form-group">
                     <br />
                     <br />
-                    <input type='file' name="uploads" multiple onchange="readURL(this);" />
+                    <input type='file' name="uploads" multiple onchange="readURL(this);" required/>
                     <img id="preview" src="http://www.adbazar.pk/frontend/images/default-image.jpg" alt="your image" />
 
                 </div>
@@ -527,7 +527,7 @@
                     <br />
                     <br />
                     <label>для фото маленького разрешения</label>
-                    <input type='file' name="uploads" multiple onchange="readURL2(this);" />
+                    <input type='file' name="uploads" multiple onchange="readURL2(this);" required/>
                     <img id="preview2" src="http://www.adbazar.pk/frontend/images/default-image.jpg" alt="your image" />
 
 
@@ -733,7 +733,7 @@
                 'insertdatetime media nonbreaking save table contextmenu directionality',
                 'emoticons template paste textcolor colorpicker textpattern imagetools image'
             ],
-            toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+            toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image" | "image",
             toolbar2: 'print preview media | forecolor backcolor emotions | code',
             image_title: true,
             automatic_uploads: true,
@@ -742,16 +742,19 @@
                 var input = document.createElement('input');
                 input.setAttribute('type', 'file');
                 input.setAttribute('accept', 'image/*');
+                input.setAttribute('name', 'files');
                 input.onchange = function () {
                     var file = this.files[0];
 
                     var reader = new FileReader();
+
                     reader.onload = function () {
+                        var dataUrl = reader.result;
+                        var base64 = dataUrl.split(',')[1];
                         var id = 'blobid' + (new Date()).getTime();
                         var blobCache = tinymce.activeEditor.editorUpload.blobCache;
                         var blobInfo = blobCache.create(id, file, base64);
                         blobCache.add(blobInfo);
-
                         cb(blobInfo.blobUri(), { title: file.name });
                     };
                     reader.readAsDataURL(file);
@@ -759,6 +762,7 @@
                 input.click();
             }
         });
+
 
         $(document).ready(function () {
             $('iframe').attr('width', '600');

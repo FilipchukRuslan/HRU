@@ -165,7 +165,6 @@
                    asp-route-page="@(Model.IndexViewModel.NewsPageInfo.PageNumber - 1)"
                    class="btn btn-default btn">
                     <i class="glyphicon glyphicon-chevron-left"></i>
-                    Назад
                 </a>
             }
             @if (Model.IndexViewModel.NewsPageInfo.HasNextPage)
@@ -173,7 +172,6 @@
                 <a asp-action="News"
                    asp-route-page="@(Model.IndexViewModel.NewsPageInfo.PageNumber + 1)"
                    class="btn btn-default btn">
-                    Вперед
                     <i class="glyphicon glyphicon-chevron-right"></i>
                 </a>
             }
@@ -187,7 +185,7 @@
                 <form name="UploadF" method="post" enctype="multipart/form-data" asp-controller="News" asp-action="PostImage">
                     <div class="form-group">
                         <br />
-                        <input type='file' name="file" multiple onchange="readURL(this);" />
+                        <input type='file' name="file" multiple onchange="readURL(this);" required/>
                         <img id="preview" src="http://www.adbazar.pk/frontend/images/default-image.jpg" alt="your image" />
                         <div></div>
                         <hr>
@@ -221,7 +219,7 @@
                 'insertdatetime media nonbreaking save table contextmenu directionality',
                 'emoticons template paste textcolor colorpicker textpattern imagetools image'
             ],
-            toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+            toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image" | "image",
             toolbar2: 'print preview media | forecolor backcolor emotions | code',
             image_title: true,
             automatic_uploads: true,
@@ -230,16 +228,19 @@
                 var input = document.createElement('input');
                 input.setAttribute('type', 'file');
                 input.setAttribute('accept', 'image/*');
+                input.setAttribute('name', 'files');
                 input.onchange = function () {
                     var file = this.files[0];
-
+        
                     var reader = new FileReader();
+
                     reader.onload = function () {
+                        var dataUrl = reader.result;
+                        var base64 = dataUrl.split(',')[1];
                         var id = 'blobid' + (new Date()).getTime();
                         var blobCache = tinymce.activeEditor.editorUpload.blobCache;
                         var blobInfo = blobCache.create(id, file, base64);
                         blobCache.add(blobInfo);
-
                         cb(blobInfo.blobUri(), { title: file.name });
                     };
                     reader.readAsDataURL(file);

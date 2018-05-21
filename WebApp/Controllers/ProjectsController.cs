@@ -46,7 +46,7 @@ namespace WebApp.Controllers
 
         public IActionResult Index(int page = 1)
         {
-            int pageSize = 9;   // количество элементов на странице
+            int pageSize = 6;   // количество элементов на странице
 
             var projects = projectsManager.GetAll().Reverse().ToList();
             var count = projects.Count();
