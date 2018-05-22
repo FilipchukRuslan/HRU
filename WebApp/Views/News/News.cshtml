@@ -4,114 +4,16 @@
     ViewData["Title"] = "Новости";
 }
 
-
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 <style>
     .title {
         font-size: 18px;
         font-family: 'Roboto', sans-serif;
     }
-
-    .eo-date .eo-date__day {
-        font-size: 18px;
-        font-weight: 700;
+    body {
+        font-family: 'Roboto', sans-serif;
     }
-
-    .eo-date .eo-date__month {
-        font-size: 11px;
-        text-transform: uppercase;
-    }
-
-    .eo-date {
-        display: -webkit-box;
-        display: flex;
-        -webkit-box-orient: vertical;
-        -webkit-box-direction: normal;
-        -webkit-flex-direction: column;
-        -ms-flex-direction: column;
-        flex-direction: column;
-        background: #eee;
-        text-align: center;
-        width: 50px;
-        height: 50px;
-        color: #888;
-        -webkit-box-align: center;
-        -webkit-align-items: center;
-        -ms-flex-align: center;
-        align-items: center;
-        -webkit-align-content: center;
-        -ms-flex-line-pack: center;
-        align-content: center;
-        -ms-grid-column-align: center;
-        justify-items: center;
-        -webkit-box-pack: center;
-        -webkit-justify-content: center;
-        -ms-flex-pack: center;
-        justify-content: center;
-        margin-top: 4px;
-    }
-
-    .modalDialog {
-        position: fixed;
-        font-family: Arial, Helvetica, sans-serif;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        background: rgba(0,0,0,0.8);
-        z-index: 99999;
-        -webkit-transition: opacity 400ms ease-in;
-        -moz-transition: opacity 400ms ease-in;
-        transition: opacity 400ms ease-in;
-        display: none;
-        pointer-events: none;
-        max-height: 100%;
-        overflow-y: auto;
-    }
-
-        .modalDialog:target {
-            display: block;
-            pointer-events: auto;
-        }
-
-        .modalDialog > div {
-            width: 600px;
-            position: relative;
-            margin: 10% auto;
-            padding: 5px 20px 13px 20px;
-            border-radius: 10px;
-            background: #fff;
-            background: -moz-linear-gradient(#fff, #999);
-            background: -webkit-linear-gradient(#fff, #999);
-            background: -o-linear-gradient(#fff, #999);
-        }
-
-    .close {
-        background: #ff0000;
-        color: #fff;
-        line-height: 25px;
-        position: absolute;
-        right: -12px;
-        text-align: center;
-        top: -10px;
-        width: 24px;
-        text-decoration: none;
-        font-weight: bold;
-        -webkit-border-radius: 12px;
-        -moz-border-radius: 12px;
-        border-radius: 12px;
-        -moz-box-shadow: 1px 1px 3px #000;
-        -webkit-box-shadow: 1px 1px 3px #000;
-        box-shadow: 1px 1px 3px #000;
-    }
-
-        .close:hover {
-            background: #00d9ff;
-        }
-
-    .section:hover {
-        cursor: pointer;
-        color: slategrey;
-    }
+   
 
     .title:hover {
         cursor: pointer;
@@ -128,12 +30,16 @@
     img {
         background-size: contain;
         background-size: cover;
-        width: 600px;
-        height: 360px;
+        width: 500px;
+        height: 300px;
     }
+
     .newsblock {
+        margin-top: 20px;
         background: rgb(245, 246, 247);
-        padding-top: 40px;
+        text-align: center;
+        max-width: 650px;
+        box-shadow: 0 0 5px #808080;
     }
 </style>
 
@@ -141,74 +47,76 @@
 
 <div class="container">
     <div class="row">
-        <h2>Новости союза</h2>
-        <div class="col-lg-8 newsblock">
-            @if (Model.IndexViewModel.News.Count() > 0)
-            {
-                @foreach (var i in Model.IndexViewModel.News)
+        <div class="col-lg-10 col-lg-offset-1 ">
+            <h2>Новости союза</h2>
+            <div class="col-lg-8 newsblock">
+                @if (Model.IndexViewModel.News.Count() > 0)
                 {
-                    <br />
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <a href='@Url.Action("ShowNews", "News", new { id = i.Id }, null)'><img style="margin-bottom:10px;" src="@Model.ImagesLst.Where(e => e.Id == i.Image_Id).FirstOrDefault().ImagePath" /></a>
-                            <div class="clear"></div>
-                            <a href='@Url.Action("ShowNews", "News", new { id = i.Id }, null)' class="title">@i.Title</a>
-                            <br />
-                            @if (User.IsInRole("Administrator"))
-                            {
-                                <a class="btn btn-default" href='@Url.Action("DeleteNews", "News", new { id = @i.Id }, null)'>Удалить новость</a>
-                            }
-                        </div>
-                    </div>
-                    <br />
-                    <hr />
-                }
-            }
-            @if (Model.IndexViewModel.NewsPageInfo.HasPreviousPage)
-            {
-                <a asp-action="News"
-                   asp-route-page="@(Model.IndexViewModel.NewsPageInfo.PageNumber - 1)"
-                   class="btn btn-default btn">
-                    <i class="glyphicon glyphicon-chevron-left"></i>
-                </a>
-            }
-            @if (Model.IndexViewModel.NewsPageInfo.HasNextPage)
-            {
-                <a asp-action="News"
-                   asp-route-page="@(Model.IndexViewModel.NewsPageInfo.PageNumber + 1)"
-                   class="btn btn-default btn">
-                    <i class="glyphicon glyphicon-chevron-right"></i>
-                </a>
-            }
-        </div>
-
-        <div class="col-lg-4">
-            @if (User.IsInRole("Administrator"))
-            {
-                <h3>Создать новость</h3>
-                <br />
-                <form name="UploadF" method="post" enctype="multipart/form-data" asp-controller="News" asp-action="PostImage">
-                    <div class="form-group">
+                    @foreach (var i in Model.IndexViewModel.News)
+                    {
                         <br />
-                        <input type='file' name="file" multiple onchange="readURL(this);" required/>
-                        <img id="preview" src="http://www.adbazar.pk/frontend/images/default-image.jpg" alt="your image" />
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <a href='@Url.Action("ShowNews", "News", new { id = i.Id }, null)'><img style="margin-bottom:10px;" src="@Model.ImagesLst.Where(e => e.Id == i.Image_Id).FirstOrDefault().ImagePath" /></a>
+                                <div class="clear"></div>
+                                <a href='@Url.Action("ShowNews", "News", new { id = i.Id }, null)' class="title">@i.Title</a>
+                                <br />
+                                @if (User.IsInRole("Administrator"))
+                                {
+                                    <a class="btn btn-default" href='@Url.Action("DeleteNews", "News", new { id = @i.Id }, null)'>Удалить новость</a>
+                                }
+                            </div>
+                        </div>
+                        <br />
+                        <hr />
+                    }
+                }
+                @if (Model.IndexViewModel.NewsPageInfo.HasPreviousPage)
+                {
+                    <a asp-action="News"
+                       asp-route-page="@(Model.IndexViewModel.NewsPageInfo.PageNumber - 1)"
+                       class="btn btn-default btn">
+                        <i class="glyphicon glyphicon-chevron-left"></i>
+                    </a>
+                }
+                @if (Model.IndexViewModel.NewsPageInfo.HasNextPage)
+                {
+                    <a asp-action="News"
+                       asp-route-page="@(Model.IndexViewModel.NewsPageInfo.PageNumber + 1)"
+                       class="btn btn-default btn">
+                        <i class="glyphicon glyphicon-chevron-right"></i>
+                    </a>
+                }
+            </div>
+
+            <div class="col-lg-4">
+                @if (User.IsInRole("Administrator"))
+                {
+                    <h3>Создать новость</h3>
+                    <br />
+                    <form name="UploadF" method="post" enctype="multipart/form-data" asp-controller="News" asp-action="PostImage">
+                        <div class="form-group">
+                            <br />
+                            <input type='file' name="file" multiple onchange="readURL(this);" required />
+                            <img id="preview" src="http://www.adbazar.pk/frontend/images/default-image.jpg" alt="your image" />
+                            <div></div>
+                            <hr>
+                        </div>
+                        <input type="submit" value="загрузить изображение" />
+                    </form>
+
+                    <div class="form-group">
+                        <label for="title">Заголовок</label>
+                        <textarea cols="30" rows="10" class="form-control text-area-title" name="Title" id="title" required></textarea>
                         <div></div>
                         <hr>
+                        <label for="article">Новость</label>
+                        <textarea cols="30" rows="10" class="form-control text-area-article" id="MCE" name="Text" required></textarea>
+                        <div></div>
                     </div>
-                    <input type="submit" value="загрузить изображение" />
-                </form>
-
-                <div class="form-group">
-                    <label for="title">Заголовок</label>
-                    <textarea cols="30" rows="10" class="form-control text-area-title" name="Title" id="title" required></textarea>
-                    <div></div>
-                    <hr>
-                    <label for="article">Новость</label>
-                    <textarea cols="30" rows="10" class="form-control text-area-article" id="MCE" name="Text" required></textarea>
-                    <div></div>
-                </div>
-                <input type="submit" id="submit-btn" value="Опубликовать новость" />
-            }
+                    <input type="submit" id="submit-btn" value="Опубликовать новость" />
+                }
+            </div>
         </div>
     </div>
 </div>
@@ -236,7 +144,7 @@
                 input.setAttribute('name', 'files');
                 input.onchange = function () {
                     var file = this.files[0];
-        
+
                     var reader = new FileReader();
 
                     reader.onload = function () {

@@ -2,9 +2,10 @@
 @{
     ViewData["Title"] = "Index";
 }
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 <style>
     body {
-        font-family: Tahoma;
+        font-family: 'Roboto', sans-serif;
         margin: 0% auto !important;
         padding: 0% !important;
         background: none;
@@ -51,7 +52,7 @@
 
     .modalDialog, .modalDialog2 {
         position: fixed;
-        font-family: Arial, Helvetica, sans-serif;
+        font-family: 'Roboto', sans-serif;
         top: 0;
         right: 0;
         bottom: 0;
@@ -235,47 +236,49 @@
 
 <div class="container">
     <div class="row">
-        <h2>О союзе</h2>
-        @if (User.IsInRole("Administrator"))
-        {
-            <form name="UploadInfo" method="post" enctype="multipart/form-data" asp-controller="AboutUnion" asp-action="Info">
+        <div class="col-lg-10 col-lg-offset-1 ">
+            <h2>О союзе</h2>
+            @if (User.IsInRole("Administrator"))
+            {
+                <form name="UploadInfo" method="post" enctype="multipart/form-data" asp-controller="AboutUnion" asp-action="Info">
 
-                <div class="form-group">
-                    <br />
-                    <label for="article">Правозащитный союз Украины - </label>
-                    <textarea cols="30" rows="10" class="form-control text-area-article" id="MCE" name="HRU" required></textarea>
-                    <label for="article">Миссия союза</label>
-                    <textarea cols="30" rows="10" class="form-control text-area-article" id="MISSION" name="Mission" required></textarea>
-                    <label for="uploads">Цели и задачи</label>
-                    <textarea cols="30" rows="10" class="form-control text-area-article" id="GOALS" name="Goals" required></textarea>
-                    <div></div>
-                    <hr>
-                </div>
-                <input type="submit" value="Опубликовать" />
-            </form>
-            <br />
-            <br />
-            <h2>
-                Состав Союза и Партнеры
-            </h2>
-            <form name="UploadTeamMember" method="post" enctype="multipart/form-data" asp-controller="AboutUnion" asp-action="PostTeamMember">
-                <div class="form-group col-lg-3">
-                    <label>фото</label><br />
-                    <img id="preview2" src="http://www.adbazar.pk/frontend/images/default-image.jpg" alt="your image" />
-                    <input type='file' name="uploads" multiple onchange="readURL2(this);" />
-                </div>
-                <div class="form-group col-lg-8">
-                    <label>описание</label>
-                    <input type="text" name="Name" />
-                    <label>описание</label>
-                    <textarea cols="30" rows="10" class="form-control text-area-article" id="CREW" name="Text" required></textarea>
+                    <div class="form-group">
+                        <br />
+                        <label for="article">Правозащитный союз Украины - </label>
+                        <textarea cols="30" rows="10" class="form-control text-area-article" id="MCE" name="HRU" required></textarea>
+                        <label for="article">Миссия союза</label>
+                        <textarea cols="30" rows="10" class="form-control text-area-article" id="MISSION" name="Mission" required></textarea>
+                        <label for="uploads">Цели и задачи</label>
+                        <textarea cols="30" rows="10" class="form-control text-area-article" id="GOALS" name="Goals" required></textarea>
+                        <div></div>
+                        <hr>
+                    </div>
                     <input type="submit" value="Опубликовать" />
-                </div>
-                <div class="clear"></div>
-                <hr>
-            </form>
-        }
+                </form>
+                <br />
+                <br />
+                <h2>
+                    Состав Союза и Партнеры
+                </h2>
+                <form name="UploadTeamMember" method="post" enctype="multipart/form-data" asp-controller="AboutUnion" asp-action="PostTeamMember">
+                    <div class="form-group col-lg-3">
+                        <label>фото</label><br />
+                        <img id="preview2" src="http://www.adbazar.pk/frontend/images/default-image.jpg" alt="your image" />
+                        <input type='file' name="uploads" multiple onchange="readURL2(this);" />
+                    </div>
+                    <div class="form-group col-lg-8">
+                        <label>описание</label>
+                        <input type="text" name="Name" />
+                        <label>описание</label>
+                        <textarea cols="30" rows="10" class="form-control text-area-article" id="CREW" name="Text" required></textarea>
+                        <input type="submit" value="Опубликовать" />
+                    </div>
+                    <div class="clear"></div>
+                    <hr>
+                </form>
+            }
 
+        </div>
     </div>
 </div>
 @section Scripts{

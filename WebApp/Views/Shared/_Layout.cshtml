@@ -3,104 +3,24 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="~/css/style.css" rel="stylesheet" />
-    <link href="~/css/site.css" rel="stylesheet" />
     <link href="~/css/normalize.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <title>Правозахисна спілка України</title>
-    <style type="text/css">
-
-        a:hover {
-            text-decoration: none;
-        }
-
-        .row {
-            margin: 0% auto !important;
-            padding: 0% !important;
-        }
-
-        .container {
-            margin: 0% auto !important;
-            padding: 0% !important;
-        }
-
-        .container-fluid {
-            margin: 0% auto !important;
-            padding: 0% !important;
-        }
-
-        body {
-            margin: 0% auto !important;
-            padding: 0% !important;
-            background: none;
-            font-family: 'Roboto', sans-serif;
-        }
-
-        .clear {
-            clear: both;
-        }
-
-        .myNavbar-stripe {
-            background-color: #e6e6e6;
-            height: 1px;
-        }
-
-        footer {
-            background-color: rgb(238, 238, 239);
-            margin-top: 5px;
-            font-family: 'Roboto', sans-serif;
-        }
-
-        .myBrand-header {
-            background: rgb(23, 175, 240);
-            height: 85px;
-        }
-
-        .navbar {
-            border-radius: 0px;
-            border-style: none;
-            font-weight: 500;
-            font-family: 'Roboto', sans-serif;
-            font-size: 22px;
-            background-color: rgb(23, 175, 240);
-            text-align: center;
-            letter-spacing: 2px;
-        }
-
-        .navbar-nav > li > a:hover {
-            color: white !important;
-        }
-
-        .myBrand {
-            font-size: 21px;
-        }
-
-        .center {
-            display: flex;
-            align-items: center;
-        }
-
-        .nav-li {
-            color: #e6e6e6 !important;
-            height: 53px;
-            margin-top: 8px;
-        }
-        .foot {
-            margin-top: 10px;
-            font-size: 24px;
-            font-weight: 500;
-            text-transform: uppercase;
-            text-decoration: none;
-            margin-bottom: 40px;
-        }
-        .nav-li-foot{
-            color:#9f9f9f;
-        }
-    </style>
+    <link href="~/css/layout.css" rel="stylesheet" />
 </head>
 <body>
-    <div class="myBrand-header"></div>
+    <div class="myBrand-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 col-lg-offset-1">
+
+                    <a asp-controller="Home" asp-action="Index"><img class="brand" src="~/images/brand.png" /></a>
+
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="myNavbar-stripe"></div>
     <nav class="nav navbar navbar-inverse">
         <div class="navbar-header">
@@ -113,30 +33,36 @@
         </div>
         <div class="container">
             <div class="row">
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav" style="margin-left:31px;">
-                        <li><a class="nav-li" asp-controller="Home" asp-action="Index"><img style="margin-top:-30%; width:54px;height:49px;" src="~/images/navLogo.png" /></a></li>
+                <div class="col-lg-10 col-lg-offset-1">
 
-                        <li><a class="nav-li" asp-controller="News" asp-action="News">НОВОСТИ</a></li>
-                        <li><a class="nav-li" asp-controller="Projects" asp-action="Index">ПРОЕКТЫ</a></li>
-                        <li><a class="nav-li" asp-controller="Video" asp-action="Index">ВИДЕО</a></li>
-                        <li><a class="nav-li" asp-controller="AboutUnion" asp-action="Index">О СОЮЗЕ</a></li>
-                        <li><a class="nav-li" asp-controller="Media" asp-action="Index">СМИ О НАС</a></li>
-                        <li><a class="nav-li" asp-controller="Contacts" asp-action="Index">КОНТАКТЫ</a></li>
+                    <div class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav center">
+                            <li><a class="nav-li" asp-controller="News" asp-action="News">НОВОСТИ</a></li>
+                            <li><a class="nav-li" asp-controller="Projects" asp-action="Index">ПРОЕКТЫ</a></li>
+                            <li><a class="nav-li" asp-controller="Video" asp-action="Index">ВИДЕО</a></li>
+                            <li><a class="nav-li" asp-controller="AboutUnion" asp-action="Index">О СОЮЗЕ</a></li>
+                            <li><a class="nav-li" asp-controller="Media" asp-action="Index">СМИ О НАС</a></li>
+                            <li><a class="nav-li" asp-controller="Contacts" asp-action="Index">КОНТАКТЫ</a></li>
+
+                        </ul>
+
+                    </div>
+                    <div>
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <li>@Html.ActionLink(@User.Identity.Name, "Index", "User")</li>
+                            <div class="col-lg-3">@User.Identity.Name</div>
 
-                            <li>
+                            <div class="col-lg-2">
                                 <form asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm">
-                                    <button type="submit" style="" class="btn btn-link navbar-btn navbar-link deff ">
+                                    <button style="margin:0%; font-size:16px; color:black;" type="submit" class="btn btn-link navbar-btn navbar-link deff ">
                                         Выйти
                                     </button>
                                 </form>
-                            </li>
+                            </div>
                         }
-                    </ul>
+                    </div>
                 </div>
+
             </div>
         </div>
     </nav>
@@ -146,27 +72,29 @@
     <footer>
         <div class="container">
             <div class="row">
-                <div class="foot col-lg-3">
-                    <a class="nav-li" asp-controller="Home" asp-action="Index">
-                        <img style="width:260px;" src="~/images/Logo.jpg" />
-                    </a>
-                </div>
-                <div class="foot col-lg-3">
-                    <a class="nav-li-foot" asp-controller="News" asp-action="News">НОВОСТИ</a>
-                    <div></div>
-                    <a class="nav-li-foot" asp-controller="Projects" asp-action="Index">ПРОЕКТЫ</a>
-                    <div></div>
-                    <a class="nav-li-foot" asp-controller="Video" asp-action="Index">ВИДЕО</a>
-                    <div></div>
-                    <a class="nav-li-foot" asp-controller="AboutUnion" asp-action="Index">О СОЮЗЕ</a>
-                    <div></div>
-                    <a class="nav-li-foot" asp-controller="Media" asp-action="Index">СМИ О НАС</a>
-                    <div></div>
-                    <a class="nav-li-foot" asp-controller="Contacts" asp-action="Index">КОНТАКТЫ</a>
-                </div>
-                <div class="clear"></div>
-                <div>© 2018 Все права защищены</div>
+                <div class="col-lg-10 col-lg-offset-1">
+                    <div class="foot col-lg-4">
+                        <a class="nav-li" asp-controller="Home" asp-action="Index">
+                            <img style="width:260px;" src="~/images/Logo.jpg" />
+                        </a>
+                    </div>
+                    <div class="foot col-lg-3">
+                        <a class="nav-li-foot" asp-controller="News" asp-action="News">НОВОСТИ</a>
+                        <div></div>
+                        <a class="nav-li-foot" asp-controller="Projects" asp-action="Index">ПРОЕКТЫ</a>
+                        <div></div>
+                        <a class="nav-li-foot" asp-controller="Video" asp-action="Index">ВИДЕО</a>
+                        <div></div>
+                        <a class="nav-li-foot" asp-controller="AboutUnion" asp-action="Index">О СОЮЗЕ</a>
+                        <div></div>
+                        <a class="nav-li-foot" asp-controller="Media" asp-action="Index">СМИ О НАС</a>
+                        <div></div>
+                        <a class="nav-li-foot" asp-controller="Contacts" asp-action="Index">КОНТАКТЫ</a>
+                    </div>
+                    <div class="clear"></div>
+                    <div>© 2018 Все права защищены</div>
 
+                </div>
             </div>
         </div>
 

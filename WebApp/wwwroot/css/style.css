@@ -1,6 +1,3 @@
-﻿@font-face {
-    font-family: Roboto Condensed;
-    src: url(~/fonts/3959.ttf);
-    src: url(~/fonts/RobotoCondensed-Regular.ttf);
-    src: url(~/fonts/RobotoCondensed-Light.ttf);
-}
+﻿
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,500);
+@import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css);
