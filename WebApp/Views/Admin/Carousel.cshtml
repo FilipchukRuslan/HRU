@@ -1,0 +1,178 @@
+﻿
+@{
+    ViewData["Title"] = "Carousel";
+}
+
+<style>
+    #preview {
+        max-height: 150px;
+        min-height: 150px;
+        max-width: 220px;
+        min-width: 220px;
+    }
+    #preview2 {
+        max-height: 150px;
+        min-height: 150px;
+        max-width: 220px;
+        min-width: 220px;
+    }
+
+</style>
+
+@if (User.IsInRole("Administrator"))
+{
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 col-lg-offset-1 ">
+                <h3>Загрузка изображений для слайдера</h3>
+                <form name="uploadCarousel" method="post" enctype="multipart/form-data" asp-controller="Admin" asp-action="PostCarousel">
+                    <div class="row">
+                        <div class="col-lg-4 form-group">
+                            <br />
+                            <br />
+                            <img id="preview" src="http://www.adbazar.pk/frontend/images/default-image.jpg" alt="your image" />
+                            <input type='file' name="uploads" multiple onchange="readURL(this);" required />
+                        </div>
+                        <div class="col-lg-2 form-group">
+                            <br />
+                            <br />
+                            <img id="preview2" src="https://st.depositphotos.com/1003595/1334/i/950/depositphotos_13349036-stock-photo-pixel-backgound.jpg" alt="your image" />
+                            <input type='file' name="uploads" multiple onchange="readURL2(this);" required />
+                        </div>
+                    </div>
+                    <br />
+                    <br />
+                    <input class="btn btn-danger" name="Carousel" type="submit" value="Загрузить изображения" />
+                    <hr>
+                    <br />
+                </form>
+                <div>
+                    <label>Заголовок</label>
+                    <textarea cols="30" rows="4" class="form-control text-area-text" id="title" required></textarea>
+                    <div></div>
+                </div>
+
+                <div>
+                    <label for="text">Текст</label>
+                    <textarea cols="30" rows="10" class="form-control text-area-text" id="MCE" required></textarea>
+                    <div></div>
+                </div>
+                <br />
+
+                <div>
+                    <label>номер слайда</label>
+                    <input id="num" type="number" size="3" name="num" min="1" max="3" value="1" />
+                </div>
+                <br />
+                <input type="submit" id="submit-btn" value="Загрузить слайд" />
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts{
+
+    <script>
+        tinymce.init({
+            selector: '#MCE',
+            plugins: [
+                'advlist autolink list link image charmap print preview hr anchor pagebreak',
+                'searchreplace wordcount visualblocks visualchars code fullscreen',
+                'insertdatetime media nonbreaking save table contextmenu directionality',
+                'emoticons template paste textcolor colorpicker textpattern imagetools image'
+            ],
+            toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image" | "image",
+            toolbar2: 'print preview media | forecolor backcolor emotions | code',
+            image_title: true,
+            automatic_uploads: true,
+            file_picker_types: 'image',
+            file_picker_callback: function (cb, value, meta) {
+                var input = document.createElement('input');
+                input.setAttribute('type', 'file');
+                input.setAttribute('accept', 'image/*');
+                input.setAttribute('name', 'files');
+                input.onchange = function () {
+                    var file = this.files[0];
+
+                    var reader = new FileReader();
+
+                    reader.onload = function () {
+                        var dataUrl = reader.result;
+                        var base64 = dataUrl.split(',')[1];
+                        var id = 'blobid' + (new Date()).getTime();
+                        var blobCache = tinymce.activeEditor.editorUpload.blobCache;
+                        var blobInfo = blobCache.create(id, file, base64);
+                        blobCache.add(blobInfo);
+                        cb(blobInfo.blobUri(), { title: file.name });
+                    };
+                    reader.readAsDataURL(file);
+                };
+                input.click();
+            }
+        });
+
+
+        $(document).ready(function () {
+            $('iframe').attr('width', '600');
+            $('iframe').attr('height', '350');
+        });
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#preview')
+                        .attr('src', e.target.result)
+                        .width(150)
+                        .height(80);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        function readURL2(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#preview2')
+                        .attr('src', e.target.result)
+                        .width(180)
+                        .height(100);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function readURL3(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#preview3')
+                        .attr('src', e.target.result)
+                        .width(180)
+                        .height(100);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $('#submit-btn').click(function () {
+            var obj = new Object();
+            var num = $("#num").val();
+            var title = $("#title").val();
+            var text = tinymce.activeEditor.getContent();
+            obj.title = title;
+            obj.text = text;
+            obj.num = num;
+            $.ajax({
+                type: "POST",
+                url: "/Admin/PostFormCarousel",
+                data: obj,
+                success: function (data) {
+                    location.reload();
+                }
+            });
+        });
+    </script>
+
+}

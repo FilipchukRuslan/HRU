@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="~/css/normalize.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500" rel="stylesheet">
     <title>Правозахисна спілка України</title>
     <link href="~/css/layout.css" rel="stylesheet" />
 </head>
@@ -47,23 +47,26 @@
                         </ul>
 
                     </div>
-                    <div>
+                    <ul class="nav navbar-nav">
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <div class="col-lg-3">@User.Identity.Name</div>
-
-                            <div class="col-lg-2">
+                            <li><a class="nav-li" asp-controller="Admin" asp-action="Carousel">слайдер</a></li>
+                            <li><a class="nav-li" asp-controller="Admin" asp-action="News">новости</a></li>
+                            <li><a class="nav-li" asp-controller="Admin" asp-action="Projects">проекты</a></li>
+                            <li><a class="nav-li" asp-controller="Admin" asp-action="Video">видео</a></li>
+                            <li><a class="nav-li" asp-controller="Admin" asp-action="AboutUnion">о союзе</a></li>
+                            <li><a class="nav-li" asp-controller="Admin" asp-action="Media">сми о нас</a></li>
+                            <li><a class="nav-li" asp-controller="Admin" asp-action="FaceBook">facebook</a></li>
+                            <li class="nav-li">
                                 <form asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm">
-                                    <button style="margin:0%; font-size:16px; color:black;" type="submit" class="btn btn-link navbar-btn navbar-link deff ">
-                                        Выйти
-                                    </button>
+                                    <input class="navbar-link" type="submit" value="Выйти" />
                                 </form>
-                            </div>
+                            </li>
                         }
-                    </div>
+                    </ul>
                 </div>
-
             </div>
+
         </div>
     </nav>
     <div class="container-fluid">

@@ -49,9 +49,8 @@ footer {
     border-style: none;
     font-weight: 500;
     font-family: 'Roboto', sans-serif;
-    font-size: 22px;
+    font-size: 21px;
     background-color: rgb(23, 175, 240);
-    letter-spacing: 1px;
 }
 
 .navbar-collapse {

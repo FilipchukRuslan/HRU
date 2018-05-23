@@ -111,58 +111,7 @@ namespace WebApp.Controllers
             });
 
         }
-        [HttpPost("UploadF")]
-        public async Task<IActionResult> PostImage(IFormFile file)
-        {
-            var path = "/images/" + file.FileName;
-
-            using (var fileStream = new FileStream(appEnvironment.WebRootPath + path, FileMode.Create))
-            {
-                await file.CopyToAsync(fileStream);
-            }
-
-
-            Image image = new Image() { ImagePath = path };
-
-            imageManager.Insert(image);
-            return RedirectToAction("News");
-        }
-
-        [HttpPost("UploadFromTextArea")]
-        public async Task<IActionResult> PostImages(List<IFormFile> files)
-        {
-            foreach (var file in files)
-            {
-                var path = "/images/" + file.FileName;
-
-                using (var fileStream = new FileStream(appEnvironment.WebRootPath + path, FileMode.Create))
-                {
-                    await file.CopyToAsync(fileStream);
-                }
-                Image image = new Image() { ImagePath = path };
-
-                imageManager.Insert(image);
-            }
-            return RedirectToAction("News");
-        }
-
-        public IActionResult PostForm(FormModelClass formModelClass)
-        {
-            var imageId = imageManager.Get().LastOrDefault().Id;
-            News news = new News()
-            {
-                Text = formModelClass.text,
-                Title = formModelClass.title,
-                Image_Id = imageId,
-                Day = DateTime.Today.Day,
-                Month = Enum.GetName(typeof(MonthEnum), DateTime.Today.Month - 1),
-                Year = DateTime.Today.Year
-            };
-
-            newsManager.Insert(news);
-            return RedirectToAction("News");
-
-        }
+        
         public IActionResult ShowNews(int id)
         {
             var article = newsManager.Get().Where(e => e.Id == id).FirstOrDefault();

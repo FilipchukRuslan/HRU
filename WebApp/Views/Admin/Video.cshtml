@@ -1,0 +1,63 @@
+﻿
+@{
+    ViewData["Title"] = "ADMIN";
+}
+
+<div class="container">
+    @if (User.IsInRole("Administrator"))
+    {
+        <form name="UploadVideo" method="post" asp-controller="Admin" asp-action="PostVideo">
+
+            <div class="form-group">
+                <label for="Video">Видео</label>
+                <textarea cols="30" rows="10" class="form-control text-area-text" name="Video" required></textarea>
+                <div></div>
+
+                <label for="Text">Текст</label>
+                <textarea cols="30" rows="10" class="form-control text-area-text" name="Text" required></textarea>
+                <div></div>
+            </div>
+            <input type="submit" value="Опубликовать" />
+        </form>
+    }
+</div>
+
+@section Scripts{
+
+    <script>
+        tinymce.init({ selector: '#MCE' });
+
+        $(document).ready(function () {
+            $('iframe').attr('width', '580');
+            $('iframe').attr('height', '320');
+        });
+
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#preview')
+                        .attr('src', e.target.result)
+                        .width(180)
+                        .height(100);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        function readURL2(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#preview2')
+                        .attr('src', e.target.result)
+                        .width(180)
+                        .height(100);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+
+}
+

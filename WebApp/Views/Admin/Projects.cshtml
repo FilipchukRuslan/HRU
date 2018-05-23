@@ -1,0 +1,192 @@
+﻿
+@{
+    ViewData["Title"] = "ADMIN";
+}
+<style>
+    body {
+        margin: 0% auto !important;
+        padding: 0% !important;
+        background: none;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    #preview {
+        max-height: 150px;
+        min-height: 150px;
+        max-width: 220px;
+        min-width: 220px;
+    }
+
+    #preview2 {
+        max-height: 150px;
+        min-height: 150px;
+        max-width: 220px;
+        min-width: 220px;
+    }
+
+    li {
+        list-style-type: none;
+    }
+
+    .date {
+        color: #414141;
+        font-size: 16px;
+    }
+
+    hr {
+        margin-top: 30px;
+        margin-bottom: 0%;
+        border: 1.5px solid #eeeeef;
+    }
+
+    .stripe {
+        width: 33%;
+        height: 30px;
+        background-color: rgba(41, 79, 209, 0.70);
+        float: left;
+        margin-right: 80px;
+        margin-bottom: 30px;
+        color: rgb(255, 255, 255);
+        font-size: 20px;
+        text-align: right;
+        font-weight: 500;
+        letter-spacing: 3px;
+    }
+
+    .decorator {
+        width: 35%;
+        height: 30px;
+        border-top: 30px solid rgb(41, 79, 209);
+        border-right: 15px solid transparent;
+    }
+
+    .container-fluid {
+        margin: 0% auto;
+        padding: 0%;
+    }
+
+    img {
+        background-size: cover;
+    }
+
+    .clear {
+        clear: both;
+    }
+
+    .projImg {
+        width: 270px;
+        height: 200px;
+    }
+
+    .projects {
+        height: 400px;
+        overflow: hidden;
+        font-size: 18px;
+        font-family: 'Roboto', sans-serif;
+        padding-top: 40px;
+        text-align: center;
+    }
+
+    .backGr {
+        box-shadow: 0 0 5px #808080;
+        background: rgb(245, 246, 247);
+    }
+
+    #proj-text {
+        margin-top: 13px;
+        cursor: pointer;
+    }
+
+        #proj-text:hover {
+        }
+</style>
+<div class="container">
+    <form name="UploadProjects" method="post" enctype="multipart/form-data" asp-controller="Admin" asp-action="Post">
+        <br />
+        <label for="file">фото</label>
+        <input type='file' name="file" multiple onchange="readURL2(this);" required />
+        <img id="preview2" src="http://www.adbazar.pk/frontend/images/default-image.jpg" alt="your image" />
+        <div></div>
+        <input type="submit" class="btn btn-danger" value="Опубликовать" />
+    </form>
+    <hr />
+    <br />
+    <form name="UploadProjectsText" method="post" enctype="multipart/form-data" asp-controller="Admin" asp-action="PostText">
+        <div class="form-group">
+            <label for="Title">Заголовок</label><br />
+            <textarea cols="30" rows="5" name="Title"></textarea><br />
+            <label for="Text">Текст</label><br />
+            <textarea name="Text" id="MCE"></textarea>
+        </div>
+        <input type="submit" class="btn btn-default" value="Опубликовать" />
+    </form>
+</div>
+@section Scripts{
+
+    <script>
+        tinymce.init({
+            selector: '#MCE, #MISSION, #GOALS, #CREW',
+            plugins: [
+                'advlist autolink list link image charmap print preview hr anchor pagebreak',
+                'searchreplace wordcount visualblocks visualchars code fullscreen',
+                'insertdatetime media nonbreaking save table contextmenu directionality',
+                'emoticons template paste textcolor colorpicker textpattern imagetools image'
+            ],
+            toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image" | "image",
+            toolbar2: 'print preview media | forecolor backcolor emotions | code',
+            image_title: true,
+            automatic_uploads: true,
+            file_picker_types: 'image',
+            file_picker_callback: function (cb, value, meta) {
+                var input = document.createElement('input');
+                input.setAttribute('type', 'file');
+                input.setAttribute('accept', 'image/*');
+                input.setAttribute('name', 'files');
+                input.onchange = function () {
+                    var file = this.files[0];
+
+                    var reader = new FileReader();
+
+                    reader.onload = function () {
+                        var dataUrl = reader.result;
+                        var base64 = dataUrl.split(',')[1];
+                        var id = 'blobid' + (new Date()).getTime();
+                        var blobCache = tinymce.activeEditor.editorUpload.blobCache;
+                        var blobInfo = blobCache.create(id, file, base64);
+                        blobCache.add(blobInfo);
+                        cb(blobInfo.blobUri(), { title: file.name });
+                    };
+                    reader.readAsDataURL(file);
+                };
+                input.click();
+            }
+        });
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#preview')
+                        .attr('src', e.target.result)
+                        .width(180)
+                        .height(100);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        function readURL2(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#preview2')
+                        .attr('src', e.target.result)
+                        .width(180)
+                        .height(100);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+    </script>
+
+}

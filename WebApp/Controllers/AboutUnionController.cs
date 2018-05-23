@@ -70,39 +70,7 @@ namespace WebApp.Controllers
             
         }
 
-        [HttpPost("UploadTeamMember")]
-        public async Task<IActionResult> PostTeamMember(IFormFile uploads, string Text, string Name)
-        {
-            string path1 = "/images/" + uploads.FileName;
-            if (path1 == null)
-                path1 = "";
 
-            using (var fileStream = new FileStream(appEnvironment.WebRootPath + path1, FileMode.Create))
-            {
-                await uploads.CopyToAsync(fileStream);
-            }
-            Image image = new Image() { ImagePath = path1 };
-
-            imageManager.Insert(image);
-
-            partnersManager.Insert(new Partners() {
-                Image_Id = image.Id,
-                ParnerName = Name,
-                ParnerAbout = Text
-            });
-            
-            return RedirectToAction("Index");
-        }
-
-        [HttpPost("UploadInfo")]
-        public IActionResult Info(string HRU, string Mission, string Goals)
-        {
-            aboutUnionManager.Insert(new AboutUnion() {
-                Mission = Mission,
-                Union = HRU,
-                Goals = Goals
-            });
-            return RedirectToAction("Index");
-        }
+        
     }
 }

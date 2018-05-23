@@ -2,14 +2,14 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500" rel="stylesheet">
 <link href="~/css/site.css" rel="stylesheet" />
 <style>
     body {
         margin: 0% auto !important;
         padding: 0% !important;
         font-family: 'Roboto', sans-serif;
-        font-size: 18px;
+        font-size: 16px;
         color: #161A1E;
     }
 
@@ -67,9 +67,8 @@
             background: -webkit-linear-gradient(#fff, #999);
             background: -o-linear-gradient(#fff, #999);
         }
-    label{
-        font-weight:500;
-    }
+
+
     .close, .close2, .close3 {
         background: #ff0000;
         color: #fff;
@@ -134,10 +133,17 @@
         font-family: 'Roboto', sans-serif;
     }
 
+    .fbdate {
+        color: #999;
+        font-weight: 300;
+        font-size: 14px;
+        display: inline;
+    }
+
     .date {
         color: #999;
-        font-weight: 200;
-        font-size: 14px;
+        font-weight: 300;
+        font-size: 15px;
     }
 
     hr {
@@ -148,13 +154,14 @@
 
     .stripe {
         width: 33%;
-        height: 30px;
+        height: 27px;
         background-color: rgb(23, 175, 240);
         float: left;
         margin-right: 80px;
-        margin-bottom: 30px;
+        margin-bottom: 20px;
+        padding-top: 2px;
         color: rgb(255, 255, 255);
-        font-size: 20px;
+        font-size: 18px;
         text-align: right;
         font-weight: 500;
         letter-spacing: 3px;
@@ -163,7 +170,7 @@
 
     .decorator {
         width: 35%;
-        height: 30px;
+        height: 27px;
         border-top: 30px solid rgb(23, 175, 240);
         border-right: 15px solid transparent;
     }
@@ -191,7 +198,7 @@
 
     .newsBlock {
         margin-bottom: 23px;
-        font-size: 18px;
+        font-size: 16px;
     }
 
     .myslider {
@@ -220,15 +227,27 @@
     }
 
     .faceBook {
-        background: rgb(245, 246, 247);
+        padding-top:5px;
+        padding-left:3px;
+        background: rgb(250, 252, 255);
         border: 1px solid rgba(164, 164, 164, 0.33);
-        font-size: 18px;
-        font-weight:300 !important;
+        font-size: 16px;
+        overflow: hidden;
+        font-weight:300;
+        font-family: 'Roboto', sans-serif;
+        line-height:110%;
     }
 
     .post {
-        font-size: 18px;
+        font-size: 16px;
         color: #424242;
+        font-weight: 300;
+        padding: 5px;
+        max-height: 180px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: start;
+        white-space: normal;
     }
 
     .profile {
@@ -239,22 +258,24 @@
         border-radius: 50px;
     }
 
+    .photo {
+        float: left;
+        margin-right: 5px;
+    }
+
     .icon {
-        max-height: 25px;
-        min-height: 25px;
-        max-width: 25px;
-        min-width: 25px;
+        max-height: 20px;
+        min-height: 20px;
+        max-width: 20px;
+        min-width: 20px;
+        margin-left: 5px;
     }
 
     .fbName {
-        font-size: 18px;
+        font-size: 16px;
+        font-weight:500;
         color: black;
-    }
-
-    .icon-div {
-        float: left;
-        margin-right: 12px;
-        margin-top: 10px;
+        display: inline;
     }
 
     .blackWraping {
@@ -265,7 +286,7 @@
         text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4);
         line-height: 33px;
         color: #FEFEFE;
-        font-size: 20px;
+        font-size: 18px;
         font-weight: 500;
         z-index: 3;
         background: rgba(0,0,0,.5);
@@ -341,16 +362,16 @@
     .projects {
         height: 400px;
         overflow: hidden;
-        font-size: 17px;
+        font-size: 16px;
     }
 
     .videoBlock {
-        background: rgb(245, 246, 247);
+        background: rgb(250, 252, 255);
     }
 
     .video-el {
         margin-top: 30px;
-        font-size: 18px;
+        font-size: 16px;
     }
 
     .center-el {
@@ -514,68 +535,6 @@
         </div>
     </div>
 </div>
-
-
-
-@if (User.IsInRole("Administrator"))
-{
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-10 col-lg-offset-1 ">
-                <h3>Загрузка изображений для слайдера</h3>
-                <form name="uploadCarousel" method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="PostCarousel">
-                    <div class="row">
-                        <div class="col-lg-4 form-group">
-                            <br />
-                            <br />
-                            <img id="preview" src="http://www.adbazar.pk/frontend/images/default-image.jpg" alt="your image" />
-                            <input type='file' name="uploads" multiple onchange="readURL(this);" required />
-
-                        </div>
-                        <div class="col-lg-2 form-group">
-                            <br />
-                            <br />
-                            <img id="preview2" src="http://www.adbazar.pk/frontend/images/default-image.jpg" alt="your image" />
-                            <input type='file' name="uploads" multiple onchange="readURL2(this);" required />
-
-
-                        </div>
-
-
-                    </div>
-                    <br />
-                    <br />
-                    <input class="btn btn-danger" name="Carousel" type="submit" value="Загрузить изображения" />
-                    <hr>
-                    <br />
-
-                </form>
-
-
-                <div>
-                    <label>Заголовок</label>
-                    <textarea cols="30" rows="4" class="form-control text-area-text" id="title" required></textarea>
-                    <div></div>
-                </div>
-
-                <div>
-                    <label for="text">Текст</label>
-                    <textarea cols="30" rows="10" class="form-control text-area-text" id="MCE" required></textarea>
-                    <div></div>
-                </div>
-                <br />
-
-                <div>
-                    <label>номер слайда</label>
-                    <input id="num" type="number" size="3" name="num" min="1" max="3" value="1" />
-                </div>
-                <br />
-                <input type="submit" id="submit-btn" value="Загрузить слайд" />
-            </div>
-        </div>
-    </div>
-}
-
 <hr>
 <div class="stripe"> НАШИ НОВОСТИ</div>
 <div class="decorator"></div>
@@ -583,84 +542,51 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-10 col-lg-offset-1 ">
-            <div class="row">
-                <div class="col-lg-6">
-                    <p class="last-news">Последние новости:</p>
-                    @foreach (var news in Model.NewsLst)
-                    {
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <a href='@Url.Action("ShowNews", "News", new { id = news.Id }, null)' class="newsBlock">@news.Title</a>
-                                <p class="date">@news.Day @news.Month @news.Year</p>
+            <div class="col-lg-6">
+                <h3>Последние новости:</h3>
+                @foreach (var news in Model.NewsLst)
+                {
+                    <div class="row">
+                        <a href='@Url.Action("ShowNews", "News", new { id = news.Id }, null)' class="newsBlock">@news.Title</a>
+                        <p class="date">@news.Day @news.Month @news.Year</p>
+                    </div>
+                    <br />
+
+
+                }
+
+            </div>
+            <div class="col-lg-6">
+                <h3>Новости из соцсетей:</h3>
+                @foreach (var face in Model.FaceBookLst)
+                {
+                    <div>
+                        <div class="photo">
+                            <img class="profile" src="@Model.ImagesLst.Where(e=>e.Id==face.Image_Id).FirstOrDefault().ImagePath" />
+
+                        </div>
+                        <div class="faceBook">
+                            <a class="fbName" href="@face.PersonLink" target="_blank">
+                                <img class="icon" src="https://cdn.techinasia.com/wp-content/uploads/2009/07/button-facebook.png" />
+                                <p class="fbName">
+                                    @face.PersonName
+                                </p>
+                                <p class="fbdate">
+                                    @face.Date
+                                </p>
+                            </a>
+                            <div class="clear"></div>
+                            <div class="post">
+                                @face.FBPost
                             </div>
                         </div>
-                        <br />
-
-
-                    }
-
-                </div>
-                <div class="col-lg-6">
-                    <p class="last-news">Новости из соцсетей:</p>
-                    @if (User.IsInRole("Administrator"))
-                    {
-                        <form name="UploadFB" enctype="multipart/form-data" method="post" asp-controller="Home" asp-action="PostFB">
-                            <div class="row">
-                                <div class="form-group">
-                                    <br />
-                                    <br />
-                                    <input type='file' name="uploads" multiple onchange="readURL3(this);" required />
-                                    <img id="preview3" src="http://www.adbazar.pk/frontend/images/default-image.jpg" alt="your image" />
-                                </div>
-                                <div class="form-group">
-                                    <label>Имя</label><br />
-                                    <input type="text" name="Person" /><br />
-                                    <label>Ссылка FaceBook</label><br />
-                                    <input type="text" name="PersonLink" />
-                                </div>
-                                <div class="form-group">
-                                    <label for="Text">Статья</label>
-                                    <textarea cols="30" rows="10" class="form-control text-area-text" name="Text" required></textarea>
-                                    <div></div>
-                                </div>
-                                <div class="clear"></div>
-                                <input type="submit" value="Опубликовать" />
-                            </div>
-                        </form>
-                    }
-                    @foreach (var face in Model.FaceBookLst)
-                    {
-                        <div class="row">
-                            <div class="col-lg-3" style="margin:0%; padding:0%">
-                                <img class="profile" src="@Model.ImagesLst.Where(e=>e.Id==face.Image_Id).FirstOrDefault().ImagePath" />
-                                @if (User.IsInRole("Administrator"))
-                                {
-                                    <a class="btn btn-default" href='@Url.Action("DeleteFB", "Home", new { id = @face.Id }, null)'>Удалить пост</a>
-                                }
-                            </div>
-                            <div class="faceBook col-lg-9">
-                                <div class="row">
-                                    <div class="icon-div">
-                                        <img class="icon" src="http://rdsport.com.ua/wp-content/uploads/2017/01/fb-footer.png" />
-                                    </div>
-                                    <div class="icon-div">
-                                        <a class="fbName" href="@face.PersonLink" target="_blank">
-                                            @face.PersonName
-                                        </a>
-                                    </div>
-                                    <div class="icon-div">
-                                        <p class="date">
-                                            @face.Date
-                                        </p>
-                                    </div>
-                                    <div class="clear"></div>
-                                    <p class="post">@face.FBPost</p>
-                                </div>
-                            </div>
-                        </div>
-                        <br />
-                    }
-                </div>
+                        <div class="clear"></div>
+                        @if (User.IsInRole("Administrator"))
+                        {
+                            <a class="btn btn-default" href='@Url.Action("DeleteFB", "Home", new { id = @face.Id }, null)'>Удалить пост</a>
+                        }
+                    </div><br />
+                }
             </div>
         </div>
     </div>
@@ -726,105 +652,11 @@
 @section Scripts{
 
     <script>
-        tinymce.init({
-            selector: '#MCE',
-            plugins: [
-                'advlist autolink list link image charmap print preview hr anchor pagebreak',
-                'searchreplace wordcount visualblocks visualchars code fullscreen',
-                'insertdatetime media nonbreaking save table contextmenu directionality',
-                'emoticons template paste textcolor colorpicker textpattern imagetools image'
-            ],
-            toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image" | "image",
-            toolbar2: 'print preview media | forecolor backcolor emotions | code',
-            image_title: true,
-            automatic_uploads: true,
-            file_picker_types: 'image',
-            file_picker_callback: function (cb, value, meta) {
-                var input = document.createElement('input');
-                input.setAttribute('type', 'file');
-                input.setAttribute('accept', 'image/*');
-                input.setAttribute('name', 'files');
-                input.onchange = function () {
-                    var file = this.files[0];
-
-                    var reader = new FileReader();
-
-                    reader.onload = function () {
-                        var dataUrl = reader.result;
-                        var base64 = dataUrl.split(',')[1];
-                        var id = 'blobid' + (new Date()).getTime();
-                        var blobCache = tinymce.activeEditor.editorUpload.blobCache;
-                        var blobInfo = blobCache.create(id, file, base64);
-                        blobCache.add(blobInfo);
-                        cb(blobInfo.blobUri(), { title: file.name });
-                    };
-                    reader.readAsDataURL(file);
-                };
-                input.click();
-            }
-        });
-
-
         $(document).ready(function () {
             $('iframe').attr('width', '600');
             $('iframe').attr('height', '350');
         });
-
-        function readURL(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    $('#preview')
-                        .attr('src', e.target.result)
-                        .width(150)
-                        .height(80);
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-        function readURL2(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    $('#preview2')
-                        .attr('src', e.target.result)
-                        .width(180)
-                        .height(100);
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        function readURL3(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    $('#preview3')
-                        .attr('src', e.target.result)
-                        .width(180)
-                        .height(100);
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        $('#submit-btn').click(function () {
-            var obj = new Object();
-            var num = $("#num").val();
-            var title = $("#title").val();
-            var text = tinymce.activeEditor.getContent();
-            obj.title = title;
-            obj.text = text;
-            obj.num = num;
-            $.ajax({
-                type: "POST",
-                url: "/Home/PostFormCarousel",
-                data: obj,
-                success: function (data) {
-                    location.reload();
-                }
-            });
-        });
+        
     </script>
 
 }

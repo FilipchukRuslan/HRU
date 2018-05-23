@@ -195,10 +195,11 @@
     }
 
     .video-el {
-        margin-top: 20px;
-        margin-bottom: 10px;
+        margin-top: 30px;
+        margin-bottom: 20px;
         font-size: 18px;
         text-align: center;
+
     }
 
     .center-el {
@@ -214,13 +215,16 @@
     }
 
     .video {
-        width: 600px !important;
-        height: 350px !important;
+        width: 500px !important;
+        height: 320px !important;
+
     }
 
     .backGr {
         box-shadow: 0 0 5px #808080;
         background: rgb(245, 246, 247);
+        text-align: center;
+        
     }
 </style>
 
@@ -229,24 +233,25 @@
     <div class="row">
         <div class="col-lg-10 col-lg-offset-1 ">
             <h2>Видео</h2>
-            <div class="col-lg-11 backGr">
+            <br />
+            <div class="col-lg-9 center-el">
                 <div class="row">
                     <br />
                     @foreach (var vid in Model.IndexViewModel.Videos)
                     {
-                        <div class="col-lg-12 video-el">
-                            @Html.Raw(@vid.VideoFile)
-                            @if (User.IsInRole("Administrator"))
-                            {
-                                <a class="btn btn-default" href='@Url.Action("DeleteVideo", "Video", new { id = @vid.Id }, null)'>Удалить видео</a>
-                            }
-                        </div>
-                        <div class="clear"></div>
-                        <div style="margin-left:40px;" class="col-sm-4 video-el">
+                        <div class="video-el">
                             @vid.Text
                         </div>
-                        <div class="clear"></div>
-                        <hr />
+                        <div class="backGr">
+                            <div class="col-lg-12 video-el">
+                                @Html.Raw(@vid.VideoFile)
+                                @if (User.IsInRole("Administrator"))
+                                {
+                                    <a class="btn btn-default" href='@Url.Action("DeleteVideo", "Video", new { id = @vid.Id }, null)'>Удалить видео</a>
+                                }
+                            </div>
+                            <hr />
+                        </div>
                         <br />
                     }
                     @if (Model.IndexViewModel.VideosPageInfo.HasPreviousPage)
@@ -267,83 +272,19 @@
                     }
                 </div>
             </div>
-            <div class="col-lg-1">
-                @if (User.IsInRole("Administrator"))
-                {
-                    <a href="#openModal2" class="btn btn-default center-el" style="margin-top:20px;">Добавить видео</a>
-                    <div id="openModal2" class="modalDialog2">
-                        <div>
-                            <a href="#close" title="Закрыть" class="close2">X</a>
-                            <form name="UploadVideo" method="post" asp-controller="Video" asp-action="PostVideo">
 
-                                <div class="form-group">
-                                    <label for="Video">Видео</label>
-                                    <textarea cols="30" rows="10" class="form-control text-area-text" name="Video" required></textarea>
-                                    <div></div>
-
-                                    <label for="Text">Текст</label>
-                                    <textarea cols="30" rows="10" class="form-control text-area-text" name="Text" required></textarea>
-                                    <div></div>
-                                </div>
-                                <input type="submit" value="Опубликовать" />
-                            </form>
-                        </div>
-                    </div>
-                }
-            </div>
         </div>
     </div>
 </div>
+
 @section Scripts{
 
     <script>
-        tinymce.init({ selector: '#MCE' });
-
         $(document).ready(function () {
-            $('iframe').attr('width', '690');
-            $('iframe').attr('height', '400');
+            $('iframe').attr('width', '600');
+            $('iframe').attr('height', '350');
         });
 
-
-        function readURL(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    $('#preview')
-                        .attr('src', e.target.result)
-                        .width(180)
-                        .height(100);
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-        function readURL2(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    $('#preview2')
-                        .attr('src', e.target.result)
-                        .width(180)
-                        .height(100);
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        $('.submit-btn').click(function () {
-            alert('новость успешно добавлена');
-            var obj = new Object();
-            obj.
-                $.ajax({
-                    type: "POST",
-                    url: "/AddNews/AddArticle",
-                    data: obj,
-                    success: function (data) {
-                        location.reload();
-                    }
-                });
-        });
     </script>
 
 }
-

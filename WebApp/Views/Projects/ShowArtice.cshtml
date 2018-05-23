@@ -4,34 +4,42 @@
 }
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 <style>
-    img {
-        background-size: contain;
-        background-size: cover;
-        width: 690px;
-        height: 420px;
-    }
     body {
         font-size: 18px;
         font-family: 'Roboto', sans-serif;
     }
+
+    img {
+        background-size: contain;
+        background-size: cover;
+        max-width: 650px;
+        max-height: 450px;
+    }
+
+    .backGr {
+        margin-top: 20px;
+        background: rgb(245, 246, 247);
+        text-align: center;
+        max-width: 720px;
+        box-shadow: 0 0 5px #808080;
+    }
+
+    .back {
+        max-width: 650px;
+    }
 </style>
+
 <div class="container">
     <div class="row">
-        <br />
-        <div class="row">
-            <img style="margin-bottom:10px;" src="@Model.Image.ImagePath" />
+        <div class="col-lg-8 col-lg-offset-1 ">
+            <div class="row backGr">
+                <div class="row back">
+                    <h3>@Model.Projects.Title</h3>
+                    <hr />
+                    <img style="margin-bottom:10px;" src="@Model.Image.ImagePath" /><br />
+                    @Html.Raw(Model.Projects.Text)<br />
+                </div>
+            </div>
         </div>
-        <div class="row">
-            @Model.Projects.Title
-        </div>
-        <div class="row">
-            @Html.Raw(Model.Projects.Text)
-        </div>
-
-        <br />
-
-
     </div>
 </div>
-
-

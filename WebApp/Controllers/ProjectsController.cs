@@ -90,37 +90,6 @@ namespace WebApp.Controllers
 
         }
 
-        [HttpPost("UploadProjects")]
-        public async Task<IActionResult> Post(IFormFile file)
-        {
-            var path = "/images/" + file.FileName;
-
-            using (var fileStream = new FileStream(appEnvironment.WebRootPath + path, FileMode.Create))
-            {
-                await file.CopyToAsync(fileStream);
-            }
-            Image image = new Image() { ImagePath = path };
-
-            imageManager.Insert(image);
-            return RedirectToAction("Index");
-        }
-
-        [HttpPost("UploadProjectsText")]
-        public IActionResult PostText(string Text, string Title)
-        {
-            var lastImages = imageManager.Get().Reverse().Take(1).FirstOrDefault();
-            Projects projects = new Projects()
-            {
-                Text = Text,
-                Title = Title,
-                Image_Id = lastImages.Id
-            };
-
-            projectsManager.Insert(projects);
-
-            return RedirectToAction("Index");
-        }
-
         public IActionResult ShowArtice(int id)
         {
             var projects = projectsManager.Get().Where(e => e.Id == id).FirstOrDefault();

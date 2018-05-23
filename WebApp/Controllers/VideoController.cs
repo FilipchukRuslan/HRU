@@ -75,12 +75,6 @@ namespace WebApp.Controllers
 
 
         }
-        [HttpPost("UploadVideo")]
-        public IActionResult PostVideo(string Video, string Text)
-        {
-            videoManager.Insert(new Video() { Text = Text, VideoFile = Video });
-            return RedirectToAction("Index");
-        }
         public IActionResult DeleteVideo(int id)
         {
             var video = videoManager.Get().Where(e => e.Id == id).FirstOrDefault();

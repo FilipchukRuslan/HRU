@@ -104,86 +104,8 @@ namespace WebApp.Controllers
             });
         }
 
-        [HttpPost("UploadFB")]
-        public async Task<IActionResult> PostFB(IFormFile uploads, string Text, string Person, string PersonLink)
-        {
-            string path1 = "/images/" + uploads.FileName;
-            if (path1 == null)
-                path1 = "";
 
-            using (var fileStream = new FileStream(appEnvironment.WebRootPath + path1, FileMode.Create))
-            {
-                await uploads.CopyToAsync(fileStream);
-            }
-            Image image = new Image() { ImagePath = path1 };
-            imageManager.Insert(image);
-            var fb = new FaceBook()
-            {
-                FBPost = Text,
-                PersonName = Person,
-                PersonLink = PersonLink,
-                Image_Id = image.Id,
-                Date = DateTime.Now
-            };
 
-            faceBookManager.Insert(fb);
-
-            return RedirectToAction("Index");
-        }
-
-        public IActionResult PostFormCarousel(CarouselModel carouselModel)
-        {
-            var lastImages = imageManager.Get().Reverse().Take(2).ToList();
-
-            try
-            {
-                Carousel entity = carouselManager.Get().Where(e => e.Id == carouselModel.num).FirstOrDefault();
-                entity.Image_Id = lastImages[1].Id;
-                entity.Title = carouselModel.title;
-                entity.Text = carouselModel.text;
-                entity.ImageMin = lastImages[0].ImagePath;
-                carouselManager.Update(entity);
-            }
-            catch (Exception ex)
-            {
-                Carousel carousel = new Carousel()
-                {
-                    Image_Id = lastImages[1].Id,
-                    Text = carouselModel.text
-                };
-                carouselManager.Insert(carousel);
-            }
-
-            return RedirectToAction("Index");
-        }
-
-        [HttpPost("UploadCarousel")]
-        public async Task<IActionResult> PostCarousel(IFormFileCollection uploads)
-        {
-            string path1 = "/images/" + uploads[0].FileName;
-            if (path1 == null)
-                path1 = "";
-
-            using (var fileStream = new FileStream(appEnvironment.WebRootPath + path1, FileMode.Create))
-            {
-                await uploads[0].CopyToAsync(fileStream);
-            }
-
-            string path2 = "/images/" + uploads[1].FileName;
-            if (path2 == null)
-                path2 = "";
-            using (var fileStream = new FileStream(appEnvironment.WebRootPath + path2, FileMode.Create))
-            {
-                await uploads[1].CopyToAsync(fileStream);
-            }
-            Image image = new Image() { ImagePath = path1 };
-            Image image2 = new Image() { ImagePath = path2 };
-
-            imageManager.Insert(image);
-            imageManager.Insert(image2);
-
-            return RedirectToAction("Index");
-        }
         public IActionResult ShowCarousel(int id)
         {
             var slider = carouselManager.Get().Where(e => e.Id == id).FirstOrDefault();

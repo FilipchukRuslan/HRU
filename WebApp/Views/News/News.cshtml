@@ -43,8 +43,6 @@
     }
 </style>
 
-
-
 <div class="container">
     <div class="row">
         <div class="col-lg-10 col-lg-offset-1 ">
@@ -88,111 +86,8 @@
                     </a>
                 }
             </div>
-
-            <div class="col-lg-4">
-                @if (User.IsInRole("Administrator"))
-                {
-                    <h3>Создать новость</h3>
-                    <br />
-                    <form name="UploadF" method="post" enctype="multipart/form-data" asp-controller="News" asp-action="PostImage">
-                        <div class="form-group">
-                            <br />
-                            <input type='file' name="file" multiple onchange="readURL(this);" required />
-                            <img id="preview" src="http://www.adbazar.pk/frontend/images/default-image.jpg" alt="your image" />
-                            <div></div>
-                            <hr>
-                        </div>
-                        <input type="submit" value="загрузить изображение" />
-                    </form>
-
-                    <div class="form-group">
-                        <label for="title">Заголовок</label>
-                        <textarea cols="30" rows="10" class="form-control text-area-title" name="Title" id="title" required></textarea>
-                        <div></div>
-                        <hr>
-                        <label for="article">Новость</label>
-                        <textarea cols="30" rows="10" class="form-control text-area-article" id="MCE" name="Text" required></textarea>
-                        <div></div>
-                    </div>
-                    <input type="submit" id="submit-btn" value="Опубликовать новость" />
-                }
-            </div>
         </div>
     </div>
 </div>
-
-@section Scripts{
-
-    <script>
-        tinymce.init({
-            selector: '#MCE',
-            plugins: [
-                'advlist autolink list link image charmap print preview hr anchor pagebreak',
-                'searchreplace wordcount visualblocks visualchars code fullscreen',
-                'insertdatetime media nonbreaking save table contextmenu directionality',
-                'emoticons template paste textcolor colorpicker textpattern imagetools image'
-            ],
-            toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image" | "image",
-            toolbar2: 'print preview media | forecolor backcolor emotions | code',
-            image_title: true,
-            automatic_uploads: true,
-            file_picker_types: 'image',
-            file_picker_callback: function (cb, value, meta) {
-                var input = document.createElement('input');
-                input.setAttribute('type', 'file');
-                input.setAttribute('accept', 'image/*');
-                input.setAttribute('name', 'files');
-                input.onchange = function () {
-                    var file = this.files[0];
-
-                    var reader = new FileReader();
-
-                    reader.onload = function () {
-                        var dataUrl = reader.result;
-                        var base64 = dataUrl.split(',')[1];
-                        var id = 'blobid' + (new Date()).getTime();
-                        var blobCache = tinymce.activeEditor.editorUpload.blobCache;
-                        var blobInfo = blobCache.create(id, file, base64);
-                        blobCache.add(blobInfo);
-                        cb(blobInfo.blobUri(), { title: file.name });
-                    };
-                    reader.readAsDataURL(file);
-                };
-                input.click();
-            }
-        });
-
-        function readURL(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    $('#preview')
-                        .attr('src', e.target.result)
-                        .width(180)
-                        .height(100);
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        $('#submit-btn').click(function () {
-            var obj = new Object();
-            var title = $("#title").val();
-            var text = tinymce.activeEditor.getContent();
-            obj.title = title;
-            obj.text = text;
-            console.log("dd");
-            $.ajax({
-                type: "POST",
-                url: "/News/PostForm",
-                data: obj,
-                success: function (data) {
-                    location.reload();
-                }
-            });
-        });
-    </script>
-
-}
 
 
