@@ -23,6 +23,7 @@ namespace DAL
         private IBaseRepository<FaceBook> faceBookRepo;
         private IBaseRepository<Video> videoRepo;
         private IBaseRepository<Messages> messagesRepo;
+        private IBaseRepository<AbstractInfo> abstractInfoRepo;
 
         public UnitOfWork(HRUDbContext context)
         {
@@ -136,7 +137,7 @@ namespace DAL
                 return videoRepo;
             }
         }
-        
+
 
         public IBaseRepository<Messages> MessagesRepo
         {
@@ -147,6 +148,14 @@ namespace DAL
             }
         }
 
+        public IBaseRepository<AbstractInfo> AbstractInfoRepo
+        {
+            get
+            {
+                if (abstractInfoRepo == null) { abstractInfoRepo = new BaseRepository<AbstractInfo>(context); }
+                return abstractInfoRepo;
+            }
+        }
         public int Save()
         {
             return context.SaveChanges();

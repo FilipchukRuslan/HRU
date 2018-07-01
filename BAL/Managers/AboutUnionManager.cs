@@ -44,18 +44,37 @@ namespace BAL.Managers
             unitOfWork.AboutUnionRepo.Insert(entity);
             unitOfWork.Save();
         }
+        public void AddPartners(int id, int img_id, string name, string about)
+        {
+            unitOfWork.PartnersRepo.Insert(new Partners
+            {
+                Image_Id = img_id,
+                AboutUnion_Id = id,
+                ParnerAbout = about,
+                ParnerName = name
+            });
+            unitOfWork.Save();
 
+        }
+        public void AddCrew(int id, int img_id, string name, string about)
+        {
+            unitOfWork.PartnersRepo.Insert(new Partners
+            {
+                Image_Id = img_id,
+                AboutUnion_Id = id,
+                ParnerAbout = about,
+                ParnerName = name
+            });
+            unitOfWork.Save();
+        }
         public void Update(AboutUnion entity)
         {
             var aboutUn = unitOfWork.AboutUnionRepo.GetById(entity.Id);
-            aboutUn.Image_Id = entity.Image_Id;
             aboutUn.Mission = entity.Mission;
-            aboutUn.Partners_Id = entity.Partners_Id;
             aboutUn.Union = entity.Union;
             aboutUn.Goals = entity.Goals;
             unitOfWork.Save();
         }
-
         public void Delete(AboutUnion entityToDelete)
         {
             unitOfWork.AboutUnionRepo.Delete(entityToDelete);

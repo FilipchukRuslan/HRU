@@ -1,29 +1,47 @@
-﻿<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+﻿@model WebApp.ViewModels.StartPageViewModel
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 <style>
     .form {
         padding: 5%;
         background: #ffffff;
-        box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        box-shadow: -5px 0 5px -5px #333, 5px 0 5px -5px #333;
         max-width: 620px;
         margin: auto;
         font-family: 'Roboto', sans-serif;
     }
+
+    .form-control {
+        border-radius: 0%;
+        border: white;
+        background: #dbdbdb;
+    }
+
+    .btn-send-email {
+        border-radius: 0%;
+        box-shadow: 2px 2px 2px #333;
+    }
+
+    .text {
+        font-weight: 500;
+        font-size: 16px;
+    }
 </style>
 <div class="form">
-    <h1>Свяжитеcь с нами</h1>
+    <div class="text">
+        @Model.Info.Text
+        <hr />
+    </div>
     <br />
     <form asp-controller="Contacts" asp-action="SendMessage" method="post" id="reused_form">
-        <label for="name">Ваше Имя:</label>
-        <input id="name" type="text" class="form-control" name="Name" required maxlength="50">
-
-        <label for="email">Ваш Email:</label>
-        <input id="email" class="form-control" type="email" name="UserEmail" required maxlength="70">
-        <label for="phone">Ваш телефон:</label>
-        <input id="phone" class="form-control" type="tel" name="Phone" required>
-        <label for="message">Сообщение:</label>
-        <textarea id="message" class="form-control" name="Message" rows="10" maxlength="6000" required></textarea>
+        <input id="name" placeholder="ИМЯ" type="text" class="form-control" name="Name" required maxlength="50">
         <br />
-        <input class="btn btn-primary btn-send-email" type="submit" value="Отправить" />
+        <input id="email" placeholder="EMAIL" class="form-control" type="email" name="UserEmail" required maxlength="70">
+        <br />
+        <input id="phone" placeholder="ТЕЛЕФОН" class="form-control" type="tel" name="Phone" required>
+        <br />
+        <textarea id="message" placeholder="ТЕКСТ СООБЩЕНИЯ" class="form-control" name="Message" rows="10" maxlength="6000" required></textarea>
+        <br />
+        <input class="btn btn-send-email" type="submit" value="Отправить" />
     </form>
 </div>
 <br />

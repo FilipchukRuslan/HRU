@@ -17,6 +17,8 @@ namespace WebApp.ViewModels
         public List<Image> ImagesLst { get; set; }
         public List<Partners> PartnersLst { get; set; }
         public List<AboutUnion> AboutUnionLst { get; set; }
+        public List<Media> MediaLst { get; set; }
+        public AbstractInfo Info { get; set; }
         public IndexViewModel IndexViewModel { get; set; }
 
     }

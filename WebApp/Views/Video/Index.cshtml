@@ -4,6 +4,7 @@
 }
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 <style>
+
     body {
         font-family: 'Roboto', sans-serif;
         margin: 0% auto !important;
@@ -70,11 +71,6 @@
         }
 
     .section:hover {
-        cursor: pointer;
-        color: slategrey;
-    }
-
-    .title:hover {
         cursor: pointer;
         color: slategrey;
     }
@@ -195,11 +191,9 @@
     }
 
     .video-el {
-        margin-top: 30px;
         margin-bottom: 20px;
         font-size: 18px;
         text-align: center;
-
     }
 
     .center-el {
@@ -215,50 +209,65 @@
     }
 
     .video {
-        width: 500px !important;
-        height: 320px !important;
-
+        width: 450px !important;
+        height: 300px !important;
     }
 
     .backGr {
-        box-shadow: 0 0 5px #808080;
-        background: rgb(245, 246, 247);
-        text-align: center;
-        
+        box-shadow: -5px 0 5px -5px #333, 5px 0 5px -5px #333;
+    }
+    .title {
+        background: rgba(214, 233, 255, 0.27);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-height: 300px;
+        color: black;
+        border-radius: 10px;
+    }
+    .date {
+        color: #999;
+        font-weight: 300;
+        font-size: 15px;
+        float: right;
     }
 </style>
 
-
 <div class="container">
     <div class="row">
-        <div class="col-lg-10 col-lg-offset-1 ">
+        <div class="col-lg-10 col-lg-offset-1 backGr">
             <h2>Видео</h2>
-            <br />
-            <div class="col-lg-9 center-el">
+            <div class="center-el video-el">
                 <div class="row">
                     <br />
                     @foreach (var vid in Model.IndexViewModel.Videos)
                     {
-                        <div class="video-el">
-                            @vid.Text
-                        </div>
-                        <div class="backGr">
-                            <div class="col-lg-12 video-el">
+                        <br />
+                        <div class="row">
+                            <div class="col-lg-6">
                                 @Html.Raw(@vid.VideoFile)
                                 @if (User.IsInRole("Administrator"))
                                 {
                                     <a class="btn btn-default" href='@Url.Action("DeleteVideo", "Video", new { id = @vid.Id }, null)'>Удалить видео</a>
                                 }
                             </div>
-                            <hr />
+                            <div class="col-lg-6 title">
+                                <div class="title-video">
+                                    @vid.Text
+                                    <br />
+                                    <hr />
+                                    <br />
+                                    <p class="date">@vid.Day @vid.Month @vid.Year</p>
+                                </div>
+                            </div>
                         </div>
                         <br />
+                        <hr />
                     }
                     @if (Model.IndexViewModel.VideosPageInfo.HasPreviousPage)
                     {
                         <a asp-action="Index"
                            asp-route-page="@(Model.IndexViewModel.VideosPageInfo.PageNumber - 1)"
-                           class="btn btn-default btn">
+                           class="btn btn-block">
                             <i class="glyphicon glyphicon-chevron-left"></i>
                         </a>
                     }
@@ -266,25 +275,21 @@
                     {
                         <a asp-action="Index"
                            asp-route-page="@(Model.IndexViewModel.VideosPageInfo.PageNumber + 1)"
-                           class="btn btn-default btn">
+                           class="btn btn-block">
                             <i class="glyphicon glyphicon-chevron-right"></i>
                         </a>
                     }
                 </div>
             </div>
-
         </div>
     </div>
 </div>
-
 @section Scripts{
-
     <script>
         $(document).ready(function () {
-            $('iframe').attr('width', '600');
-            $('iframe').attr('height', '350');
+            $('iframe').attr('width', '450');
+            $('iframe').attr('height', '300');
         });
 
     </script>
-
 }

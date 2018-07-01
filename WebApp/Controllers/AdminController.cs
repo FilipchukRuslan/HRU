@@ -34,6 +34,8 @@ namespace WebApp.Controllers
         private readonly IVideoManager videoManager;
         private readonly IAboutUnionManager aboutUnionManager;
         private readonly IPartnersManager partnersManager;
+        private readonly IMediaManager mediaManager;
+        private readonly IAbstractInfoManager abstractInfoManager;
 
         public AdminController(ICarouselManager carouselManager,
             INewsManager newsManager,
@@ -43,7 +45,7 @@ namespace WebApp.Controllers
             IProjectsManager projectsManager,
             IHostingEnvironment appEnvironment,
             IAboutUnionManager aboutUnionManager,
-            IPartnersManager partnersManager)
+            IPartnersManager partnersManager, IMediaManager mediaManager, IAbstractInfoManager abstractInfoManager)
         {
             this.carouselManager = carouselManager;
             this.newsManager = newsManager;
@@ -54,6 +56,8 @@ namespace WebApp.Controllers
             this.appEnvironment = appEnvironment;
             this.aboutUnionManager = aboutUnionManager;
             this.partnersManager = partnersManager;
+            this.mediaManager = mediaManager;
+            this.abstractInfoManager = abstractInfoManager;
         }
         public IActionResult News()
         {
@@ -83,12 +87,26 @@ namespace WebApp.Controllers
         {
             return View();
         }
+        public IActionResult Contacts()
+        {
+            return View();
+        }
 
+        
+        public IActionResult EditContacts(string Text)
+        {
+            abstractInfoManager.Insert(new AbstractInfo() { Text = Text });
+            return RedirectToAction("Contacts");
+        }
 
         [HttpPost("UploadVideo")]
         public IActionResult PostVideo(string Video, string Text)
         {
-            videoManager.Insert(new Video() { Text = Text, VideoFile = Video });
+            videoManager.Insert(new Video() { Text = Text, VideoFile = Video,
+                Day = DateTime.Today.Day,
+                Month = Enum.GetName(typeof(MonthEnum), DateTime.Today.Month - 1),
+                Year = DateTime.Today.Year
+            });
             return RedirectToAction("Video");
         }
 
@@ -161,7 +179,7 @@ namespace WebApp.Controllers
         }
 
         [HttpPost("UploadTeamMember")]
-        public async Task<IActionResult> PostTeamMember(IFormFile uploads, string Text, string Name)
+        public async Task<IActionResult> PostTeamMember(IFormFile uploads, string Text)
         {
             string path1 = "/images/" + uploads.FileName;
             if (path1 == null)
@@ -178,24 +196,77 @@ namespace WebApp.Controllers
             partnersManager.Insert(new Partners()
             {
                 Image_Id = image.Id,
-                ParnerName = Name,
+                isCrew = false,
                 ParnerAbout = Text
             });
 
             return RedirectToAction("AboutUnion");
         }
 
-        [HttpPost("UploadInfo")]
-        public IActionResult Info(string HRU, string Mission, string Goals)
+        [HttpPost("UploadMedia")]
+        public IActionResult PostMedia(string Text, string Ref, string Name)
         {
-            aboutUnionManager.Insert(new AboutUnion()
+            Media media = new Media()
             {
-                Mission = Mission,
-                Union = HRU,
-                Goals = Goals
+                MediaName = Ref,
+                Text = Text,
+                Name = Name,
+                Day = DateTime.Today.Day,
+                Month = Enum.GetName(typeof(MonthEnum), DateTime.Today.Month - 1),
+                Year = DateTime.Today.Year
+            };
+
+            mediaManager.Insert(media);
+            return RedirectToAction("Media");
+        }
+
+        [HttpPost("UploadCrew")]
+        public async Task<IActionResult> PostCrew(IFormFile uploads, string Text)
+        {
+            string path1 = "/images/" + uploads.FileName;
+            if (path1 == null)
+                path1 = "";
+
+            using (var fileStream = new FileStream(appEnvironment.WebRootPath + path1, FileMode.Create))
+            {
+                await uploads.CopyToAsync(fileStream);
+            }
+            Image image = new Image() { ImagePath = path1 };
+
+            imageManager.Insert(image);
+
+            partnersManager.Insert(new Partners()
+            {
+                Image_Id = image.Id,
+                isCrew = true,
+                ParnerAbout = Text
+            });
+
+            return RedirectToAction("AboutUnion");
+        }
+
+        public IActionResult Info(string mce, string mission, string goals)
+        {
+            if (!aboutUnionManager.GetAll().Any())
+            {
+                aboutUnionManager.Insert(new AboutUnion()
+                {
+                    Mission = mission,
+                    Union = mce,
+                    Goals = goals
+                });
+                return RedirectToAction("AboutUnion");
+            }
+            aboutUnionManager.Update(new AboutUnion()
+            {
+                Mission = mission,
+                Union = mce,
+                Goals = goals
             });
             return RedirectToAction("AboutUnion");
         }
+
+       
 
         [HttpPost("UploadFB")]
         public async Task<IActionResult> PostFB(IFormFile uploads, string Text, string Person, string PersonLink)

@@ -29,7 +29,7 @@ body {
 }
 
 .myNavbar-stripe {
-    background-color: #e6e6e6;
+    background-color: #ffffff;
     height: 1px;
 }
 
@@ -56,7 +56,7 @@ footer {
 .navbar-collapse {
     padding-right: 0%;
     padding-left: 0%;
-    margin-left: 45px;
+    margin-left: 66px;
 }
 
 .navbar-nav > li > a:hover {
@@ -73,7 +73,7 @@ footer {
 }
 
 .nav-li {
-    color: #e6e6e6 !important;
+    color: #ffffff !important;
     height: 50px;
     margin-top: 4px;
 }
@@ -94,8 +94,47 @@ footer {
 .brand {
     width: 80px;
     height: 85px;
+    float: left;
+    margin-right:5px;
+    margin-left:-20px;
 }
 
 .center {
     text-align: center !important;
+}
+
+.brand-text {
+    font-family: 'Open Sans', sans-serif;
+    color: white;
+    font-size: 24px;
+    margin-top: 30px;
+    font-weight: 400;
+}
+.hot-text {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    color: rgb(86, 119, 155);
+
+}
+.numbers {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    font-size: 20px;
+    color: rgb(86, 119, 155);
+    margin-right:20px;
+    float:left;
+}
+.line {
+    float:left;
+}
+.hot-line {
+    margin-top:20px;
+    float:right;
+}
+
+.hot-icon {
+    margin-top: -20px;
+    width:50px; 
+    height:50px;
 }

@@ -1,81 +1,17 @@
-﻿
-@{
-    ViewData["Title"] = "ADMIN";
-}
-<style>
-    .title {
-        font-size: 18px;
-        font-family: 'Roboto', sans-serif;
-    }
-
-    body {
-        font-family: 'Roboto', sans-serif;
-    }
-
-
-    .title:hover {
-        cursor: pointer;
-        color: slategrey;
-    }
-
-    #preview {
-        max-height: 150px;
-        min-height: 150px;
-        max-width: 220px;
-        min-width: 220px;
-    }
-    #preview2 {
-        max-height: 150px;
-        min-height: 150px;
-        max-width: 220px;
-        min-width: 220px;
-    }
-    img {
-        background-size: contain;
-        background-size: cover;
-        width: 500px;
-        height: 300px;
-    }
-
-    .newsblock {
-        margin-top: 20px;
-        background: rgb(245, 246, 247);
-        text-align: center;
-        max-width: 650px;
-        box-shadow: 0 0 5px #808080;
-    }
-</style>
-<div class="container">
-    <h3>Создать новость</h3>
-    <br />
-    <form name="UploadF" method="post" enctype="multipart/form-data" asp-controller="Admin" asp-action="PostImage">
-        <div class="form-group">
-            <br />
-            <input type='file' name="file" multiple onchange="readURL(this);" required />
-            <img id="preview" src="http://www.adbazar.pk/frontend/images/default-image.jpg" alt="your image" />
-            <div></div>
-
+﻿<div class="container ">
+    <div class="row">
+        <div class="col-lg-10 col-lg-offset-1 newsblock">
+            <label for="uploads">Информация о пресс службе</label>
+<textarea cols="30" rows="10" class="form-control text-area-article" id="Info" required></textarea>
+            <input class="btn btn-danger" type="button" id="info-btn" value="опубликовать" />
         </div>
-        <input class="btn btn-danger" type="submit" value="загрузить изображение" />
-    </form>
-    <hr>
-    <div class="form-group">
-        <label for="title">Заголовок</label>
-        <textarea cols="30" rows="10" class="form-control text-area-title" name="Title" id="title" required></textarea>
-        <div></div>
-        <hr>
-        <label for="article">Новость</label>
-        <textarea cols="30" rows="10" class="form-control text-area-article" id="MCE" name="Text" required></textarea>
-        <div></div>
     </div>
-    <input type="submit" id="submit-btn" value="Опубликовать новость" />
 </div>
 
 @section Scripts{
-
     <script>
         tinymce.init({
-            selector: '#MCE',
+            selector: '#MCE, #MISSION, #Info, #CREW',
             plugins: [
                 'advlist autolink list link image charmap print preview hr anchor pagebreak',
                 'searchreplace wordcount visualblocks visualchars code fullscreen',
@@ -111,7 +47,6 @@
                 input.click();
             }
         });
-
         function readURL(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
@@ -124,22 +59,45 @@
                 reader.readAsDataURL(input.files[0]);
             }
         }
-
-        $('#submit-btn').click(function () {
+        function readURL2(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#preview2')
+                        .attr('src', e.target.result)
+                        .width(180)
+                        .height(100);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        function readURL3(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#preview3')
+                        .attr('src', e.target.result)
+                        .width(180)
+                        .height(100);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $('#info-btn').click(function () {
             var obj = new Object();
-            var title = $("#title").val();
-            var text = tinymce.activeEditor.getContent();
-            obj.title = title;
-            obj.text = text;
+
+            var Text = $('#Info').tinymce().getContent();
+
+            obj.Text = Text;
+
             $.ajax({
                 type: "POST",
-                url: "/Admin/PostForm",
+                url: "/Admin/EditContacts",
                 data: obj,
                 success: function (data) {
                     location.reload();
                 }
             });
-        });
-    </script>
-
+        });</script>
 }
+

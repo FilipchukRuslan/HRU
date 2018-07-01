@@ -15,18 +15,38 @@ using WebApp.ViewModels;
 
 namespace WebApp.Controllers
 {
+    
+
     public class ContactsController : Controller
     {
+        private readonly IAbstractInfoManager abstractInfoManager;
+        public ContactsController(
+           IAbstractInfoManager abstractInfoManager)
+        {
+            this.abstractInfoManager = abstractInfoManager;
+        }
         public IActionResult Index()
         {
-            return View();
+            AbstractInfo info = null;
+            if (abstractInfoManager.GetAll().Count() < 1)
+            {
+                info = new AbstractInfo() { Title = "по умолчанию", Text = "09826259810" };
+            }
+            else
+            {
+                info = abstractInfoManager.Get().LastOrDefault();
+            }
+            return View(new StartPageViewModel()
+            {
+                Info = info
+            });
         }
 
         public IActionResult SendMessage(string UserEmail, string Message, string Phone, string Name)
         {
             string ssword = "hrumailservice123";
             string serviceMail = "hrumailservice@gmail.com";
-            string ToEmail = "Filipchukruslan@rambler.ru";
+            string ToEmail = "east.hr.group@gmail.com";
             EmailService emailService = new EmailService();
             emailService.SendEmailAsync(ssword, serviceMail, ToEmail, UserEmail, Message, Phone, Name);
             return RedirectToAction("Index");

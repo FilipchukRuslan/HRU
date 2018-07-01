@@ -25,13 +25,16 @@ namespace WebApp.Controllers
 {
     public class HomeController : Controller
     {
-        IHostingEnvironment appEnvironment;
+        readonly IHostingEnvironment appEnvironment;
         private readonly ICarouselManager carouselManager;
         private readonly INewsManager newsManager;
         private readonly IImageManager imageManager;
         private readonly IFaceBookManager faceBookManager;
         private readonly IProjectsManager projectsManager;
         private readonly IVideoManager videoManager;
+        private readonly IPartnersManager partnersManager;
+        private readonly IMediaManager mediaManager;
+        private readonly IAbstractInfoManager abstractInfoManager;
 
         public HomeController(ICarouselManager carouselManager,
             INewsManager newsManager,
@@ -39,7 +42,10 @@ namespace WebApp.Controllers
             IFaceBookManager faceBookManager,
             IVideoManager videoManager,
             IProjectsManager projectsManager,
-            IHostingEnvironment appEnvironment)
+            IHostingEnvironment appEnvironment,
+            IPartnersManager partnersManager,
+            IMediaManager mediaManager,
+            IAbstractInfoManager abstractInfoManager)
         {
             this.carouselManager = carouselManager;
             this.newsManager = newsManager;
@@ -48,6 +54,9 @@ namespace WebApp.Controllers
             this.projectsManager = projectsManager;
             this.videoManager = videoManager;
             this.appEnvironment = appEnvironment;
+            this.partnersManager = partnersManager;
+            this.mediaManager = mediaManager;
+            this.abstractInfoManager = abstractInfoManager;
         }
 
         public IActionResult Index()
@@ -67,16 +76,24 @@ namespace WebApp.Controllers
             {
                 projectsManager.Insert(new Projects() { Image_Id = 1, Title = "Default text" });
             }
-            
+
             if (!faceBookManager.GetAll().Any())
             {
                 faceBookManager.Insert(new FaceBook() { FBPost = "Default text", Date = DateTime.Now, Image_Id = 1, PersonLink = "#", PersonName = "Default Name" });
             }
             while (videoManager.GetAll().Count() < 4)
             {
-                videoManager.Insert(new Video() { Text = "Default Text", VideoFile = "<iframe width=\"854\" height=\"480\" src=\"https://www.youtube.com/embed/TFHcJMzgYiE\" frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen></iframe>" });
+                videoManager.Insert(new Video()
+                {
+                    Text = "Default Text",
+                    VideoFile = "<iframe width=\"854\" height=\"480\" src=\"https://www.youtube.com/embed/TFHcJMzgYiE\" frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen></iframe>",
+                    Day = DateTime.Today.Day,
+                    Month = ((MonthEnum)DateTime.Today.Month - 1).ToString(),
+                    Year = DateTime.Today.Year
+                });
             }
 
+            
             List<FaceBook> fbLst;
             if (faceBookManager.GetAll().Count() > 5)
             {
@@ -90,8 +107,19 @@ namespace WebApp.Controllers
             var carouselLst = carouselManager.GetAll().ToList();
             var newsLst = newsManager.GetAll().ToList();
             var projLst = projectsManager.GetAll().ToList();
+            var partnersLst = partnersManager.GetAll().ToList();
             var videoLst = videoManager.GetAll().ToList();
             var imgLst = imageManager.GetAll().ToList();
+            var mediaLst = mediaManager.GetAll().ToList();
+            AbstractInfo info = null;
+            if (abstractInfoManager.GetAll().Count() < 1)
+            {
+                info = new AbstractInfo() { Title = "по умолчанию", Text = "09826259810" };
+            }
+            else
+            {
+                info = abstractInfoManager.Get().LastOrDefault();
+            }
 
             return View(new StartPageViewModel()
             {
@@ -100,7 +128,10 @@ namespace WebApp.Controllers
                 ProjectsLst = projLst,
                 VideoLst = videoLst,
                 NewsLst = newsLst,
-                ImagesLst = imgLst
+                ImagesLst = imgLst,
+                PartnersLst = partnersLst,
+                MediaLst = mediaLst,
+                Info = info
             });
         }
 
@@ -128,8 +159,8 @@ namespace WebApp.Controllers
             faceBookManager.Delete(fb);
             return RedirectToAction("Index");
         }
-        
-        
+
+
 
     }
 }

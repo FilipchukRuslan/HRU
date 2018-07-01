@@ -1,7 +1,73 @@
-﻿
+﻿@model WebApp.ViewModels.StartPageViewModel
 @{
     ViewData["Title"] = "Index";
 }
+<style>
+    .newsblock {
+        text-align: start;
+        box-shadow: -5px 0 5px -5px #333, 5px 0 5px -5px #333;
+    }
 
-<h2>Index</h2>
+    .container {
+        margin-top: 0%;
+        padding-top: 0%;
+    }
 
+    .date {
+        color: #999;
+        font-weight: 300;
+        font-size: 14px;
+    }
+
+    body {
+        font-family: 'Roboto', sans-serif;
+    }
+
+    .media-name {
+        color: #999;
+        font-size: 13px;
+    }
+
+    .block {
+        background: rgb(250, 252, 255);
+        border: 1px solid #eeeeef;
+    }
+
+    .article-block {
+        background: rgb(250, 252, 255);
+        text-align: start;
+        padding: 10px;
+        border: 1px solid #eeeeef;
+        box-shadow: 2px 0 2px 1px rgba(53, 142, 165, 0.60);
+    }
+</style>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-10 col-lg-offset-1 newsblock">
+            <h2>СМИ О НАС</h2>
+            <hr />
+            <div class="col-lg-10 col-lg-offset-1">
+                @try
+                {
+                    @foreach (var media in Model.MediaLst)
+                    {
+                        <div class="article-block">
+                            <p class="date">@media.Day @media.Month @media.Year</p>
+                            <a href="@media.MediaName">@media.Text</a><br />
+                            <br />
+                            <a class="media-name" href="@media.MediaName">@media.Name</a>
+
+                        </div>
+                        <br />
+                    }
+
+                }
+                catch (Exception ex)
+                {
+
+
+                }
+            </div>
+        </div>
+    </div>
+</div>

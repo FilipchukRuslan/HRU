@@ -10,9 +10,8 @@ namespace Model.DB
         public string Union { get; set; }
         public string Mission { get; set; }
         public string Goals { get; set; }
-
-        public int Partners_Id { get; set; }
-        public virtual Partners Partners { get; set; }
+        
+        public virtual List<Partners> Partners { get; set; }
 
         public int Image_Id { get; set; }
         public virtual Image Image { get; set; }

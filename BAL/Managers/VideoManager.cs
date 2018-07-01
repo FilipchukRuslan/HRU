@@ -42,7 +42,7 @@ namespace BAL.Managers
 
         public void Insert(Video entity)
         {
-            unitOfWork.VideoRepo.Insert(mapper.Map<Video>(entity));
+            unitOfWork.VideoRepo.Insert(entity);
             unitOfWork.Save();
         }
 

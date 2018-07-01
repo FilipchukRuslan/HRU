@@ -3,47 +3,82 @@
 @{
     ViewData["Title"] = "ADMIN";
 }
-
+<style>
+    #preview {
+        max-height: 150px;
+        min-height: 150px;
+        max-width: 220px;
+        min-width: 220px;
+    }
+    #preview2 {
+        max-height: 150px;
+        min-height: 150px;
+        max-width: 220px;
+        min-width: 220px;
+    }
+    #preview3 {
+        max-height: 150px;
+        min-height: 150px;
+        max-width: 220px;
+        min-width: 220px;
+    }
+</style>
 <div class="container">
     @if (User.IsInRole("Administrator"))
     {
-        <form name="UploadInfo" method="post" enctype="multipart/form-data" asp-controller="Admin" asp-action="Info">
-
+        <form>
             <div class="form-group">
                 <br />
                 <label for="article">Правозащитный союз Украины - </label>
-                <textarea cols="30" rows="10" class="form-control text-area-article" id="MCE" name="HRU" required></textarea>
+                <textarea cols="30" rows="10" class="form-control text-area-article" id="MCE" required></textarea>
                 <label for="article">Миссия союза</label>
-                <textarea cols="30" rows="10" class="form-control text-area-article" id="MISSION" name="Mission" required></textarea>
+                <textarea cols="30" rows="10" class="form-control text-area-article" id="MISSION" required></textarea>
                 <label for="uploads">Цели и задачи</label>
-                <textarea cols="30" rows="10" class="form-control text-area-article" id="GOALS" name="Goals" required></textarea>
+                <textarea cols="30" rows="10" class="form-control text-area-article" id="GOALS" required></textarea>
                 <div></div>
                 <hr>
             </div>
-            <input type="submit" value="Опубликовать" />
+            <input type="submit" id="info-btn" value="Опубликовать" />
         </form>
         <br />
         <br />
         <h2>
-            Состав Союза и Партнеры
+            Состав Союза
         </h2>
-        <form name="UploadTeamMember" method="post" enctype="multipart/form-data" asp-controller="Admin" asp-action="PostTeamMember">
+        <form name="UploadCrew" method="post" enctype="multipart/form-data" asp-controller="Admin" asp-action="PostCrew">
             <div class="form-group">
-                <label>фото</label><br />
+                <label>лого</label><br />
                 <img id="preview2" src="http://www.adbazar.pk/frontend/images/default-image.jpg" alt="your image" />
                 <input type='file' name="uploads" multiple onchange="readURL2(this);" />
             </div>
             <div class="form-group">
-                <label>Название организации</label><br />
-                <input type="text" name="Name" /><br />
-                <br />
                 <label>описание</label>
-                <textarea cols="30" rows="10" class="form-control text-area-article" id="CREW" name="Text" required></textarea>
+                <textarea cols="30" rows="10" class="form-control text-area-article" name="Text" required></textarea>
                 <input type="submit" value="Опубликовать" />
             </div>
-            <div class="clear"></div>
-            <hr>
         </form>
+        <div class="clear"></div>
+        <hr>
+        <br />
+        <br />
+        <h2>
+            Партнеры
+        </h2>
+        <form name="UploadTeamMember" method="post" enctype="multipart/form-data" asp-controller="Admin" asp-action="PostTeamMember">
+            <div class="form-group">
+                <label>лого</label><br />
+                <img id="preview3" src="http://www.adbazar.pk/frontend/images/default-image.jpg" alt="your image" />
+                <input type='file' name="uploads" multiple onchange="readURL3(this);" />
+            </div>
+            <div class="form-group">
+                <label>описание</label>
+                <textarea cols="30" rows="10" class="form-control text-area-article" name="Text" required></textarea>
+                <input type="submit" value="Опубликовать" />
+            </div>
+        </form>
+        <div class="clear"></div>
+        <hr>
+
     }
 </div>
 @section Scripts{
@@ -110,19 +145,37 @@
                 reader.readAsDataURL(input.files[0]);
             }
         }
-
-        $('.submit-btn').click(function () {
-            alert('новость успешно добавлена');
+        function readURL3(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#preview3')
+                        .attr('src', e.target.result)
+                        .width(180)
+                        .height(100);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $('#info-btn').click(function () {
             var obj = new Object();
-            obj.
-                $.ajax({
-                    type: "POST",
-                    url: "/AddNews/AddArticle",
-                    data: obj,
-                    success: function (data) {
-                        location.reload();
-                    }
-                });
+            
+            var mce = $('#MCE').tinymce().getContent();
+            var mission = $('#MISSION').tinymce().getContent();
+            var goals = $('#GOALS').tinymce().getContent();
+            
+            obj.mce = mce;
+            obj.mission = mission;
+            obj.goals = goals;
+            
+            $.ajax({
+                type: "POST",
+                url: "/Admin/Info",
+                data: obj,
+                success: function (data) {
+                    location.reload();
+                }
+            });
         });
     </script>
 

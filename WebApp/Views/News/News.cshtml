@@ -1,23 +1,46 @@
 ﻿@model WebApp.ViewModels.StartPageViewModel
-
 @{
     ViewData["Title"] = "Новости";
 }
-
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 <style>
+
     .title {
         font-size: 18px;
         font-family: 'Roboto', sans-serif;
     }
+
     body {
         font-family: 'Roboto', sans-serif;
     }
-   
+
+    .container {
+        margin: 0%;
+        padding: 0%;
+    }
+    .date {
+        color: #999;
+        font-weight: 300;
+        font-size: 15px;
+        float:right;
+    }
+    .row {
+        margin: 0%;
+        padding: 0%;
+    }
 
     .title:hover {
         cursor: pointer;
         color: slategrey;
+    }
+
+    .title {
+        background: rgba(214, 233, 255, 0.27);
+        overflow: hidden;
+        text-overflow:ellipsis;
+        max-height: 300px;
+        color: black;
+        border-radius: 10px;
     }
 
     #preview {
@@ -30,64 +53,64 @@
     img {
         background-size: contain;
         background-size: cover;
-        width: 500px;
+        width: 450px;
         height: 300px;
     }
 
     .newsblock {
-        margin-top: 20px;
-        background: rgb(245, 246, 247);
-        text-align: center;
-        max-width: 650px;
-        box-shadow: 0 0 5px #808080;
+        text-align: start;
+        box-shadow: -5px 0 5px -5px #333, 5px 0 5px -5px #333;
+    }
+    .podrobn{
+        font-size:13px;
     }
 </style>
-
-<div class="container">
+<div class="container ">
     <div class="row">
-        <div class="col-lg-10 col-lg-offset-1 ">
+        <div class="col-lg-10 col-lg-offset-1 newsblock">
             <h2>Новости союза</h2>
-            <div class="col-lg-8 newsblock">
-                @if (Model.IndexViewModel.News.Count() > 0)
+            @if (Model.IndexViewModel.News.Count() > 0)
+            {
+                @foreach (var i in Model.IndexViewModel.News)
                 {
-                    @foreach (var i in Model.IndexViewModel.News)
-                    {
-                        <br />
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <a href='@Url.Action("ShowNews", "News", new { id = i.Id }, null)'><img style="margin-bottom:10px;" src="@Model.ImagesLst.Where(e => e.Id == i.Image_Id).FirstOrDefault().ImagePath" /></a>
-                                <div class="clear"></div>
-                                <a href='@Url.Action("ShowNews", "News", new { id = i.Id }, null)' class="title">@i.Title</a>
-                                <br />
-                                @if (User.IsInRole("Administrator"))
-                                {
-                                    <a class="btn btn-default" href='@Url.Action("DeleteNews", "News", new { id = @i.Id }, null)'>Удалить новость</a>
-                                }
-                            </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <a href='@Url.Action("ShowNews", "News", new { id = i.Id }, null)'><img style="margin-bottom:10px;" src="@Model.ImagesLst.Where(e => e.Id == i.Image_Id).FirstOrDefault().ImagePath" /></a>
+                            <br />
+                            @if (User.IsInRole("Administrator"))
+                            {
+                                <a class="btn btn-default" href='@Url.Action("DeleteNews", "News", new { id = @i.Id }, null)'>Удалить новость</a>
+                            }
                         </div>
-                        <br />
-                        <hr />
-                    }
+                        <div class="col-lg-6 title">
+                            <a href='@Url.Action("ShowNews", "News", new { id = i.Id }, null)' class="title">@i.Title</a>
+                            <br />
+                            <hr />
+                            <a href='@Url.Action("ShowNews", "News", new { id = i.Id }, null)' class="podrobn">перейти к новости</a> <p class="date">@i.Day @i.Month @i.Year</p>
+                        </div>
+                    </div>
+                    <br />
+                    <hr />
                 }
-                @if (Model.IndexViewModel.NewsPageInfo.HasPreviousPage)
-                {
-                    <a asp-action="News"
-                       asp-route-page="@(Model.IndexViewModel.NewsPageInfo.PageNumber - 1)"
-                       class="btn btn-default btn">
-                        <i class="glyphicon glyphicon-chevron-left"></i>
-                    </a>
-                }
-                @if (Model.IndexViewModel.NewsPageInfo.HasNextPage)
-                {
-                    <a asp-action="News"
-                       asp-route-page="@(Model.IndexViewModel.NewsPageInfo.PageNumber + 1)"
-                       class="btn btn-default btn">
-                        <i class="glyphicon glyphicon-chevron-right"></i>
-                    </a>
-                }
-            </div>
+            }
+            @if (Model.IndexViewModel.NewsPageInfo.HasPreviousPage)
+            {
+                <a asp-action="News"
+                   asp-route-page="@(Model.IndexViewModel.NewsPageInfo.PageNumber - 1)"
+                   class="btn btn-block">
+                    <i class="glyphicon glyphicon-chevron-left"></i>
+                </a>
+            }
+            @if (Model.IndexViewModel.NewsPageInfo.HasNextPage)
+            {
+                <a asp-action="News"
+                   asp-route-page="@(Model.IndexViewModel.NewsPageInfo.PageNumber + 1)"
+                   class="btn btn-block">
+                    <i class="glyphicon glyphicon-chevron-right"></i>
+                </a>
+            }
         </div>
     </div>
 </div>
-
 

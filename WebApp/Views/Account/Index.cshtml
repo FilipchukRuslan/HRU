@@ -1,9 +1,5 @@
 ﻿@model WebApp.ViewModels.LoginViewModel
-@using Microsoft.AspNetCore.Mvc.Localization
 
-@inject IViewLocalizer Localizer
-
-@inject IHtmlLocalizer<SharedRes> SharedLocalizer
 <style>
     li {
         color: black;
@@ -20,7 +16,7 @@
                 <div asp-validation-summary="ModelOnly"></div>
                 <div>
                     <label asp-for="Email">
-                        @SharedLocalizer["Email"]
+                        Email
                     </label><br />
 
                     <input asp-for="Email" />
@@ -28,7 +24,7 @@
                 </div>
                 <div>
                     <label asp-for="Password">
-                        @SharedLocalizer["Password"]
+                        Password
                     </label><br />
 
                     <input asp-for="Password" />
@@ -36,13 +32,13 @@
                 </div>
                 <div>
                     <label asp-for="RememberMe">
-                        @SharedLocalizer["RememberMe?"]
+                        RememberMe?
                     </label>
 
                     <input asp-for="RememberMe" />
                 </div>
                 <div>
-                    <input type="submit" value="@SharedLocalizer["SignIn"]" />
+                    <input type="submit" value="SignIn" />
                 </div>
             </form>
         </div>

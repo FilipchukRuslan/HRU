@@ -91,7 +91,7 @@ namespace WebApp.Controllers
                     ModelState.AddModelError("", "Incorrect login and (or) password");
                 }
             }
-            return View(model);
+            return RedirectToAction("Index", "Account");
         }
 
         [HttpPost]

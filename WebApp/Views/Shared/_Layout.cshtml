@@ -6,17 +6,197 @@
     <link href="~/css/normalize.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Francois+One|Open+Sans:700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins|Roboto" rel="stylesheet">
     <title>Правозахисна спілка України</title>
     <link href="~/css/layout.css" rel="stylesheet" />
 </head>
+
+<style>
+    a:hover {
+        text-decoration: none;
+    }
+
+    .row {
+        margin: 0% auto !important;
+        padding: 0% !important;
+    }
+
+    .container {
+        margin: 0% auto !important;
+        padding: 0% !important;
+    }
+
+    .container-fluid {
+        margin: 0% auto !important;
+        padding: 0% !important;
+    }
+
+    body {
+        margin: 0% auto !important;
+        padding: 0% !important;
+        background: none;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    .clear {
+        clear: both;
+    }
+
+    .myNavbar-stripe {
+        background-color: #ffffff;
+        height: 1px;
+    }
+
+    footer {
+        background-color: rgb(232, 232, 232);
+        margin-top: 5px;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    .myBrand-header {
+        background: rgb(23, 175, 240);
+        height: 100px;
+    }
+    .position-header{
+        margin-top:10px;
+    }
+
+    .navbar {
+        border-radius: 0px;
+        border-style: none;
+        font-weight: 500;
+        font-family: 'Roboto', sans-serif;
+        font-size: 21px;
+        background-color: rgb(23, 175, 240);
+    }
+
+    .navbar-collapse {
+        padding-right: 0%;
+        padding-left: 0%;
+        margin-left: 66px;
+    }
+
+    .navbar-nav > li > a:hover {
+        color: white !important;
+    }
+
+    .myBrand {
+        font-size: 21px;
+    }
+
+    .center {
+        display: flex;
+        align-items: center;
+    }
+
+    .nav-li {
+        color: #ffffff !important;
+        height: 50px;
+        margin-top: 4px;
+    }
+
+    .foot {
+        margin-top: 10px;
+        font-size: 24px;
+        font-weight: 500;
+        text-transform: uppercase;
+        text-decoration: none;
+        margin-bottom: 40px;
+    }
+
+    .logo-foot {
+        float:right;
+    }
+
+    .nav-li-foot {
+        color: #9f9f9f;
+    }
+    .nav{
+        margin-bottom:0%;
+    }
+    .brand {
+        width: 80px !important;
+        height: 85px !important;
+        float: left;
+        margin-right: 5px;
+        margin-left: -20px;
+    }
+
+    .center {
+        text-align: center !important;
+    }
+
+    .brand-text {
+        font-family: 'Poppins', sans-serif;
+        color: white;
+        font-size: 29px;
+        font-weight: 700;
+        margin-top: 30px;
+        font-weight: 400;
+    }
+
+    .hot-text {
+        font-family: 'Roboto', sans-serif;
+        font-weight: 300;
+        font-size: 16px;
+        color: rgb(86, 119, 155);
+    }
+
+    .numbers {
+        font-family: 'Roboto', sans-serif;
+        font-weight: 500;
+        font-size: 20px;
+        color: rgb(86, 119, 155);
+        margin-right: 20px;
+        float: left;
+    }
+
+    .line {
+        float: left;
+    }
+
+    .hot-line {
+        margin-top: 20px;
+        float: right;
+    }
+
+    .hot-icon {
+        margin-top: -20px;
+        width: 50px;
+        height: 50px;
+    }
+
+    .fb-foot {
+        float: right;
+        margin-top: 10px;
+        
+    }
+</style>
 <body>
+    <div id="fb-root"></div>
+    <script>
+(function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = 'https://connect.facebook.net/ru_RU/sdk.js#xfbml=1&version=v3.0&appId=2034706566791196&autoLogAppEvents=1';
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
     <div class="myBrand-header">
         <div class="container">
             <div class="row">
-                <div class="col-lg-10 col-lg-offset-1">
-
-                    <a asp-controller="Home" asp-action="Index"><img class="brand" src="~/images/brand.png" /></a>
-
+                <div class="col-lg-10 col-lg-offset-1 position-header">
+                    <a class="col-lg-8" asp-controller="Home" asp-action="Index">
+                        <img class="brand" src="~/images/brand.png" />
+                        <p class="brand-text">ПРАВОЗАЩИТНЫЙ СОЮЗ УКРАИНЫ</p>
+                    </a>
+                    <div class="hot-line">
+                        <div class="hot-text">ГОРЯЧАЯ ЛИНИЯ:</div>
+                        <div class="numbers">0 800 212 212</div>
+                        <img class="hot-icon" src="http://aziamost.com/assets/images/icon/tel_icon.png" />
+                    </div>
+                    <div class="clear"></div>
                 </div>
             </div>
         </div>
@@ -34,7 +214,6 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-10 col-lg-offset-1">
-
                     <div class="navbar-collapse collapse">
                         <ul class="nav navbar-nav center">
                             <li><a class="nav-li" asp-controller="News" asp-action="News">НОВОСТИ</a></li>
@@ -43,9 +222,7 @@
                             <li><a class="nav-li" asp-controller="AboutUnion" asp-action="Index">О СОЮЗЕ</a></li>
                             <li><a class="nav-li" asp-controller="Media" asp-action="Index">СМИ О НАС</a></li>
                             <li><a class="nav-li" asp-controller="Contacts" asp-action="Index">КОНТАКТЫ</a></li>
-
                         </ul>
-
                     </div>
                     <ul class="nav navbar-nav">
                         @if (User.Identity.IsAuthenticated)
@@ -57,6 +234,7 @@
                             <li><a class="nav-li" asp-controller="Admin" asp-action="AboutUnion">о союзе</a></li>
                             <li><a class="nav-li" asp-controller="Admin" asp-action="Media">сми о нас</a></li>
                             <li><a class="nav-li" asp-controller="Admin" asp-action="FaceBook">facebook</a></li>
+                            <li><a class="nav-li" asp-controller="Admin" asp-action="Contacts">contacts</a></li>
                             <li class="nav-li">
                                 <form asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm">
                                     <input class="navbar-link" type="submit" value="Выйти" />
@@ -66,7 +244,6 @@
                     </ul>
                 </div>
             </div>
-
         </div>
     </nav>
     <div class="container-fluid">
@@ -76,31 +253,33 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-10 col-lg-offset-1">
-                    <div class="foot col-lg-4">
-                        <a class="nav-li" asp-controller="Home" asp-action="Index">
-                            <img style="width:260px;" src="~/images/Logo.jpg" />
+
+                    <div class="foot col-lg-7">
+                        <div style="float:left;">
+                            <a class="nav-li-foot" asp-controller="News" asp-action="News">НОВОСТИ</a>
+                            <div></div>
+                            <a class="nav-li-foot" asp-controller="Projects" asp-action="Index">ПРОЕКТЫ</a>
+                            <div></div>
+                            <a class="nav-li-foot" asp-controller="Video" asp-action="Index">ВИДЕО</a>
+                            <div></div>
+                            <a class="nav-li-foot" asp-controller="AboutUnion" asp-action="Index">О СОЮЗЕ</a>
+                            <div></div>
+                            <a class="nav-li-foot" asp-controller="Media" asp-action="Index">СМИ О НАС</a>
+                            <div></div>
+                            <a class="nav-li-foot" asp-controller="Contacts" asp-action="Index">КОНТАКТЫ</a>
+                        </div>
+                        <a class="logo-foot" asp-controller="Home" asp-action="Index">
+                            <img style="width:320px;height:480px;" src="~/images/logo.jpg" />
                         </a>
                     </div>
-                    <div class="foot col-lg-3">
-                        <a class="nav-li-foot" asp-controller="News" asp-action="News">НОВОСТИ</a>
-                        <div></div>
-                        <a class="nav-li-foot" asp-controller="Projects" asp-action="Index">ПРОЕКТЫ</a>
-                        <div></div>
-                        <a class="nav-li-foot" asp-controller="Video" asp-action="Index">ВИДЕО</a>
-                        <div></div>
-                        <a class="nav-li-foot" asp-controller="AboutUnion" asp-action="Index">О СОЮЗЕ</a>
-                        <div></div>
-                        <a class="nav-li-foot" asp-controller="Media" asp-action="Index">СМИ О НАС</a>
-                        <div></div>
-                        <a class="nav-li-foot" asp-controller="Contacts" asp-action="Index">КОНТАКТЫ</a>
+                    <div class="fb-foot">
+                        <div class="fb-page" data-href="https://www.facebook.com/east.hr.group/" data-tabs="timeline,events,messages" data-width="320" data-height="480" data-small-header="false" data-adapt-container-width="false" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/east.hr.group/" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/east.hr.group/">Восточная Правозащитная Группа</a></blockquote></div>
                     </div>
                     <div class="clear"></div>
                     <div>© 2018 Все права защищены</div>
-
                 </div>
             </div>
         </div>
-
     </footer>
     <script src="~/js/modernizr.custom.js"></script>
     <script src="~/lib/jquery/dist/jquery.js"></script>
@@ -109,7 +288,6 @@
     <script src="~/js/site.js"></script>
     <script src="~/js/jquery.tinymce.min.js"></script>
     <script src="~/js/tinymce.min.js"></script>
-
 
     @RenderSection("Scripts", required: false)
 </body>

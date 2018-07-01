@@ -7,6 +7,5 @@ namespace Model.DB
 {
     public class User : IdentityUser
     {
-
     }
 }

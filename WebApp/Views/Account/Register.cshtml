@@ -1,16 +1,11 @@
 ﻿@model WebApp.ViewModels.RegisterViewModel
-@using Microsoft.AspNetCore.Mvc.Localization
-
-@inject IViewLocalizer Localizer
-
-@inject IHtmlLocalizer<SharedRes> SharedLocalizer
 <h2>
-    @SharedLocalizer["Registration"]</h2>
+    Registration</h2>
 <form method="post" asp-controller="Account" asp-action="Register">
     <div asp-validation-summary="ModelOnly"></div>
     <div>
         <label asp-for="Email">
-            @SharedLocalizer["Email"]
+           Email
         </label><br />
 
         <input asp-for="Email" />
@@ -19,7 +14,7 @@
 
     <div>
         <label asp-for="Password">
-            @SharedLocalizer["Password"]
+            Password
         </label><br />
 
         <input asp-for="Password" />
@@ -27,13 +22,13 @@
     </div>
     <div>
         <label asp-for="PasswordConfirm">
-            @SharedLocalizer["PasswordConfirm"]
+            PasswordConfirm
         </label><br />
 
         <input asp-for="PasswordConfirm" />
         <span asp-validation-for="PasswordConfirm"></span>
     </div>
     <div>
-        <button type="submit" class="btn btn-default">@SharedLocalizer["Registration"]</button>
+        <button type="submit" class="btn btn-default">Registration</button>
     </div>
 </form>

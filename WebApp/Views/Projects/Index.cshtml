@@ -4,6 +4,7 @@
 }
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 <style>
+
     body {
         margin: 0% auto !important;
         padding: 0% !important;
@@ -77,15 +78,16 @@
     .projects {
         height: 400px;
         overflow: hidden;
-        font-size: 18px;
+        text-overflow: ellipsis;
+        font-weight: 300;
+        font-size: 15px;
         font-family: 'Roboto', sans-serif;
         padding-top: 40px;
         text-align: center;
     }
 
     .backGr {
-        box-shadow: 0 0 5px #808080;
-        background: rgb(245, 246, 247);
+        box-shadow: -5px 0 5px -5px #333, 5px 0 5px -5px #333;
     }
 
     #proj-text {
@@ -97,57 +99,48 @@
         }
 </style>
 
-
 <div class="container">
     <div class="row">
-        <div class="col-lg-10 col-lg-offset-1 ">
+        <div class="col-lg-10 col-lg-offset-1 backGr">
             <h2>Проекты</h2>
             <br />
-
-            <div class="col-lg-12 backGr">
-                <div class="row">
-                    <br />
-                    @foreach (var proj in Model.IndexViewModel.Projects)
+            <br />
+            @foreach (var proj in Model.IndexViewModel.Projects)
+            {
+                <div class="col-lg-4 projects">
+                    <a href='@Url.Action("ShowArtice", "Projects", new { id = @proj.Id }, null)'>
+                        <img class="projImg"
+                             src="@Model.ImagesLst.Where(e=>e.Id==proj.Image_Id).FirstOrDefault().ImagePath" />
+                    </a>
+                    <a href='@Url.Action("ShowArtice", "Projects", new { id = @proj.Id }, null)'><p id="proj-text">@proj.Title</p></a>
+                    @if (User.IsInRole("Administrator"))
                     {
-                        <div class="col-lg-4 projects">
-                            <a href='@Url.Action("ShowArtice", "Projects", new { id = @proj.Id }, null)'>
-                                <img class="projImg"
-                                     src="@Model.ImagesLst.Where(e=>e.Id==proj.Image_Id).FirstOrDefault().ImagePath" />
-                            </a>
-
-                            <a href='@Url.Action("ShowArtice", "Projects", new { id = @proj.Id }, null)'><p id="proj-text">@proj.Title</p></a>
-                            @if (User.IsInRole("Administrator"))
-                            {
-                                <a class="btn btn-default" href='@Url.Action("DeleteProject", "Projects", new { id = @proj.Id }, null)'>Удалить проект</a>
-                            }
-                        </div>
-                    }
-                    <div class="clear"></div>
-                    @if (Model.IndexViewModel.ProjectsPageInfo.HasPreviousPage)
-                    {
-                        <a asp-action="Index"
-                           asp-route-page="@(Model.IndexViewModel.ProjectsPageInfo.PageNumber - 1)"
-                           class="btn btn-default btn">
-                            <i class="glyphicon glyphicon-chevron-left"></i>
-                        </a>
-                    }
-                    @if (Model.IndexViewModel.ProjectsPageInfo.HasNextPage)
-                    {
-                        <a asp-action="Index"
-                           asp-route-page="@(Model.IndexViewModel.ProjectsPageInfo.PageNumber + 1)"
-                           class="btn btn-default btn">
-                            <i class="glyphicon glyphicon-chevron-right"></i>
-                        </a>
+                        <a class="btn btn-default" href='@Url.Action("DeleteProject", "Projects", new { id = @proj.Id }, null)'>Удалить проект</a>
                     }
                 </div>
-            </div>
+            }
+            <div class="clear"></div>
+            @if (Model.IndexViewModel.ProjectsPageInfo.HasPreviousPage)
+            {
+                <a asp-action="Index"
+                   asp-route-page="@(Model.IndexViewModel.ProjectsPageInfo.PageNumber - 1)"
+                   class="btn btn-block">
+                    <i class="glyphicon glyphicon-chevron-left"></i>
+                </a>
+            }
+            @if (Model.IndexViewModel.ProjectsPageInfo.HasNextPage)
+            {
+                <a asp-action="Index"
+                   asp-route-page="@(Model.IndexViewModel.ProjectsPageInfo.PageNumber + 1)"
+                   class="btn btn-block">
+                    <i class="glyphicon glyphicon-chevron-right"></i>
+                </a>
+            }
         </div>
     </div>
 </div>
 
-
 @section Scripts{
-
     <script>
         function ch(id) {
             obj = new Object();
@@ -162,7 +155,6 @@
                 }
             });
         };
-        
-    </script>
 
+    </script>
 }

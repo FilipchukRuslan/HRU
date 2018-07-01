@@ -61,7 +61,7 @@ namespace WebApp
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 
-            
+
             services.AddScoped<IImageManager, ImageManager>();
             services.AddScoped<INewsManager, NewsManager>();
             services.AddScoped<IProjectsManager, ProjectsManager>();
@@ -71,11 +71,8 @@ namespace WebApp
             services.AddScoped<IMessagesManager, MessagesManager>();
             services.AddScoped<IPartnersManager, PartnersManager>();
             services.AddScoped<IAboutUnionManager, AboutUnionManager>();
-
-            //services.AddScoped<IPartnersManager, PartnersManager>();
-            //services.AddScoped<IContactsManager, ContactsManager>();
-            //services.AddScoped<IMediaManager, MediaManager>();
-            //services.AddScoped<IAboutUnionManager, AboutUnionManager>();
+            services.AddScoped<IMediaManager, MediaManager>();
+            services.AddScoped<IAbstractInfoManager, AbstractInfoManager>();
 
             services.Configure<IdentityOptions>(options =>
             {

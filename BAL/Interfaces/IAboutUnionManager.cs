@@ -21,7 +21,8 @@ namespace BAL.Interfaces
         void Insert(AboutUnion entity);
 
         void Update(AboutUnion entity);
-
+        void AddPartners(int id, int img_id, string name, string about);
+        void AddCrew(int id, int img_id, string name, string about);
         void Delete(AboutUnion entityToDelete);
     }
 }
