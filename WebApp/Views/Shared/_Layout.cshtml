@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Francois+One|Open+Sans:700" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Poppins|Roboto" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Volkhov:400,400i,700,700i" rel="stylesheet">
     <title>Правозахисна спілка України</title>
     <link href="~/css/layout.css" rel="stylesheet" />
 </head>
@@ -130,10 +131,8 @@
     .brand-text {
         font-family: 'Poppins', sans-serif;
         color: white;
-        font-size: 29px;
+        font-size: 33px;
         font-weight: 700;
-        margin-top: 30px;
-        font-weight: 400;
     }
 
     .hot-text {
@@ -176,7 +175,7 @@
 <body>
     <div id="fb-root"></div>
     <script>
-(function (d, s, id) {
+        (function (d, s, id) {
             var js, fjs = d.getElementsByTagName(s)[0];
             if (d.getElementById(id)) return;
             js = d.createElement(s); js.id = id;
@@ -187,13 +186,13 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-10 col-lg-offset-1 position-header">
-                    <a class="col-lg-8" asp-controller="Home" asp-action="Index">
+                    <a class="col-lg-9" asp-controller="Home" asp-action="Index">
                         <img class="brand" src="~/images/brand.png" />
                         <p class="brand-text">ПРАВОЗАЩИТНЫЙ СОЮЗ УКРАИНЫ</p>
                     </a>
-                    <div class="hot-line">
+                    <div class="hot-line col-lg-3">
                         <div class="hot-text">ГОРЯЧАЯ ЛИНИЯ:</div>
-                        <div class="numbers">0 800 212 212</div>
+                        <div class="numbers">0 800 309 110</div>
                         <img class="hot-icon" src="http://aziamost.com/assets/images/icon/tel_icon.png" />
                     </div>
                     <div class="clear"></div>
@@ -253,7 +252,6 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-10 col-lg-offset-1">
-
                     <div class="foot col-lg-7">
                         <div style="float:left;">
                             <a class="nav-li-foot" asp-controller="News" asp-action="News">НОВОСТИ</a>
@@ -288,7 +286,6 @@
     <script src="~/js/site.js"></script>
     <script src="~/js/jquery.tinymce.min.js"></script>
     <script src="~/js/tinymce.min.js"></script>
-
     @RenderSection("Scripts", required: false)
 </body>
 </html>
