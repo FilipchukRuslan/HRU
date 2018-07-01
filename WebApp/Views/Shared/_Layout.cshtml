@@ -50,7 +50,7 @@
     }
 
     footer {
-        background-color: rgb(232, 232, 232);
+        background: rgb(232, 232, 232);
         margin-top: 5px;
         font-family: 'Roboto', sans-serif;
     }
@@ -67,8 +67,8 @@
         border-radius: 0px;
         border-style: none;
         font-weight: 500;
-        font-family: 'Roboto', sans-serif;
         font-size: 21px;
+        font-family: 'Roboto', sans-serif;
         background-color: rgb(23, 175, 240);
     }
 
@@ -98,20 +98,22 @@
     }
 
     .foot {
-        margin-top: 10px;
+        padding-top: 5px;
         font-size: 24px;
         font-weight: 500;
         text-transform: uppercase;
         text-decoration: none;
         margin-bottom: 40px;
+        line-height: 40px;
+        margin: 0% auto !important;
+        border-right:white 2px solid;
     }
 
-    .logo-foot {
-        float:right;
-    }
 
     .nav-li-foot {
-        color: #9f9f9f;
+        color: rgb(178, 178, 177);
+        font-weight: 500;
+        font-size: 35px;
     }
     .nav{
         margin-bottom:0%;
@@ -167,9 +169,11 @@
     }
 
     .fb-foot {
-        float: right;
         margin-top: 10px;
         
+    }
+    .fb-page{
+        float:right;
     }
 </style>
 <body>
@@ -252,8 +256,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-10 col-lg-offset-1">
-                    <div class="foot col-lg-7">
-                        <div style="float:left;">
+                    <div class="foot col-lg-6">
+
+                        <div>
                             <a class="nav-li-foot" asp-controller="News" asp-action="News">НОВОСТИ</a>
                             <div></div>
                             <a class="nav-li-foot" asp-controller="Projects" asp-action="Index">ПРОЕКТЫ</a>
@@ -266,11 +271,11 @@
                             <div></div>
                             <a class="nav-li-foot" asp-controller="Contacts" asp-action="Index">КОНТАКТЫ</a>
                         </div>
-                        <a class="logo-foot" asp-controller="Home" asp-action="Index">
-                            <img style="width:320px;height:480px;" src="~/images/logo.jpg" />
+                        <a asp-controller="Home" asp-action="Index">
+                            <img style="width:200px;height:300px; margin-left:-15px;" src="~/images/logo.jpg" />
                         </a>
                     </div>
-                    <div class="fb-foot">
+                    <div class="fb-foot col-lg-6">
                         <div class="fb-page" data-href="https://www.facebook.com/east.hr.group/" data-tabs="timeline,events,messages" data-width="320" data-height="480" data-small-header="false" data-adapt-container-width="false" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/east.hr.group/" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/east.hr.group/">Восточная Правозащитная Группа</a></blockquote></div>
                     </div>
                     <div class="clear"></div>
