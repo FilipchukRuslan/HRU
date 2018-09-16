@@ -9,5 +9,7 @@ namespace Model.Entity
     {
         public string title { get; set; }
         public string text { get; set; }
+        public DateTime dat { get; set; }
+
     }
 }

@@ -18,12 +18,14 @@
         margin: 0%;
         padding: 0%;
     }
+
     .date {
         color: #999;
         font-weight: 300;
         font-size: 15px;
-        float:right;
+        float: right;
     }
+
     .row {
         margin: 0%;
         padding: 0%;
@@ -37,7 +39,7 @@
     .title {
         background: rgba(214, 233, 255, 0.27);
         overflow: hidden;
-        text-overflow:ellipsis;
+        text-overflow: ellipsis;
         max-height: 300px;
         color: black;
         border-radius: 10px;
@@ -61,14 +63,19 @@
         text-align: start;
         box-shadow: -5px 0 5px -5px #333, 5px 0 5px -5px #333;
     }
-    .podrobn{
-        font-size:13px;
+
+    .podrobn {
+        font-size: 13px;
     }
 </style>
 <div class="container ">
     <div class="row">
         <div class="col-lg-10 col-lg-offset-1 newsblock">
-            <h2>Новости союза</h2>
+            <div class="row">
+                <h2 class="col-lg-12">Новости союза</h2>
+            </div>
+            <hr />
+            <br />
             @if (Model.IndexViewModel.News.Count() > 0)
             {
                 @foreach (var i in Model.IndexViewModel.News)

@@ -37,6 +37,11 @@
             <div class="row backGr-inner">
                 <h3>@Model.Carousel.Title</h3>
                 <hr />
+                @if (User.IsInRole("Administrator"))
+                {
+                    <a href='@Url.Action("Carousel", "Admin", new { id = @Model.Carousel.Id }, null)' class="alert-warning">редактировать</a>
+
+                }
                 <img src="@Model.Image.ImagePath" /><br />
                 @Html.Raw(Model.Carousel.Text)<br />
             </div>

@@ -496,7 +496,7 @@
             <div class="backGr" style="background-image:url(@Model.CarouselLst[0].ImageMin);">
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-10 col-lg-offset-1 ">
+                        <div class="col-lg-10 col-lg-offset-1 col-sm-10 col-md-10">
                             <img class="myslider" src="@Model.ImagesLst.Where(e=>e.Id==Model.CarouselLst[0].Image_Id).FirstOrDefault().ImagePath" alt="Chania">
                         </div>
                     </div>
@@ -509,7 +509,7 @@
             <div class="backGr" style="background-image:url(@Model.CarouselLst[1].ImageMin);">
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-10 col-lg-offset-1">
+                        <div class="col-lg-10 col-lg-offset-1 col-sm-10 col-md-10">
                             <img class="myslider" src="@Model.ImagesLst.Where(e=>e.Id==Model.CarouselLst[1].Image_Id).FirstOrDefault().ImagePath" alt="Chania">
                         </div>
                         <a href='@Url.Action("ShowCarousel", "Home", new { id = @Model.CarouselLst[1].Id }, null)'><p class="blackWraping">@Model.CarouselLst[1].Title</p></a>
@@ -521,7 +521,7 @@
             <div class="backGr" style="background-image:url(@Model.CarouselLst[2].ImageMin);">
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-10 col-lg-offset-1">
+                        <div class="col-lg-10 col-lg-offset-1 col-sm-10 col-md-10">
                             <img class="myslider" src="@Model.ImagesLst.Where(e=>e.Id==Model.CarouselLst[2].Image_Id).FirstOrDefault().ImagePath" alt="Chania">
                         </div>
                     </div>
@@ -537,7 +537,7 @@
 <div class="clear"></div>
 <div class="container">
     <div class="row">
-        <div class="col-lg-10 col-lg-offset-1 ">
+        <div class="col-lg-10 col-lg-offset-1 col-sm-10 col-md-10">
             <div class="col-lg-6">
                 <h3>Последние новости:</h3>
                 @foreach (var news in Model.NewsLst)
@@ -552,7 +552,7 @@
                 }
 
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-6 col-sm-6 col-md-6">
                 <h3>Новости из соцсетей:</h3>
                 @foreach (var face in Model.FaceBookLst)
                 {
@@ -595,7 +595,7 @@
 <div class="clear"></div>
 <div class="container">
     <div class="row">
-        <div class="col-lg-10 col-lg-offset-1 ">
+        <div class="col-lg-10 col-lg-offset-1 col-sm-10 col-md-10">
             <div class="row videoBlock">
                 <div class="slider">
                     <input type="radio" name="slider" checked="checked" class="slider__nav" />
@@ -626,7 +626,7 @@
 <div class="clear"></div>
 <div class="container">
     <div class="row">
-        <div class="col-lg-10 col-lg-offset-1 ">
+        <div class="col-lg-10 col-lg-offset-1 col-sm-10 col-md-10">
             <div class="row">
                 <br />
 

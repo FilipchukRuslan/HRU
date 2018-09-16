@@ -4,22 +4,23 @@
 }
 
 <div class="container">
-    @if (User.IsInRole("Administrator"))
-    {
-        <form name="UploadVideo" method="post" asp-controller="Admin" asp-action="PostVideo">
 
-            <div class="form-group">
-                <label for="Video">Видео</label>
-                <textarea cols="30" rows="10" class="form-control text-area-text" name="Video" required></textarea>
-                <div></div>
+    <form name="UploadVideo" method="post" asp-controller="Admin" asp-action="PostVideo">
 
-                <label for="Text">Текст</label>
-                <textarea cols="30" rows="10" class="form-control text-area-text" name="Text" required></textarea>
-                <div></div>
-            </div>
-            <input type="submit" value="Опубликовать" />
-        </form>
-    }
+        <div class="form-group">
+            <label for="Video">Видео (HTML-link)</label>
+            <textarea cols="30" rows="10" class="form-control text-area-text" name="Video" required></textarea>
+            <div></div>
+
+            <label for="Text">Текст</label>
+            <textarea cols="30" rows="10" class="form-control text-area-text" name="Text" required></textarea>
+            <div></div>
+            <input type="date" id="custom_date" name="custom_date" required>
+            <br />
+        </div>
+        <input type="submit" value="Опубликовать" />
+    </form>
+
 </div>
 
 @section Scripts{

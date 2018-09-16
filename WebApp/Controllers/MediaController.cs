@@ -55,7 +55,7 @@ namespace WebApp.Controllers
             this.partnersManager = partnersManager;
             this.mediaManager = mediaManager;
         }
-        public IActionResult Index()
+        public IActionResult Index(int page = 1)
         {
             if (!imageManager.GetAll().Any())
             {
@@ -99,13 +99,68 @@ namespace WebApp.Controllers
                 fbLst = faceBookManager.GetAll().ToList();
             }
 
+            
+
             var carouselLst = carouselManager.GetAll().ToList();
             var newsLst = newsManager.GetAll().ToList();
             var projLst = projectsManager.GetAll().ToList();
             var partnersLst = partnersManager.GetAll().ToList();
             var videoLst = videoManager.GetAll().ToList();
             var imgLst = imageManager.GetAll().ToList();
-            var mediaLst = mediaManager.GetAll().ToList();
+
+
+            Media[] mediaLst = mediaManager.GetAll().ToArray();
+            
+            for (int i = 0; i < mediaManager.GetAll().Count(); i++)//construction to sort dates
+            {
+                for (int i2 = i+1; i2 < mediaManager.GetAll().Count(); i2++)
+                {
+                    DateTime date1 = new DateTime();
+                    DateTime date2 = new DateTime();
+                    Media temp = null;
+                    foreach (MonthEnum item in Enum.GetValues(typeof(MonthEnum)))
+                    {
+                        if (mediaLst[i].Month == item.ToString())
+                        {
+                            date1 = new DateTime(mediaLst[i].Year, (int)item+1, mediaLst[i].Day);
+                            break;
+                        }
+                    }
+
+                    foreach (MonthEnum item2 in Enum.GetValues(typeof(MonthEnum)))
+                    {
+                        if (mediaLst[i2].Month == item2.ToString())
+                        {
+                            date2 = new DateTime(mediaLst[i2].Year, (int)item2+1, mediaLst[i2].Day);
+                            break;
+                        }
+                    }
+
+                    if (DateTime.Compare(date1, date2) < 0)
+                    {
+                        temp = mediaLst[i];
+                        mediaLst[i] = mediaLst[i2];
+                        mediaLst[i2] = temp;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+            }
+
+            int pageSize = 10;
+            //var mediaNews = mediaManager.GetAll().Reverse().ToList();
+            var count = mediaLst.Count();
+            var items = mediaLst.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            PageViewModel MediaNewsPageViewModel = new PageViewModel(count, page, pageSize);
+            IndexViewModel viewModel = new IndexViewModel
+            {
+                MediaPageInfo = MediaNewsPageViewModel,
+                Media = items
+            };
 
             return View(new StartPageViewModel()
             {
@@ -116,7 +171,8 @@ namespace WebApp.Controllers
                 NewsLst = newsLst,
                 ImagesLst = imgLst,
                 PartnersLst = partnersLst,
-                MediaLst = mediaLst
+                MediaLst = mediaLst.ToList(),
+                IndexViewModel = viewModel
             });
         }
     }

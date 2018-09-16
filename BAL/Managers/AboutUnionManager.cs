@@ -69,7 +69,7 @@ namespace BAL.Managers
         }
         public void Update(AboutUnion entity)
         {
-            var aboutUn = unitOfWork.AboutUnionRepo.GetById(entity.Id);
+            var aboutUn = unitOfWork.AboutUnionRepo.GetById(1);
             aboutUn.Mission = entity.Mission;
             aboutUn.Union = entity.Union;
             aboutUn.Goals = entity.Goals;

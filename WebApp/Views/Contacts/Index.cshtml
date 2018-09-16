@@ -30,7 +30,13 @@
 </style>
 <div class="form">
     <div class="text">
-        @Model.Info.Text
+        @Html.Raw(Model.Info.Text)
+        <br />
+        @if(User.IsInRole("Administrator"))
+        {
+            <a href='@Url.Action("Contacts", "Admin")' class="alert-warning">редактировать</a>
+
+        }
         <hr />
     </div>
     <br />

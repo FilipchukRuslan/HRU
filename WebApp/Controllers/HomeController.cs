@@ -105,7 +105,60 @@ namespace WebApp.Controllers
             }
 
             var carouselLst = carouselManager.GetAll().ToList();
-            var newsLst = newsManager.GetAll().ToList();
+            
+            News[] news = newsManager.GetAll().ToArray();
+
+
+            for (int i = 0; i < newsManager.GetAll().Count(); i++)//construction to sort dates
+            {
+                for (int i2 = i + 1; i2 < newsManager.GetAll().Count(); i2++)
+                {
+                    DateTime date1 = new DateTime();
+                    DateTime date2 = new DateTime();
+                    News temp = null;
+                    foreach (MonthEnum item in Enum.GetValues(typeof(MonthEnum)))
+                    {
+                        if (news[i].Month == item.ToString())
+                        {
+                            date1 = new DateTime(news[i].Year, (int)item + 1, news[i].Day);
+                            break;
+                        }
+                    }
+
+                    foreach (MonthEnum item2 in Enum.GetValues(typeof(MonthEnum)))
+                    {
+                        if (news[i2].Month == item2.ToString())
+                        {
+                            date2 = new DateTime(news[i2].Year, (int)item2 + 1, news[i2].Day);
+                            break;
+                        }
+                    }
+
+                    if (DateTime.Compare(date1, date2) < 0)
+                    {
+                        temp = news[i];
+                        news[i] = news[i2];
+                        news[i2] = temp;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+            }
+
+
+            List<News> newsLst;
+            if (newsManager.GetAll().Count() > 8)
+            {
+                newsLst = news.Take(8).ToList();
+            }
+            else
+            {
+                newsLst = news.ToList();
+            }
+            
             var projLst = projectsManager.GetAll().ToList();
             var partnersLst = partnersManager.GetAll().ToList();
             var videoLst = videoManager.GetAll().ToList();

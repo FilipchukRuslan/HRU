@@ -78,11 +78,11 @@ namespace WebApp
             {
                 // Password settings
                 options.Password.RequireDigit = true;
-                options.Password.RequiredLength = 8;
+                options.Password.RequiredLength = 6;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = true;
                 options.Password.RequireLowercase = false;
-                options.Password.RequiredUniqueChars = 6;
+                options.Password.RequiredUniqueChars = 4;
 
                 // Lockout settings
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
@@ -124,7 +124,7 @@ namespace WebApp
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-            
+
 
             app.UseAuthentication();
 

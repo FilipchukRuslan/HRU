@@ -1,8 +1,10 @@
-﻿<div class="container ">
+﻿@model WebApp.ViewModels.StartPageViewModel
+
+<div class="container">
     <div class="row">
         <div class="col-lg-10 col-lg-offset-1 newsblock">
             <label for="uploads">Информация о пресс службе</label>
-<textarea cols="30" rows="10" class="form-control text-area-article" id="Info" required></textarea>
+            <textarea cols="30" rows="10" class="form-control text-area-article" id="Info" required>@Model.Info.Text</textarea>
             <input class="btn btn-danger" type="button" id="info-btn" value="опубликовать" />
         </div>
     </div>

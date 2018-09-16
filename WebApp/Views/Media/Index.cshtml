@@ -44,30 +44,53 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-10 col-lg-offset-1 newsblock">
-            <h2>СМИ О НАС</h2>
+            <div class="row">
+                <br />
+                <h2 class="col-lg-11 col-lg-offset-1">СМИ о нас</h2>
+            </div>
             <hr />
+            <br />
             <div class="col-lg-10 col-lg-offset-1">
                 @try
                 {
-                    @foreach (var media in Model.MediaLst)
+                    @if (Model.IndexViewModel.Media.Count() > 0)
                     {
-                        <div class="article-block">
-                            <p class="date">@media.Day @media.Month @media.Year</p>
-                            <a href="@media.MediaName">@media.Text</a><br />
-                            <br />
-                            <a class="media-name" href="@media.MediaName">@media.Name</a>
+                        @foreach (var media in Model.IndexViewModel.Media)
+                        {
+                            <div class="article-block">
+                                <p class="date">@media.Day @media.Month @media.Year</p>
+                                <a href="@media.MediaName">@media.Text</a><br />
+                                <br />
+                                <a class="media-name" href="@media.MediaName">@media.Name</a>
 
-                        </div>
-                        <br />
+                            </div>
+                            <br />
+                        }
+                    }
+                    @if (Model.IndexViewModel.MediaPageInfo.HasPreviousPage)
+                    {
+                        <a asp-action="Index"
+                           asp-route-page="@(Model.IndexViewModel.MediaPageInfo.PageNumber - 1)"
+                           class="btn btn-block">
+                            <i class="glyphicon glyphicon-chevron-left"></i>
+                        </a>
+                    }
+                    @if (Model.IndexViewModel.MediaPageInfo.HasNextPage)
+                    {
+                        <a asp-action="Index"
+                           asp-route-page="@(Model.IndexViewModel.MediaPageInfo.PageNumber + 1)"
+                           class="btn btn-block">
+                            <i class="glyphicon glyphicon-chevron-right"></i>
+                        </a>
                     }
 
                 }
-                catch (Exception ex)
-                {
+                    catch (Exception ex)
+                    {
 
 
-                }
+                    }
+                </div>
             </div>
         </div>
     </div>
-</div>

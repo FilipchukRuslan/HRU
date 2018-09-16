@@ -35,7 +35,11 @@
         <div class="col-lg-10 col-lg-offset-1 backGr">
             <div class="row backGr-inner">
                 <h3>@Model.Article.Title</h3>
-                <hr />
+                <hr />@if (User.IsInRole("Administrator"))
+                {
+                    <a href='@Url.Action("News", "Admin", new { id = @Model.Article.Id }, null)' class="alert-warning">редактировать</a>
+
+                }
                 <img src="@Model.Image.ImagePath" /><br />
                 @Html.Raw(Model.Article.Text)<br />
             </div>

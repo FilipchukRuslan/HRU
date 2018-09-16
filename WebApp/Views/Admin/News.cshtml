@@ -1,4 +1,4 @@
-﻿
+﻿@model Model.DB.News
 @{
     ViewData["Title"] = "ADMIN";
 }
@@ -24,12 +24,14 @@
         max-width: 220px;
         min-width: 220px;
     }
+
     #preview2 {
         max-height: 150px;
         min-height: 150px;
         max-width: 220px;
         min-width: 220px;
     }
+
     img {
         background-size: contain;
         background-size: cover;
@@ -54,19 +56,20 @@
             <input type='file' name="file" multiple onchange="readURL(this);" required />
             <img id="preview" src="http://www.adbazar.pk/frontend/images/default-image.jpg" alt="your image" />
             <div></div>
-
         </div>
         <input class="btn btn-danger" type="submit" value="загрузить изображение" />
     </form>
     <hr>
     <div class="form-group">
         <label for="title">Заголовок</label>
-        <textarea cols="30" rows="10" class="form-control text-area-title" name="Title" id="title" required></textarea>
+        <textarea cols="30" rows="10" class="form-control text-area-title" name="Title" id="title" required>@try {@Model.Title } catch (Exception ex) {}</textarea>
         <div></div>
         <hr>
         <label for="article">Новость</label>
-        <textarea cols="30" rows="10" class="form-control text-area-article" id="MCE" name="Text" required></textarea>
+        <textarea cols="30" rows="10" class="form-control text-area-article" id="MCE" name="Text" required>@try {@Model.Text } catch (Exception ex) {}</textarea>
         <div></div>
+        <input type="date" id="custom_date" required>
+        <br />
     </div>
     <input type="submit" id="submit-btn" value="Опубликовать новость" />
 </div>
@@ -128,9 +131,11 @@
         $('#submit-btn').click(function () {
             var obj = new Object();
             var title = $("#title").val();
+            var dat = $("#custom_date").val();
             var text = tinymce.activeEditor.getContent();
             obj.title = title;
             obj.text = text;
+            obj.dat = dat;
             $.ajax({
                 type: "POST",
                 url: "/Admin/PostForm",

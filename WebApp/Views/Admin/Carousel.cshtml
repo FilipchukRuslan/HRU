@@ -1,4 +1,4 @@
-﻿
+﻿@model Model.DB.Carousel
 @{
     ViewData["Title"] = "Carousel";
 }
@@ -10,66 +10,64 @@
         max-width: 220px;
         min-width: 220px;
     }
+
     #preview2 {
         max-height: 150px;
         min-height: 150px;
         max-width: 220px;
         min-width: 220px;
     }
-
 </style>
 
-@if (User.IsInRole("Administrator"))
-{
 
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-10 col-lg-offset-1 ">
-                <h3>Загрузка изображений для слайдера</h3>
-                <form name="uploadCarousel" method="post" enctype="multipart/form-data" asp-controller="Admin" asp-action="PostCarousel">
-                    <div class="row">
-                        <div class="col-lg-4 form-group">
-                            <br />
-                            <br />
-                            <img id="preview" src="http://www.adbazar.pk/frontend/images/default-image.jpg" alt="your image" />
-                            <input type='file' name="uploads" multiple onchange="readURL(this);" required />
-                        </div>
-                        <div class="col-lg-2 form-group">
-                            <br />
-                            <br />
-                            <img id="preview2" src="https://st.depositphotos.com/1003595/1334/i/950/depositphotos_13349036-stock-photo-pixel-backgound.jpg" alt="your image" />
-                            <input type='file' name="uploads" multiple onchange="readURL2(this);" required />
-                        </div>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-10 col-lg-offset-1 ">
+            <h3>Загрузка изображений для слайдера</h3>
+            <form name="uploadCarousel" method="post" enctype="multipart/form-data" asp-controller="Admin" asp-action="PostCarousel">
+                <div class="row">
+                    <div class="col-lg-4 form-group">
+                        <br />
+                        <br />
+                        <img id="preview" src="http://www.adbazar.pk/frontend/images/default-image.jpg" alt="your image" />
+                        <input type='file' name="uploads" multiple onchange="readURL(this);" required />
                     </div>
-                    <br />
-                    <br />
-                    <input class="btn btn-danger" name="Carousel" type="submit" value="Загрузить изображения" />
-                    <hr>
-                    <br />
-                </form>
-                <div>
-                    <label>Заголовок</label>
-                    <textarea cols="30" rows="4" class="form-control text-area-text" id="title" required></textarea>
-                    <div></div>
-                </div>
-
-                <div>
-                    <label for="text">Текст</label>
-                    <textarea cols="30" rows="10" class="form-control text-area-text" id="MCE" required></textarea>
-                    <div></div>
+                    <div class="col-lg-2 form-group">
+                        <br />
+                        <br />
+                        <img id="preview2" src="https://st.depositphotos.com/1003595/1334/i/950/depositphotos_13349036-stock-photo-pixel-backgound.jpg" alt="your image" />
+                        <input type='file' name="uploads" multiple onchange="readURL2(this);" required />
+                    </div>
                 </div>
                 <br />
-
-                <div>
-                    <label>номер слайда</label>
-                    <input id="num" type="number" size="3" name="num" min="1" max="3" value="1" />
-                </div>
                 <br />
-                <input type="submit" id="submit-btn" value="Загрузить слайд" />
+                <input class="btn btn-danger" name="Carousel" type="submit" value="Загрузить изображения" />
+                <hr>
+                <br />
+            </form>
+            <div>
+                <label>Заголовок</label>
+                <textarea cols="30" rows="4" class="form-control text-area-text" id="title" required>@try {@Model.Title } catch (Exception ex) { }</textarea>
+                <div></div>
             </div>
+
+            <div>
+                <label for="text">Текст</label>
+                <textarea cols="30" rows="10" class="form-control text-area-text" id="MCE" required>@try {@Model.Text } catch (Exception ex) { }</textarea>
+                <div></div>
+            </div>
+            <br />
+
+            <div>
+                <label>номер слайда</label>
+                <input value="@try {@Model.Id } catch (Exception ex) {}" id="num" type="number" size="3" name="num" min="1" max="3" />
+            </div>
+            <br />
+            <input type="submit" id="submit-btn" value="Загрузить слайд" />
         </div>
     </div>
-}
+</div>
+
 
 @section Scripts{
 

@@ -11,8 +11,10 @@ namespace WebApp.ViewModels
         public IEnumerable<News> News { get; set; }
         public IEnumerable<Projects> Projects { get; set; }
         public IEnumerable<Video> Videos { get; set; }
+        public IEnumerable<Media> Media { get; set; }
         public PageViewModel NewsPageInfo { get; set; }
         public PageViewModel ProjectsPageInfo { get; set; }
         public PageViewModel VideosPageInfo { get; set; }
+        public PageViewModel MediaPageInfo { get; set; }
     }
 }

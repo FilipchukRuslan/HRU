@@ -34,12 +34,6 @@
         font-size: 16px;
     }
 
-    hr {
-        margin-top: 30px;
-        margin-bottom: 0%;
-        border: 1.5px solid #eeeeef;
-    }
-
     .stripe {
         width: 33%;
         height: 30px;
@@ -151,9 +145,18 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-10 col-lg-offset-1 backGr">
-            <h3>О союзе</h3>
             <br />
             <div class="col-lg-10 col-lg-offset-1">
+                <div class="row">
+                    <h2>О союзе</h2>
+                </div>
+                <hr />
+                <br />
+                @if (User.IsInRole("Administrator"))
+                {
+                    <a href='@Url.Action("AboutUnion", "Admin")' class="alert-warning">редактировать</a>
+
+                }
                 @foreach (var i in Model.AboutUnionLst)
                 {
                     <div class="descr">
@@ -186,7 +189,18 @@
                                         <p>@partners.ParnerAbout</p>
                                         <div class="clear"></div>
                                     </div>
+                                    @if (User.IsInRole("Administrator"))
+                                    {
+                                        <a class="btn btn-default" href='@Url.Action("DeletePartner", "AboutUnion", new { id = @partners.Id }, null)'>Удалить</a>
+                                    }
+
                                     <br />
+                                    @if (User.IsInRole("Administrator"))
+                                    {
+                                        <a href='@Url.Action("AboutUnion", "Admin", new { id = @partners.Id }, null )' class="alert-warning">редактировать</a>
+
+                                    }
+
                                 }
                             }
                         }
@@ -206,7 +220,16 @@
                                         <p>@partners.ParnerAbout</p>
                                         <div class="clear"></div>
                                     </div>
+                                    @if (User.IsInRole("Administrator"))
+                                    {
+                                        <a class="btn btn-default" href='@Url.Action("DeleteCrew", "AboutUnion", new { id = @partners.Id }, null)'>Удалить</a>
+                                    }
                                     <br />
+                                    @if (User.IsInRole("Administrator"))
+                                    {
+                                        <a href='@Url.Action("AboutUnion", "Admin", new { id = @partners.Id }, null)' class="alert-warning">редактировать</a>
+
+                                    }
                                 }
                             }
                         }

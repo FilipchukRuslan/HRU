@@ -15,6 +15,9 @@
 
             <textarea cols="30" placeholder="Текст статьи" rows="10" class="form-control text-area-article" name="Text" required></textarea>
             <br />
+            <div></div>
+            <input type="date" name="dat" required>
+            <br />
 
             <input type="submit" class="btn btn-danger" value="Опубликовать" />
         </div>
@@ -106,11 +109,12 @@
         var mce = $('#MCE').tinymce().getContent();
         var mission = $('#MISSION').tinymce().getContent();
         var goals = $('#GOALS').tinymce().getContent();
+        var dat = $("#custom_date").val();
 
         obj.mce = mce;
         obj.mission = mission;
         obj.goals = goals;
-
+        obj.dat = dat;
         $.ajax({
             type: "POST",
             url: "/Admin/Info",

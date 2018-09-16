@@ -9,6 +9,8 @@ namespace WebApp.ViewModels
 {
     public class StartPageViewModel
     {
+
+        public int id { get; set; }
         public List<News> NewsLst { get; set; }
         public List<Video> VideoLst { get; set; }
         public List<FaceBook> FaceBookLst { get; set; }

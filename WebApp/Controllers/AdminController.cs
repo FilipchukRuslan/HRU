@@ -12,6 +12,7 @@ using BAL.Managers;
 using Common;
 using DAL;
 using DAL.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
@@ -23,6 +24,7 @@ using WebApp.ViewModels;
 
 namespace WebApp.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     public class AdminController : Controller
     {
         IHostingEnvironment appEnvironment;
@@ -59,17 +61,50 @@ namespace WebApp.Controllers
             this.mediaManager = mediaManager;
             this.abstractInfoManager = abstractInfoManager;
         }
-        public IActionResult News()
+        public IActionResult News(int id)
         {
-            return View();
+            if (id == 0)
+            {
+                return View();
+            }
+            var item = newsManager.GetById(id);
+            return View(item);
         }
-        public IActionResult Projects()
+        public IActionResult Projects(int id)
         {
-            return View();
+            if (id == 0)
+            {
+                return View();
+            }
+            var item = projectsManager.GetById(id);
+            return View(item);
         }
-        public IActionResult AboutUnion()
+        public IActionResult AboutUnion(int id)
         {
-            return View();
+            var carouselLst = carouselManager.GetAll().ToList();
+            var fbLst = faceBookManager.GetAll().ToList();
+            var projLst = projectsManager.GetAll().ToList();
+            var newsLst = newsManager.GetAll().ToList();
+            var videoLst = videoManager.GetAll().ToList();
+            var imgLst = imageManager.GetAll().ToList();
+            var partnersManagerLst = partnersManager.GetAll().ToList();
+            var aboutUnionLst = aboutUnionManager.GetAll().ToList();
+
+            
+            return View(new StartPageViewModel()
+            {
+                CarouselLst = carouselLst,
+                FaceBookLst = fbLst,
+                ProjectsLst = projLst,
+                VideoLst = videoLst,
+                NewsLst = newsLst,
+                ImagesLst = imgLst,
+                PartnersLst = partnersManagerLst,
+                AboutUnionLst = aboutUnionLst,
+                id = id
+            });
+
+
         }
         public IActionResult Video()
         {
@@ -79,9 +114,14 @@ namespace WebApp.Controllers
         {
             return View();
         }
-        public IActionResult Carousel()
+        public IActionResult Carousel(int id)
         {
-            return View();
+            if (id == 0)
+            {
+                return View();
+            }
+            var item = carouselManager.GetById(id);
+            return View(item);
         }
         public IActionResult Media()
         {
@@ -89,10 +129,24 @@ namespace WebApp.Controllers
         }
         public IActionResult Contacts()
         {
-            return View();
+            AbstractInfo info = null;
+            if (abstractInfoManager.GetAll().Count() < 1)
+            {
+                info = new AbstractInfo() { Title = "по умолчанию", Text = "09826259810" };
+            }
+            else
+            {
+                info = abstractInfoManager.Get().LastOrDefault();
+            }
+            return View(new StartPageViewModel()
+            {
+                Info = info
+            });
         }
 
-        
+
+
+
         public IActionResult EditContacts(string Text)
         {
             abstractInfoManager.Insert(new AbstractInfo() { Text = Text });
@@ -100,12 +154,15 @@ namespace WebApp.Controllers
         }
 
         [HttpPost("UploadVideo")]
-        public IActionResult PostVideo(string Video, string Text)
+        public IActionResult PostVideo(string Video, string Text, DateTime custom_date)
         {
-            videoManager.Insert(new Video() { Text = Text, VideoFile = Video,
-                Day = DateTime.Today.Day,
-                Month = Enum.GetName(typeof(MonthEnum), DateTime.Today.Month - 1),
-                Year = DateTime.Today.Year
+            videoManager.Insert(new Video()
+            {
+                Text = Text,
+                VideoFile = Video,
+                Day = custom_date.Day,
+                Month = Enum.GetName(typeof(MonthEnum), custom_date.Month - 1),
+                Year = custom_date.Year
             });
             return RedirectToAction("Video");
         }
@@ -163,57 +220,77 @@ namespace WebApp.Controllers
         public IActionResult PostForm(FormModelClass formModelClass)
         {
             var imageId = imageManager.Get().LastOrDefault().Id;
+
             News news = new News()
             {
                 Text = formModelClass.text,
                 Title = formModelClass.title,
                 Image_Id = imageId,
-                Day = DateTime.Today.Day,
-                Month = Enum.GetName(typeof(MonthEnum), DateTime.Today.Month - 1),
-                Year = DateTime.Today.Year
+                Day = formModelClass.dat.Day,
+                Month = Enum.GetName(typeof(MonthEnum), formModelClass.dat.Month - 1),
+                Year = formModelClass.dat.Year
             };
-
             newsManager.Insert(news);
             return RedirectToAction("News");
 
         }
 
         [HttpPost("UploadTeamMember")]
-        public async Task<IActionResult> PostTeamMember(IFormFile uploads, string Text)
+        public async Task<IActionResult> PostTeamMember(IFormFile uploads, string Text, int id)
         {
-            string path1 = "/images/" + uploads.FileName;
-            if (path1 == null)
-                path1 = "";
-
-            using (var fileStream = new FileStream(appEnvironment.WebRootPath + path1, FileMode.Create))
+            if (id != 0)
             {
-                await uploads.CopyToAsync(fileStream);
+                var item = partnersManager.Get().Where(e => e.Id == id).FirstOrDefault();
+                item.ParnerAbout = Text;
+                string path1 = "/images/" + uploads.FileName;
+                if (path1 == null)
+                    path1 = "";
+
+                using (var fileStream = new FileStream(appEnvironment.WebRootPath + path1, FileMode.Create))
+                {
+                    await uploads.CopyToAsync(fileStream);
+                }
+                Image image = new Image() { ImagePath = path1 };
+
+                imageManager.Insert(image);
+                item.Image_Id = image.Id;
+                partnersManager.Update(item);
             }
-            Image image = new Image() { ImagePath = path1 };
-
-            imageManager.Insert(image);
-
-            partnersManager.Insert(new Partners()
+            else
             {
-                Image_Id = image.Id,
-                isCrew = false,
-                ParnerAbout = Text
-            });
+                string path1 = "/images/" + uploads.FileName;
+                if (path1 == null)
+                    path1 = "";
 
+                using (var fileStream = new FileStream(appEnvironment.WebRootPath + path1, FileMode.Create))
+                {
+                    await uploads.CopyToAsync(fileStream);
+                }
+                Image image = new Image() { ImagePath = path1 };
+
+                imageManager.Insert(image);
+
+                partnersManager.Insert(new Partners()
+                {
+                    Image_Id = image.Id,
+                    isCrew = false,
+                    ParnerAbout = Text
+                });
+            }
             return RedirectToAction("AboutUnion");
         }
 
         [HttpPost("UploadMedia")]
-        public IActionResult PostMedia(string Text, string Ref, string Name)
+        public IActionResult PostMedia(string Text, string Ref, string Name, DateTime dat)
         {
             Media media = new Media()
             {
                 MediaName = Ref,
                 Text = Text,
                 Name = Name,
-                Day = DateTime.Today.Day,
-                Month = Enum.GetName(typeof(MonthEnum), DateTime.Today.Month - 1),
-                Year = DateTime.Today.Year
+                Day = dat.Day,
+                Month = Enum.GetName(typeof(MonthEnum), dat.Month - 1),
+                Year = dat.Year
             };
 
             mediaManager.Insert(media);
@@ -221,27 +298,49 @@ namespace WebApp.Controllers
         }
 
         [HttpPost("UploadCrew")]
-        public async Task<IActionResult> PostCrew(IFormFile uploads, string Text)
+        public async Task<IActionResult> PostCrew(IFormFile uploads, string Text, int id)
         {
-            string path1 = "/images/" + uploads.FileName;
-            if (path1 == null)
-                path1 = "";
-
-            using (var fileStream = new FileStream(appEnvironment.WebRootPath + path1, FileMode.Create))
+            if (id != 0)
             {
-                await uploads.CopyToAsync(fileStream);
+                var item = partnersManager.Get().Where(e => e.Id == id).FirstOrDefault();
+
+                item.ParnerAbout = Text;
+                string path1 = "/images/" + uploads.FileName;
+                if (path1 == null)
+                    path1 = "";
+
+                using (var fileStream = new FileStream(appEnvironment.WebRootPath + path1, FileMode.Create))
+                {
+                    await uploads.CopyToAsync(fileStream);
+                }
+                Image image = new Image() { ImagePath = path1 };
+
+                imageManager.Insert(image);
+                item.Image_Id = image.Id;
+
+                partnersManager.Update(item);
             }
-            Image image = new Image() { ImagePath = path1 };
-
-            imageManager.Insert(image);
-
-            partnersManager.Insert(new Partners()
+            else
             {
-                Image_Id = image.Id,
-                isCrew = true,
-                ParnerAbout = Text
-            });
+                string path1 = "/images/" + uploads.FileName;
+                if (path1 == null)
+                    path1 = "";
 
+                using (var fileStream = new FileStream(appEnvironment.WebRootPath + path1, FileMode.Create))
+                {
+                    await uploads.CopyToAsync(fileStream);
+                }
+                Image image = new Image() { ImagePath = path1 };
+
+                imageManager.Insert(image);
+
+                partnersManager.Insert(new Partners()
+                {
+                    Image_Id = image.Id,
+                    isCrew = true,
+                    ParnerAbout = Text
+                });
+            }
             return RedirectToAction("AboutUnion");
         }
 
@@ -266,7 +365,7 @@ namespace WebApp.Controllers
             return RedirectToAction("AboutUnion");
         }
 
-       
+
 
         [HttpPost("UploadFB")]
         public async Task<IActionResult> PostFB(IFormFile uploads, string Text, string Person, string PersonLink)

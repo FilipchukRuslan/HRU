@@ -70,7 +70,19 @@ namespace WebApp.Controllers
             
         }
 
+        public IActionResult DeletePartner(int id)
+        {
+            var p = partnersManager.Get().Where(e => e.Id == id).FirstOrDefault();
+            partnersManager.Delete(p);
+            return RedirectToAction("Index");
+        }
 
-        
+        public IActionResult DeleteCrew(int id)
+        {
+            var p = partnersManager.Get().Where(e => e.Id == id).FirstOrDefault();
+            partnersManager.Delete(p);
+            return RedirectToAction("Index");
+        }
+
     }
 }

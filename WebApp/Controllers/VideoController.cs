@@ -1,4 +1,5 @@
 ﻿using BAL.Interfaces;
+using Common;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Model.DB;
@@ -47,14 +48,57 @@ namespace WebApp.Controllers
             var fbLst = faceBookManager.GetAll().ToList();
             var newsLst = newsManager.GetAll().ToList();
             var projLst = projectsManager.GetAll().ToList();
-            var videoLst = videoManager.GetAll().ToList();
             var imgLst = imageManager.GetAll().ToList();
+
+            ///////////////////////////////////////////////
+            Video[] videoLst = videoManager.GetAll().ToArray();
+
+
+            for (int i = 0; i < videoManager.GetAll().Count(); i++)//construction to sort dates
+            {
+                for (int i2 = i + 1; i2 < videoManager.GetAll().Count(); i2++)
+                {
+                    DateTime date1 = new DateTime();
+                    DateTime date2 = new DateTime();
+                    Video temp = null;
+                    foreach (MonthEnum item in Enum.GetValues(typeof(MonthEnum)))
+                    {
+                        if (videoLst[i].Month == item.ToString())
+                        {
+                            date1 = new DateTime(videoLst[i].Year, (int)item + 1, videoLst[i].Day);
+                            break;
+                        }
+                    }
+
+                    foreach (MonthEnum item2 in Enum.GetValues(typeof(MonthEnum)))
+                    {
+                        if (videoLst[i2].Month == item2.ToString())
+                        {
+                            date2 = new DateTime(videoLst[i2].Year, (int)item2 + 1, videoLst[i2].Day);
+                            break;
+                        }
+                    }
+
+                    if (DateTime.Compare(date1, date2) < 0)
+                    {
+                        temp = videoLst[i];
+                        videoLst[i] = videoLst[i2];
+                        videoLst[i2] = temp;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+            }
+
 
             int pageSize = 3;   // количество элементов на странице
 
-            var videos = videoManager.GetAll().Reverse().ToList();
-            var count = videos.Count();
-            var items = videos.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            //var videos = videoManager.GetAll().Reverse().ToList();
+            var count = videoLst.Count();
+            var items = videoLst.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
             PageViewModel VideosPageViewModel = new PageViewModel(count, page, pageSize);
             IndexViewModel viewModel = new IndexViewModel
@@ -67,7 +111,7 @@ namespace WebApp.Controllers
                 CarouselLst = carouselLst,
                 FaceBookLst = fbLst,
                 ProjectsLst = projLst,
-                VideoLst = videoLst,
+                VideoLst = videoLst.ToList(),
                 NewsLst = newsLst,
                 ImagesLst = imgLst,
                 IndexViewModel = viewModel

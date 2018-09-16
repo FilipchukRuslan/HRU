@@ -36,6 +36,11 @@
             <div class="row backGr-inner">
                 <h3>@Model.Projects.Title</h3>
                 <hr />
+                @if (User.IsInRole("Administrator"))
+                {
+                    <a href='@Url.Action("Projects", "Admin", new { id = @Model.Projects.Id }, null)' class="alert-warning">редактировать</a>
+
+                }
                 <img src="@Model.Image.ImagePath" /><br />
                 @Html.Raw(Model.Projects.Text)<br />
             </div>

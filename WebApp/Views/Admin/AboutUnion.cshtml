@@ -1,4 +1,4 @@
-﻿
+﻿@model WebApp.ViewModels.StartPageViewModel
 
 @{
     ViewData["Title"] = "ADMIN";
@@ -10,12 +10,14 @@
         max-width: 220px;
         min-width: 220px;
     }
+
     #preview2 {
         max-height: 150px;
         min-height: 150px;
         max-width: 220px;
         min-width: 220px;
     }
+
     #preview3 {
         max-height: 150px;
         min-height: 150px;
@@ -24,62 +26,83 @@
     }
 </style>
 <div class="container">
-    @if (User.IsInRole("Administrator"))
-    {
-        <form>
-            <div class="form-group">
-                <br />
-                <label for="article">Правозащитный союз Украины - </label>
-                <textarea cols="30" rows="10" class="form-control text-area-article" id="MCE" required></textarea>
-                <label for="article">Миссия союза</label>
-                <textarea cols="30" rows="10" class="form-control text-area-article" id="MISSION" required></textarea>
-                <label for="uploads">Цели и задачи</label>
-                <textarea cols="30" rows="10" class="form-control text-area-article" id="GOALS" required></textarea>
-                <div></div>
-                <hr>
-            </div>
-            <input type="submit" id="info-btn" value="Опубликовать" />
-        </form>
-        <br />
-        <br />
-        <h2>
-            Состав Союза
-        </h2>
-        <form name="UploadCrew" method="post" enctype="multipart/form-data" asp-controller="Admin" asp-action="PostCrew">
-            <div class="form-group">
-                <label>лого</label><br />
-                <img id="preview2" src="http://www.adbazar.pk/frontend/images/default-image.jpg" alt="your image" />
-                <input type='file' name="uploads" multiple onchange="readURL2(this);" />
-            </div>
-            <div class="form-group">
-                <label>описание</label>
-                <textarea cols="30" rows="10" class="form-control text-area-article" name="Text" required></textarea>
-                <input type="submit" value="Опубликовать" />
-            </div>
-        </form>
-        <div class="clear"></div>
-        <hr>
-        <br />
-        <br />
-        <h2>
-            Партнеры
-        </h2>
-        <form name="UploadTeamMember" method="post" enctype="multipart/form-data" asp-controller="Admin" asp-action="PostTeamMember">
-            <div class="form-group">
-                <label>лого</label><br />
-                <img id="preview3" src="http://www.adbazar.pk/frontend/images/default-image.jpg" alt="your image" />
-                <input type='file' name="uploads" multiple onchange="readURL3(this);" />
-            </div>
-            <div class="form-group">
-                <label>описание</label>
-                <textarea cols="30" rows="10" class="form-control text-area-article" name="Text" required></textarea>
-                <input type="submit" value="Опубликовать" />
-            </div>
-        </form>
-        <div class="clear"></div>
-        <hr>
 
+    <form>
+        <div class="form-group">
+            <br />
+            <label for="article">Правозащитный союз Украины - </label>
+            <textarea cols="30" rows="10" class="form-control text-area-article" id="MCE" required>@try {@Model.AboutUnionLst[0].Union } catch (Exception ex) { }</textarea>
+            <label for="article">Миссия союза</label>
+            <textarea cols="30" rows="10" class="form-control text-area-article" id="MISSION" required>@try {@Model.AboutUnionLst[0].Mission } catch (Exception ex) { }</textarea>
+            <label for="uploads">Цели и задачи</label>
+            <textarea cols="30" rows="10" class="form-control text-area-article" id="GOALS" required>@try {@Model.AboutUnionLst[0].Goals } catch (Exception ex) { }</textarea>
+            <div></div>
+            <hr>
+        </div>
+        <input type="submit" id="info-btn" value="Опубликовать" />
+    </form>
+    <br />
+    <br />
+    <h2>
+        Состав Союза
+    </h2>
+    <form name="UploadCrew" method="post" enctype="multipart/form-data" asp-controller="Admin" asp-action="PostCrew">
+        <div class="form-group">
+            <input name="id" type="number" value="@Model.id" hidden/>
+            <label>лого</label><br />
+            <img id="preview2" src="http://www.adbazar.pk/frontend/images/default-image.jpg" alt="your image" />
+            <input type='file' name="uploads" multiple onchange="readURL2(this);" required />
+        </div>
+        <div class="form-group">
+            <label>описание</label>
+            <textarea cols="30" rows="10" class="form-control text-area-article" name="Text" required>
+
+@try
+{
+@if (Model.PartnersLst.Where(e => e.Id == Model.id).FirstOrDefault().isCrew)
+{
+    @Model.PartnersLst.Where(e => e.Id == Model.id).FirstOrDefault().ParnerAbout 
     }
+}
+catch (Exception ex) { }
+
+
+</textarea>
+            <input type="submit" value="Опубликовать" />
+        </div>
+    </form>
+    <div class="clear"></div>
+    <hr>
+    <br />
+    <br />
+    <h2>
+        Партнеры
+    </h2>
+    <form name="UploadTeamMember" method="post" enctype="multipart/form-data" asp-controller="Admin" asp-action="PostTeamMember">
+        <div class="form-group">
+            <input name="id" type="number" value="@Model.id" hidden/>
+            <label>лого</label><br />
+            <img id="preview3" src="http://www.adbazar.pk/frontend/images/default-image.jpg" alt="your image" />
+            <input type='file' name="uploads" multiple onchange="readURL3(this);" required />
+        </div>
+        <div class="form-group">
+            <label>описание</label>
+            <textarea cols="30" rows="10" class="form-control text-area-article" name="Text" required>
+
+
+@try {
+@if (!Model.PartnersLst.Where(e => e.Id == Model.id).FirstOrDefault().isCrew)
+{
+    @Model.PartnersLst.Where(e => e.Id == Model.id).FirstOrDefault().ParnerAbout } 
+    }
+    catch (Exception ex) { }
+</textarea>
+            <input type="submit" value="Опубликовать" required />
+        </div>
+    </form>
+    <div class="clear"></div>
+    <hr>
+
 </div>
 @section Scripts{
 
@@ -159,15 +182,15 @@
         }
         $('#info-btn').click(function () {
             var obj = new Object();
-            
+
             var mce = $('#MCE').tinymce().getContent();
             var mission = $('#MISSION').tinymce().getContent();
             var goals = $('#GOALS').tinymce().getContent();
-            
+
             obj.mce = mce;
             obj.mission = mission;
             obj.goals = goals;
-            
+
             $.ajax({
                 type: "POST",
                 url: "/Admin/Info",

@@ -33,8 +33,8 @@ namespace DAL.Seed
             if (!context.Roles.Any(r => r.Name == "Administrator"))
             {
                 roleManager.CreateAsync(new IdentityRole("Administrator")).Wait();
-                string userAdmin = "admin@gmail.com";
-                string passwordAdmin = "Admin_123";
+                string userAdmin = "east.hr.group@gmail.com";
+                string passwordAdmin = "Fr20Hrv";
                 userManager.CreateAsync(new User { UserName = userAdmin, Email = userAdmin, EmailConfirmed = true }, passwordAdmin).Wait();
                 var t = userManager.FindByNameAsync(userAdmin);
                 userManager.AddToRoleAsync(t.Result, "Administrator").Wait();
